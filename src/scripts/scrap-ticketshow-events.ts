@@ -38,7 +38,7 @@ export default async function main() {
       },
       referrer: "https://www.ticketshow.com.ec/",
       referrerPolicy: "strict-origin-when-cross-origin",
-      body: '{"ciudad":"Guayaquil","cantmaxticket":9}',
+      body: '{"ciudad":"Guayaquil","cantmaxticket":0}',
       method: "POST",
       mode: "cors",
       credentials: "omit",
