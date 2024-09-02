@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic"; // static by default, unless reading the
 import { NextResponse } from "next/server";
 import scrapMeet2Go from "../../../scripts/scrap-meet2go-events";
 import scrapTicketShow from "../../../scripts/scrap-ticketshow-events";
+import cleanEvents from "../../../scripts/clean-events";
 
 export async function GET(request: Request) {
   try {
@@ -10,6 +11,9 @@ export async function GET(request: Request) {
     await scrapMeet2Go();
     await scrapTicketShow();
     console.log("close scrap");
+
+    await cleanEvents();
+    console.log("events cleaned.");
 
     return new Response(`Hello from ${process.env.VERCEL_REGION}`);
   } catch (error) {
