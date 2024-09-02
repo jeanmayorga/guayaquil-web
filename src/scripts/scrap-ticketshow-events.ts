@@ -19,7 +19,7 @@ interface Response {
   imagenmediana: string;
 }
 
-async function main() {
+export default async function main() {
   const request = await fetch(
     "http://microservicios.ticketshow.com.ec/coba/product/getEventosByFiltro",
     {
@@ -65,9 +65,10 @@ async function main() {
 
   if (data.error) {
     console.error("Error al hacer upsert:", data.error);
+    return;
   }
 
-  console.log(`${response.length} upsert`);
+  console.log(`TicketShow scraped ${response.length} upserted`);
 }
 
 main();

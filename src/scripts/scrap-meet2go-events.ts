@@ -17,7 +17,7 @@ interface Response {
   }[];
 }
 
-async function main() {
+export default async function main() {
   const baseUrl = "https://app.meet2go.com/items/events";
   const fields =
     "slug,name,cover_image,start_date,end_date,start_time,end_time,promotional_tag,venue.address,venue.name";
@@ -79,9 +79,10 @@ async function main() {
 
   if (data.error) {
     console.error("Error al hacer upsert:", data.error);
+    return;
   }
 
-  console.log(`${response.data.length} upsert`);
+  console.log(`Meet2Go scraped ${response.data.length} upserted`);
 }
 
 main();
