@@ -71,5 +71,3 @@ export default async function main() {
 
   console.log(`TicketShow scraped ${response.length} upserted`);
 }
-
-main();

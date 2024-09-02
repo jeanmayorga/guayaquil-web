@@ -85,5 +85,3 @@ export default async function main() {
 
   console.log(`Meet2Go scraped ${response.data.length} upserted`);
 }
-
-main();
