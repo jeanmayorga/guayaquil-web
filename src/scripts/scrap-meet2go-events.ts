@@ -18,6 +18,7 @@ interface Response {
 }
 
 export default async function main() {
+  console.log("start meet2go scrap");
   const baseUrl = "https://app.meet2go.com/items/events";
   const fields =
     "slug,name,cover_image,start_date,end_date,start_time,end_time,promotional_tag,venue.address,venue.name";

@@ -20,6 +20,7 @@ interface Response {
 }
 
 export default async function main() {
+  console.log("start ticketshow scrap");
   const request = await fetch(
     "http://microservicios.ticketshow.com.ec/coba/product/getEventosByFiltro",
     {
