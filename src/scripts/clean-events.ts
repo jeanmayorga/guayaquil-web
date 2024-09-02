@@ -13,7 +13,10 @@ export default async function main() {
     return;
   }
 
-  const ids = data.data.map((event) => event.id);
+  const ids = data.data.map((event) => {
+    console.log(event.id, event.name, event.end_date);
+    return event.id;
+  });
 
   await supabase.from("events").delete().in("id", ids);
 

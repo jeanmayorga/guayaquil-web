@@ -17,6 +17,8 @@ interface Response {
   lugar: string;
   imagenpequeña: string;
   imagenmediana: string;
+  redirectlink: string;
+  title?: string;
 }
 
 export default async function main() {
@@ -38,7 +40,7 @@ export default async function main() {
       },
       referrer: "https://www.ticketshow.com.ec/",
       referrerPolicy: "strict-origin-when-cross-origin",
-      body: '{"ciudad":"Guayaquil","cantmaxticket":0}',
+      body: '{"ciudad":"Guayaquil","cantmaxticket":20}',
       method: "POST",
       mode: "cors",
       credentials: "omit",
@@ -51,11 +53,11 @@ export default async function main() {
     cover_image: tsEvent.imagenpequeña || tsEvent.imagenmediana,
     name: tsEvent.nombre,
     slug: `ticketshow-${tsEvent.id}`,
+    url:
+      tsEvent.redirectlink ||
+      `https://www.ticketshow.com.ec/evento/${tsEvent.title}`,
     start_date: tsEvent.fechaevento.split("T")[0],
     end_date: tsEvent.fechaeventofin.split("T")[0],
-    start_time: tsEvent.horario[0].horaInicio.split("T")[1],
-    end_time: tsEvent.horario[0].horaFin.split("T")[1],
-    location_address: null,
     location_name: tsEvent.lugar,
   }));
 

@@ -25,7 +25,7 @@ export default async function main() {
   const limit = -1;
   const sort = "start_date";
   const filters = {
-    end_date_gte: "2024-09-01T21:04:13",
+    end_date_gte: new Date().toISOString(),
     status_eq: "published",
     venue_city_in: "Guayaquil",
   };
@@ -65,11 +65,9 @@ export default async function main() {
     cover_image: `https://d20zx9sjn15rrf.cloudfront.net/assets/${m2gEvent.cover_image}?width=350&format=auto&quality=100`,
     name: m2gEvent.name,
     slug: `m2g-${m2gEvent.slug}`,
+    url: `https://www.meet2go.com/ev/${m2gEvent.slug}`,
     start_date: m2gEvent.start_date,
     end_date: m2gEvent.end_date,
-    start_time: m2gEvent.start_time,
-    end_time: m2gEvent.end_time,
-    location_address: m2gEvent.venue.address,
     location_name: m2gEvent.venue.name,
   }));
 
