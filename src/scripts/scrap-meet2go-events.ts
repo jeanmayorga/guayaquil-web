@@ -70,6 +70,7 @@ export default async function main() {
       start_date: m2gEvent.start_date,
       end_date: m2gEvent.end_date,
       location_name: m2gEvent.venue.name,
+      last_updated: new Date().toISOString(),
     };
   });
 
@@ -83,5 +84,5 @@ export default async function main() {
     return;
   }
 
-  console.log(`meet2go: total ${response.data.length}}`);
+  console.log(`meet2go: total ${response.data.length}`);
 }

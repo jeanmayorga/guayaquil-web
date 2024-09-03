@@ -60,6 +60,7 @@ export default async function main() {
       start_date: tsEvent.fechaevento.split("T")[0],
       end_date: tsEvent.fechaeventofin.split("T")[0],
       location_name: tsEvent.lugar,
+      last_updated: new Date().toISOString(),
     };
   });
 
