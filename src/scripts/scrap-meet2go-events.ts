@@ -18,7 +18,6 @@ interface Response {
 }
 
 export default async function main() {
-  console.log("start meet2go scrap");
   const baseUrl = "https://app.meet2go.com/items/events";
   const fields =
     "slug,name,cover_image,start_date,end_date,start_time,end_time,promotional_tag,venue.address,venue.name";
@@ -61,15 +60,18 @@ export default async function main() {
   });
   const response = (await request.json()) as Response;
 
-  const mapped = response.data.map((m2gEvent) => ({
-    cover_image: `https://d20zx9sjn15rrf.cloudfront.net/assets/${m2gEvent.cover_image}?width=350&format=auto&quality=100`,
-    name: m2gEvent.name,
-    slug: `m2g-${m2gEvent.slug}`,
-    url: `https://www.meet2go.com/ev/${m2gEvent.slug}`,
-    start_date: m2gEvent.start_date,
-    end_date: m2gEvent.end_date,
-    location_name: m2gEvent.venue.name,
-  }));
+  const mapped = response.data.map((m2gEvent) => {
+    console.log(`meet2go: mapped ${m2gEvent.name}`);
+    return {
+      cover_image: `https://d20zx9sjn15rrf.cloudfront.net/assets/${m2gEvent.cover_image}?width=350&format=auto&quality=100`,
+      name: m2gEvent.name,
+      slug: `m2g-${m2gEvent.slug}`,
+      url: `https://www.meet2go.com/ev/${m2gEvent.slug}`,
+      start_date: m2gEvent.start_date,
+      end_date: m2gEvent.end_date,
+      location_name: m2gEvent.venue.name,
+    };
+  });
 
   const data = await supabase.from("events").upsert(mapped, {
     ignoreDuplicates: false,
@@ -81,5 +83,5 @@ export default async function main() {
     return;
   }
 
-  console.log(`Meet2Go scraped ${response.data.length} upserted`);
+  console.log(`meet2go: total ${response.data.length}}`);
 }

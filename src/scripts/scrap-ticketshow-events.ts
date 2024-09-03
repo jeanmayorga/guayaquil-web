@@ -22,7 +22,6 @@ interface Response {
 }
 
 export default async function main() {
-  console.log("start ticketshow scrap");
   const request = await fetch(
     "http://microservicios.ticketshow.com.ec/coba/product/getEventosByFiltro",
     {
@@ -40,7 +39,7 @@ export default async function main() {
       },
       referrer: "https://www.ticketshow.com.ec/",
       referrerPolicy: "strict-origin-when-cross-origin",
-      body: '{"ciudad":"Guayaquil","cantmaxticket":20}',
+      body: '{"ciudad":"Guayaquil","cantmaxticket":0}',
       method: "POST",
       mode: "cors",
       credentials: "omit",
@@ -49,17 +48,20 @@ export default async function main() {
 
   const response = (await request.json()) as Response[];
 
-  const mapped = response.map((tsEvent) => ({
-    cover_image: tsEvent.imagenmediana || tsEvent.imagenpequeña,
-    name: tsEvent.nombre,
-    slug: `ticketshow-${tsEvent.id}`,
-    url:
-      tsEvent.redirectlink ||
-      `https://www.ticketshow.com.ec/evento/${tsEvent.title}`,
-    start_date: tsEvent.fechaevento.split("T")[0],
-    end_date: tsEvent.fechaeventofin.split("T")[0],
-    location_name: tsEvent.lugar,
-  }));
+  const mapped = response.map((tsEvent) => {
+    console.log(`ticketShow: mapped ${tsEvent.nombre}`);
+    return {
+      cover_image: tsEvent.imagenmediana || tsEvent.imagenpequeña,
+      name: tsEvent.nombre,
+      slug: `ticketshow-${tsEvent.id}`,
+      url:
+        tsEvent.redirectlink ||
+        `https://www.ticketshow.com.ec/evento/${tsEvent.title}`,
+      start_date: tsEvent.fechaevento.split("T")[0],
+      end_date: tsEvent.fechaeventofin.split("T")[0],
+      location_name: tsEvent.lugar,
+    };
+  });
 
   const data = await supabase.from("events").upsert(mapped, {
     ignoreDuplicates: false,
@@ -71,5 +73,5 @@ export default async function main() {
     return;
   }
 
-  console.log(`TicketShow scraped ${response.length} upserted`);
+  console.log(`ticketShow total: ${response.length}`);
 }
