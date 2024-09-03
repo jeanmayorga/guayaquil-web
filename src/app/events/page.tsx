@@ -65,12 +65,13 @@ export default async function Home() {
           </h1>
           <p className="text-gray-400 mb-8">
             Ultima actualización el{" "}
-            {new Date(events[0].last_updated).toLocaleDateString("es-LA", {
+            {new Date(events[0].last_updated).toLocaleDateString("es-EC", {
               day: "2-digit",
               month: "long",
               year: "numeric",
               hour: "2-digit",
               minute: "2-digit",
+              second: "2-digit",
             })}
           </p>
         </div>
