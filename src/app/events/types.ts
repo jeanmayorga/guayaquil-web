@@ -7,4 +7,5 @@ export interface EventType {
   end_date: string;
   location_name: string;
   url: string;
+  last_updated: string;
 }
