@@ -34,12 +34,12 @@ export function Event({ event, fullWidth }: Props) {
             <>
               {new Date(event.start_date).toLocaleDateString("es-LA", {
                 day: "2-digit",
-                month: "long",
+                month: "short",
               })}{" "}
               hasta{" "}
               {new Date(event.end_date).toLocaleDateString("es-LA", {
                 day: "2-digit",
-                month: "long",
+                month: "short",
               })}
             </>
           )}

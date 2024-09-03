@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://guayaquil.app/block3.webp",
+        url: "https://guayaquil.app/block2.jpg",
         width: 1120,
         height: 753,
         alt: "Eventos en Guayaquil",
