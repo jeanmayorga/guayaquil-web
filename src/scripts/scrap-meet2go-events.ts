@@ -17,25 +17,16 @@ interface Response {
   }[];
 }
 
-export default async function main() {
+async function getEventsFromCity(city: string) {
   const baseUrl = "https://app.meet2go.com/items/events";
-  const fields =
-    "slug,name,cover_image,start_date,end_date,start_time,end_time,promotional_tag,venue.address,venue.name";
-  const limit = -1;
-  const sort = "start_date";
-  const filters = {
-    end_date_gte: new Date().toISOString(),
-    status_eq: "published",
-    venue_city_in: "Guayaquil",
-  };
 
   const queryParams = new URLSearchParams({
-    fields: fields,
-    limit: limit.toString(),
-    sort: sort,
-    "filter[end_date][_gte]": filters.end_date_gte,
-    "filter[status][_eq]": filters.status_eq,
-    "filter[venue][city][_in]": filters.venue_city_in,
+    fields: "slug,name,cover_image,start_date,end_date,venue.name",
+    limit: "-1",
+    sort: "start_date",
+    "filter[end_date][_gte]": new Date().toISOString(),
+    "filter[status][_eq]": "published",
+    "filter[venue][city][_in]": city,
   });
 
   const headers = {
@@ -59,8 +50,16 @@ export default async function main() {
     method: "GET",
   });
   const response = (await request.json()) as Response;
+  return response.data;
+}
 
-  const mapped = response.data.map((m2gEvent) => {
+export default async function main() {
+  const guayaquilEvents = await getEventsFromCity("Guayaquil");
+  const samborondonEvents = await getEventsFromCity("Samborondón");
+
+  const events = [...guayaquilEvents, ...samborondonEvents];
+
+  const mapped = events.map((m2gEvent) => {
     console.log(`meet2go: mapped ${m2gEvent.name}`);
     return {
       cover_image: `https://d20zx9sjn15rrf.cloudfront.net/assets/${m2gEvent.cover_image}?width=350&format=auto&quality=100`,
@@ -84,5 +83,5 @@ export default async function main() {
     return;
   }
 
-  console.log(`meet2go: total ${response.data.length}`);
+  console.log(`meet2go: total ${events.length}`);
 }

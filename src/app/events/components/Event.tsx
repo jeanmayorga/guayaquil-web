@@ -22,7 +22,7 @@ export function Event({ event, fullWidth }: Props) {
         <img src={event.cover_image} alt={event.name} className="w-full" />
       </div>
       <div className="p-4">
-        <div className="flex items-center text-violet-700 mb-2 text-sm gap-2">
+        <div className="flex items-center text-violet-700 font-medium mb-2 text-sm gap-2">
           <CalendarIcon />
           {event.start_date === event.end_date ? (
             new Date(event.start_date).toLocaleDateString("es-LA", {

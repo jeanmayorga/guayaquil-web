@@ -57,19 +57,24 @@ export default async function Home() {
           </Button>
         </Link>
       </div>
-      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-        Eventos en la ciudad de Guayaquil
-      </h1>
-      <p className="text-gray-400 mb-8">
-        Ultima actualización el{" "}
-        {new Date(events[0].last_updated).toLocaleDateString("es-LA", {
-          day: "2-digit",
-          month: "long",
-          year: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-        })}
-      </p>
+      <header className="flex items-end justify-between">
+        <div>
+          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+            Eventos en la ciudad de Guayaquil
+          </h1>
+          <p className="text-gray-400 mb-8">
+            Ultima actualización el{" "}
+            {new Date(events[0].last_updated).toLocaleDateString("es-LA", {
+              day: "2-digit",
+              month: "long",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </p>
+        </div>
+        <p className="text-gray-400 mb-8">{events.length} eventos</p>
+      </header>
       <div className="grid grid-cols-4 gap-4">
         {events.map((event) => (
           <Event event={event} key={event.slug} fullWidth />
