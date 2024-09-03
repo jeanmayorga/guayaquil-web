@@ -46,13 +46,13 @@ export function EventsSectionScroll({ events }: Props) {
         <div>
           <button
             className="bg-black bg-opacity-50 text-white p-2 z-10 rounded-full mr-2"
-            onClick={() => scroll(-400)}
+            onClick={() => scroll(-336)}
           >
             <LeftIcon />
           </button>
           <button
             className="bg-black bg-opacity-50 text-white p-2 z-10 rounded-full"
-            onClick={() => scroll(400)}
+            onClick={() => scroll(336)}
           >
             <RightIcon />
           </button>
