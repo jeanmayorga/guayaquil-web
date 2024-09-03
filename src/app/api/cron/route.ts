@@ -16,7 +16,7 @@ export async function GET(request: Request) {
     await cleanEvents();
     console.log("events cleaned.");
 
-    revalidatePath("/events");
+    revalidatePath("/");
 
     return new Response(`Hello from ${process.env.VERCEL_REGION}`);
   } catch (error) {

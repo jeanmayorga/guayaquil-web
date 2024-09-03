@@ -6,7 +6,7 @@ export default async function Home() {
   const { data } = await supabase
     .from("events")
     .select("*")
-    .limit(9)
+    .limit(12)
     .order("start_date", { ascending: true });
   const events = data as EventType[];
 

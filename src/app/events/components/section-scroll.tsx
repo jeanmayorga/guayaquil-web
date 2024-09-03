@@ -110,11 +110,11 @@ export function EventsSectionScroll({ events }: Props) {
               <img
                 src={event.cover_image}
                 alt={event.name}
-                className="h-full"
+                className="w-full"
               />
             </div>
             <div className="p-4">
-              <div className="flex items-center text-violet-700 mb-4 text-sm gap-2">
+              <div className="flex items-center text-violet-700 mb-2 text-sm gap-2">
                 <CalendarIcon />
                 {new Date(event.start_date).toLocaleDateString("es-LA", {
                   day: "2-digit",
@@ -122,7 +122,7 @@ export function EventsSectionScroll({ events }: Props) {
                   year: "numeric",
                 })}
               </div>
-              <div className="font-semibold text-lg">{event.name}</div>
+              <div className="font-semibold text-lg truncate">{event.name}</div>
               <div className="flex items-center text-gray-700 text-sm">
                 {event.location_name}
               </div>
