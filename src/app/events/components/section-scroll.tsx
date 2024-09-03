@@ -116,11 +116,25 @@ export function EventsSectionScroll({ events }: Props) {
             <div className="p-4">
               <div className="flex items-center text-violet-700 mb-2 text-sm gap-2">
                 <CalendarIcon />
-                {new Date(event.start_date).toLocaleDateString("es-LA", {
-                  day: "2-digit",
-                  month: "long",
-                  year: "numeric",
-                })}
+                {event.start_date === event.end_date ? (
+                  new Date(event.start_date).toLocaleDateString("es-LA", {
+                    day: "2-digit",
+                    month: "long",
+                    year: "numeric",
+                  })
+                ) : (
+                  <>
+                    {new Date(event.start_date).toLocaleDateString("es-LA", {
+                      day: "2-digit",
+                      month: "long",
+                    })}{" "}
+                    hasta{" "}
+                    {new Date(event.end_date).toLocaleDateString("es-LA", {
+                      day: "2-digit",
+                      month: "long",
+                    })}
+                  </>
+                )}
               </div>
               <div className="font-semibold text-lg truncate">{event.name}</div>
               <div className="flex items-center text-gray-700 text-sm">
