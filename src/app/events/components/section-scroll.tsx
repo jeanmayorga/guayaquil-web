@@ -22,9 +22,23 @@ export function EventsSectionScroll({ events }: Props) {
   return (
     <div>
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">
-          Eventos en tendencia
-        </h2>
+        <div>
+          <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+            Eventos en tendencia
+          </h2>
+
+          <p className="text-gray-400">
+            Ultima actualización el{" "}
+            {new Date(events[0].last_updated).toLocaleDateString("es-EC", {
+              day: "2-digit",
+              month: "long",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+            })}
+          </p>
+        </div>
         <div>
           <Link href="/events">
             <Button variant="outline" className=" rounded-full">
