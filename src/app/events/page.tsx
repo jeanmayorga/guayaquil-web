@@ -25,6 +25,7 @@ export const metadata: Metadata = {
   ],
   robots: "index, follow",
   openGraph: {
+    siteName: "Guayaquil App",
     title: "Eventos y shows en la ciudad de Guayaquil",
     description:
       "Explora los eventos y shows más importantes en Guayaquil. Encuentra lo que está sucediendo en la ciudad y planifica tu próxima salida.",
