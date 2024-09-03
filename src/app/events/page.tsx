@@ -57,7 +57,7 @@ export default async function Home() {
           </Button>
         </Link>
       </div>
-      <header className="flex items-end justify-between">
+      <header className="md:flex md:items-end md:justify-between">
         <div>
           <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
             Eventos en la ciudad de Guayaquil
@@ -75,7 +75,7 @@ export default async function Home() {
         </div>
         <p className="text-gray-400 mb-8">{events.length} eventos</p>
       </header>
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
         {events.map((event) => (
           <Event event={event} key={event.slug} fullWidth />
         ))}
