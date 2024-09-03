@@ -19,7 +19,7 @@ export function Event({ event, fullWidth }: Props) {
       )}
     >
       <div className="relative aspect-video overflow-hidden bg-black flex items-center justify-center">
-        <img src={event.cover_image} alt={event.name} className="w-full" />
+        <img src={event.cover_image} className="w-full" alt={event.name} />
       </div>
       <div className="p-4">
         <div className="flex items-center text-violet-700 font-medium mb-2 text-sm gap-2">

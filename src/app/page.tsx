@@ -53,6 +53,7 @@ export default async function Home() {
         <img
           src="./block2.jpg"
           className="w-full absolute top-1/2 -translate-y-1/2"
+          alt="Guayaquil"
         />
         <div className="z-20 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
           <h1 className="font-bold drop-shadow-md text-4xl lg:text-8xl lg:mb-8 text-white">
