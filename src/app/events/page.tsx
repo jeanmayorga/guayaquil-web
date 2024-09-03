@@ -1,11 +1,14 @@
 import { supabase } from "@/lib/supabase";
 import Image from "next/image";
+import { EventType } from "./types";
 
 export default async function Page() {
-  let { data: events, error } = await supabase
+  const { data, error } = await supabase
     .from("events")
     .select("*")
     .order("start_date", { ascending: true });
+
+  const events = data as EventType[];
 
   return (
     <main className="m-80">

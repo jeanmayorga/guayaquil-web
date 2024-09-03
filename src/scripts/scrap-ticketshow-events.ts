@@ -50,7 +50,7 @@ export default async function main() {
   const response = (await request.json()) as Response[];
 
   const mapped = response.map((tsEvent) => ({
-    cover_image: tsEvent.imagenpequeña || tsEvent.imagenmediana,
+    cover_image: tsEvent.imagenmediana || tsEvent.imagenpequeña,
     name: tsEvent.nombre,
     slug: `ticketshow-${tsEvent.id}`,
     url:
