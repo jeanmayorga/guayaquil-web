@@ -21,6 +21,18 @@ interface Response {
   title?: string;
 }
 
+function dateInEcuadorFormat(isoDateString: string) {
+  const dateUTC = new Date(isoDateString);
+  const options: Intl.DateTimeFormatOptions = {
+    timeZone: "America/Guayaquil",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  };
+  const dateInEcuador = dateUTC.toLocaleDateString("sv-SE", options);
+  return dateInEcuador;
+}
+
 export default async function main() {
   const request = await fetch(
     "http://microservicios.ticketshow.com.ec/coba/product/getEventosByFiltro",
@@ -49,10 +61,11 @@ export default async function main() {
   const response = (await request.json()) as Response[];
 
   const mapped = response.map((tsEvent) => {
+    const start_date = dateInEcuadorFormat(tsEvent.fechaevento);
+    const end_date = dateInEcuadorFormat(tsEvent.fechaeventofin);
+
     console.log(
-      `ticketShow: mapped ${tsEvent.nombre} startDate: ${
-        tsEvent.fechaevento.split("T")[0]
-      } endDate: ${tsEvent.fechaeventofin.split("T")[0]}`
+      `ticketShow: mapped ${tsEvent.nombre} startDate: ${start_date} endDate: ${end_date}`
     );
     return {
       cover_image: tsEvent.imagenmediana || tsEvent.imagenpequeña,
@@ -61,8 +74,8 @@ export default async function main() {
       url:
         tsEvent.redirectlink ||
         `https://www.ticketshow.com.ec/evento/${tsEvent.title}`,
-      start_date: tsEvent.fechaevento.split("T")[0],
-      end_date: tsEvent.fechaeventofin.split("T")[0],
+      start_date: start_date,
+      end_date: end_date,
       location_name: tsEvent.lugar,
       last_updated: new Date().toISOString(),
     };
