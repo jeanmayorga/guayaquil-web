@@ -1,7 +1,7 @@
 import { supabase } from "../lib/supabase";
 
 export default async function main() {
-  console.log("start clean events");
+  console.log("cleanEvents: start");
 
   const data = await supabase
     .from("events")
@@ -14,11 +14,11 @@ export default async function main() {
   }
 
   const ids = data.data.map((event) => {
-    console.log(event.id, event.name, event.end_date);
+    console.log("cleanEvents", event);
     return event.id;
   });
 
   await supabase.from("events").delete().in("id", ids);
 
-  console.log(`${data.data.length} events found and deleted`);
+  console.log(`cleanEvents: ${data.data.length} events found and deleted`);
 }

@@ -49,7 +49,11 @@ export default async function main() {
   const response = (await request.json()) as Response[];
 
   const mapped = response.map((tsEvent) => {
-    console.log(`ticketShow: mapped ${tsEvent.nombre}`);
+    console.log(
+      `ticketShow: mapped ${tsEvent.nombre} startDate: ${
+        tsEvent.fechaevento.split("T")[0]
+      } endDate: ${tsEvent.fechaeventofin.split("T")[0]}`
+    );
     return {
       cover_image: tsEvent.imagenmediana || tsEvent.imagenpequeña,
       name: tsEvent.nombre,

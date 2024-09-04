@@ -60,7 +60,9 @@ export default async function main() {
   const events = [...guayaquilEvents, ...samborondonEvents];
 
   const mapped = events.map((m2gEvent) => {
-    console.log(`meet2go: mapped ${m2gEvent.name}`);
+    console.log(
+      `meet2go: mapped ${m2gEvent.name} startDate: ${m2gEvent.start_date} endDate: ${m2gEvent.end_date}`
+    );
     return {
       cover_image: `https://d20zx9sjn15rrf.cloudfront.net/assets/${m2gEvent.cover_image}?width=350&format=auto&quality=100`,
       name: m2gEvent.name,
