@@ -3,10 +3,13 @@ import { supabase } from "../lib/supabase";
 export default async function main() {
   console.log("cleanEvents: start");
 
+  const now = new Date();
+  const ecuadorDate = new Date(now.getTime() - 5 * 60 * 60 * 1000);
+
   const data = await supabase
     .from("events")
     .select("*")
-    .lt("end_date", new Date().toISOString());
+    .lt("end_date", ecuadorDate.toISOString());
 
   if (data.error) {
     console.error("Error al get events:", data.error);

@@ -33,7 +33,7 @@ function dateInEcuadorFormat(isoDateString: string) {
   return dateInEcuador;
 }
 
-export default async function main() {
+async function getEvents(city: string, countByPage: number) {
   const request = await fetch(
     "http://microservicios.ticketshow.com.ec/coba/product/getEventosByFiltro",
     {
@@ -51,7 +51,7 @@ export default async function main() {
       },
       referrer: "https://www.ticketshow.com.ec/",
       referrerPolicy: "strict-origin-when-cross-origin",
-      body: '{"ciudad":"Guayaquil","cantmaxticket":0}',
+      body: `{"ciudad":"${city}","cantmaxticket":${countByPage}}`,
       method: "POST",
       mode: "cors",
       credentials: "omit",
@@ -60,7 +60,27 @@ export default async function main() {
 
   const response = (await request.json()) as Response[];
 
-  const mapped = response.map((tsEvent) => {
+  return response;
+}
+
+export default async function main() {
+  const resultsEvents = await Promise.allSettled([
+    getEvents("Guayaquil", 0),
+    getEvents("Guayaquil", 9),
+    getEvents("Guayaquil", 18),
+    getEvents("Samborondon", 0),
+    getEvents("Samborondon", 9),
+  ]);
+
+  const results = resultsEvents.flatMap((promise) => {
+    if (promise.status === "fulfilled") {
+      return promise.value;
+    }
+    return [];
+  });
+  const events = results.flat();
+
+  const mapped = events.map((tsEvent) => {
     const start_date = dateInEcuadorFormat(tsEvent.fechaevento);
     const end_date = dateInEcuadorFormat(tsEvent.fechaeventofin);
 
@@ -91,5 +111,5 @@ export default async function main() {
     return;
   }
 
-  console.log(`ticketShow total: ${response.length}`);
+  console.log(`ticketShow total: ${events.length}`);
 }

@@ -19,12 +19,14 @@ interface Response {
 
 async function getEventsFromCity(city: string) {
   const baseUrl = "https://app.meet2go.com/items/events";
+  const now = new Date();
+  const ecuadorDate = new Date(now.getTime() - 5 * 60 * 60 * 1000);
 
   const queryParams = new URLSearchParams({
     fields: "slug,name,cover_image,start_date,end_date,venue.name",
     limit: "-1",
     sort: "start_date",
-    "filter[end_date][_gte]": new Date().toISOString(),
+    "filter[end_date][_gte]": ecuadorDate.toISOString(),
     "filter[status][_eq]": "published",
     "filter[venue][city][_in]": city,
   });
