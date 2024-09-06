@@ -22,6 +22,7 @@ export default function Layout({ children }: Props) {
           Shows en Guayaquil
         </h1>
       </header>
+
       <EventsSearch />
       <EventsTab />
 

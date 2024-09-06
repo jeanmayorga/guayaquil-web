@@ -3,7 +3,6 @@ import { EventType } from "./types";
 import { CheckCircle, ExclamationCircle } from "@/components/icons";
 import { Metadata } from "next";
 import { EventItem } from "./components/EventItem";
-import { searchParamsCache } from "./search-params";
 
 export const metadata: Metadata = {
   title: "Eventos y shows en la ciudad de Guayaquil",
@@ -46,11 +45,14 @@ interface Props {
 }
 
 export default async function Home({ searchParams }: Props) {
-  const { search, tab } = searchParamsCache.parse(searchParams);
+  console.log({ searchParams });
+  // const { search, tab } = searchParams;
+  // const { search, tab } = searchParamsCache.parse(searchParams);
 
   let client = supabase.from("events").select("*");
 
-  if (search) client = client.ilike("name", `%${search}%`);
+  if (searchParams?.search)
+    client = client.ilike("name", `%${searchParams?.search}%`);
 
   const { data } = await client.order("start_date", { ascending: true });
   const events = data as EventType[];
