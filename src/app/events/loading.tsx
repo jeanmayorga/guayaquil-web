@@ -1,3 +1,5 @@
+"use client";
+
 import { ArrowPath } from "@/components/icons";
 import { EventItemSkeleton } from "./components/EventItemSkeleton";
 
