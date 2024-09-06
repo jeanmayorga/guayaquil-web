@@ -3,7 +3,6 @@ import { EventType } from "./types";
 import { CheckCircle, ExclamationCircle } from "@/components/icons";
 import { Metadata } from "next";
 import { EventItem } from "./components/EventItem";
-import { DEFAULT_TAB } from "./constants";
 import { searchParamsCache } from "./search-params";
 
 export const metadata: Metadata = {
@@ -47,7 +46,6 @@ interface Props {
 }
 
 export default async function Home({ searchParams }: Props) {
-  console.log({ searchParams });
   const { search, tab } = searchParamsCache.parse(searchParams);
 
   let client = supabase.from("events").select("*");
@@ -57,7 +55,7 @@ export default async function Home({ searchParams }: Props) {
   const { data } = await client.order("start_date", { ascending: true });
   const events = data as EventType[];
 
-  await new Promise((r) => setTimeout(r, 1000));
+  // await new Promise((r) => setTimeout(r, 1000));
 
   return (
     <>
