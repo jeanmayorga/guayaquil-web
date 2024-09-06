@@ -1,10 +1,10 @@
 import { supabase } from "@/lib/supabase";
 import { EventType } from "./types";
-import { Event } from "./components/Event";
-import { Button } from "@/components/ui/button";
-import { LeftIcon } from "@/components/icons";
-import Link from "next/link";
+import { CheckCircle, ExclamationCircle } from "@/components/icons";
 import { Metadata } from "next";
+import { EventItem } from "./components/EventItem";
+import { DEFAULT_TAB } from "./constants";
+import { searchParamsCache } from "./search-params";
 
 export const metadata: Metadata = {
   title: "Eventos y shows en la ciudad de Guayaquil",
@@ -42,46 +42,54 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Home() {
-  const { data } = await supabase
-    .from("events")
-    .select("*")
-    .order("start_date", { ascending: true });
+interface Props {
+  searchParams: Record<string, string | string[] | undefined>;
+}
+
+export default async function Home({ searchParams }: Props) {
+  console.log({ searchParams });
+  const { search, tab } = searchParamsCache.parse(searchParams);
+
+  let client = supabase.from("events").select("*");
+
+  if (search) client = client.ilike("name", `%${search}%`);
+
+  const { data } = await client.order("start_date", { ascending: true });
   const events = data as EventType[];
 
+  await new Promise((r) => setTimeout(r, 1000));
+
   return (
-    <main className="container mx-auto px-4 ms:px-0 my-8">
-      <div className="mb-8">
-        <Link href="/">
-          <Button variant="outline" className="rounded-full">
-            <LeftIcon /> Regresar
-          </Button>
-        </Link>
-      </div>
-      <header className="md:flex md:items-end md:justify-between">
-        <div>
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-            Eventos en la ciudad de Guayaquil
-          </h1>
-          <p className="text-gray-400 mb-8">
-            Ultima actualización el{" "}
-            {new Date(events[0].last_updated).toLocaleDateString("es-EC", {
-              day: "2-digit",
-              month: "long",
-              year: "numeric",
-              hour: "2-digit",
-              minute: "2-digit",
-              second: "2-digit",
-            })}
-          </p>
+    <>
+      <section className="my-8 flex justify-center items-center">
+        <span className="text-gray-400 text-sm flex items-center">
+          {events.length === 0 ? (
+            <>
+              <ExclamationCircle className="w-5 h-5 mr-1" />
+              No hay shows o eventos.
+            </>
+          ) : (
+            <>
+              <CheckCircle className="w-5 h-5 mr-1" />
+              Actualizado{" "}
+              {new Date(events[0]?.last_updated).toLocaleDateString("es-EC", {
+                day: "2-digit",
+                month: "long",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </>
+          )}
+        </span>
+      </section>
+      <section>
+        <div className="grid xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2 grid-cols-1 gap-4">
+          {events.map((event) => (
+            <EventItem event={event} key={event.slug} />
+          ))}
         </div>
-        <p className="text-gray-400 mb-8">{events.length} eventos</p>
-      </header>
-      <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
-        {events.map((event) => (
-          <Event event={event} key={event.slug} fullWidth />
-        ))}
-      </div>
-    </main>
+      </section>
+    </>
   );
 }
