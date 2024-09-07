@@ -2,6 +2,7 @@ import { CalendarIcon } from "@/components/icons";
 import { EventType } from "../types";
 import { cn } from "@/lib/utils";
 import { EventDateFormat } from "./EventDateFormat";
+import Link from "next/link";
 
 interface Props {
   event: EventType;
@@ -9,10 +10,8 @@ interface Props {
 }
 export function EventItem({ event, className }: Props) {
   return (
-    <a
-      href={event.url}
-      target="_blank"
-      rel="noopener noreferrer"
+    <Link
+      href={`/events/${event.slug}`}
       className={cn(
         "w-full flex-none rounded-2xl group transition-all relative",
         className
@@ -42,6 +41,6 @@ export function EventItem({ event, className }: Props) {
         </div>
       </div>
       <div className="absolute z-0 top-0 left-0 w-full h-full rounded-2xl bg-cyan-500/15 opacity-0 group-hover:opacity-100 group-hover:scale-[1.05] group-active:bg-cyan-500/20 transition-all" />
-    </a>
+    </Link>
   );
 }

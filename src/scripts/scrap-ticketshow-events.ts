@@ -90,7 +90,7 @@ export default async function main() {
     return {
       cover_image: tsEvent.imagenmediana || tsEvent.imagenpequeña,
       name: tsEvent.nombre,
-      slug: `ticketshow-${tsEvent.id}`,
+      slug: `ts-${tsEvent.id}`,
       url:
         tsEvent.redirectlink ||
         `https://www.ticketshow.com.ec/evento/${tsEvent.title}`,

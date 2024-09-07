@@ -7,6 +7,10 @@ import { supabase } from "@/lib/supabase";
 import { EventType } from "../types";
 import { EventItem } from "./EventItem";
 import { EventListSkeleton } from "./EventListSkeleton";
+import { BackButton } from "@/components/back-button";
+import { Title } from "@/components/title";
+import { EventsSearch } from "./EventsSearch";
+import { EventsTab } from "./EventsNav";
 
 function EventsList() {
   const searchParams = useSearchParams();
@@ -31,6 +35,10 @@ function EventsList() {
 
   return (
     <>
+      <BackButton />
+      <Title title="Shows en Guayaquil" />
+      <EventsSearch />
+      <EventsTab />
       <section className="my-8 flex justify-center items-center">
         <span className="text-gray-400 text-xs flex items-center">
           {events.length === 0 ? (
