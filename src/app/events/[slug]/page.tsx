@@ -17,7 +17,11 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
   return (
     <>
-      <BackButton url="/events" />
+      <BackButton
+        url="/events"
+        text="Shows en Guayaquil"
+        style={{ viewTransitionName: `title` }}
+      />
 
       <section className="grid grid-cols-2 gap-4">
         <div className="flex justify-center items-center">

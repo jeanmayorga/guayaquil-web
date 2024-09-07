@@ -14,7 +14,10 @@ function EventsList({ events }: Props) {
   return (
     <>
       <BackButton />
-      <Title title="Shows en Guayaquil" />
+      <Title
+        title="Shows en Guayaquil"
+        style={{ viewTransitionName: `title` }}
+      />
 
       <Suspense fallback={<>Cargando..</>}>
         <EventsSearch />
