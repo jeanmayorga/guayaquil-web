@@ -2,7 +2,6 @@
 
 import { cn } from "@/lib/utils";
 import { useQueryState } from "nuqs";
-import { useState } from "react";
 import { DEFAULT_TAB } from "../constants";
 
 interface Tab {

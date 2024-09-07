@@ -1,22 +1,24 @@
 import { CalendarIcon } from "@/components/icons";
 import { EventType } from "../types";
 import { cn } from "@/lib/utils";
-import { EventDateFormat } from "../date-format";
+import { EventDateFormat } from "./EventDateFormat";
 
 interface Props {
   event: EventType;
+  className?: string;
 }
-export function EventItem({ event }: Props) {
+export function EventItem({ event, className }: Props) {
   return (
     <a
       href={event.url}
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
-        "w-full flex-none rounded-2xl overflow-hidden group transition-all"
+        "w-full flex-none rounded-2xl group transition-all relative",
+        className
       )}
     >
-      <div className="relative overflow-hidden bg-black flex items-center justify-center h-[200px] rounded-xl">
+      <div className="relative z-10 overflow-hidden bg-black flex items-center justify-center h-[200px] rounded-xl">
         <img
           src={event.cover_image}
           alt={event.name}
@@ -24,7 +26,7 @@ export function EventItem({ event }: Props) {
         />
         <div className="absolute top-0 left-0 w-full h-full bg-transparent group-hover:bg-white/20 transition-all" />
       </div>
-      <div className="py-4">
+      <div className="py-4 pb-2">
         <div className="flex items-center text-cyan-500 group-hover:text-cyan-600 font-medium mb-1 text-xs gap-2 transition-all">
           <CalendarIcon />
           <EventDateFormat
@@ -39,6 +41,7 @@ export function EventItem({ event }: Props) {
           {event.location_name}
         </div>
       </div>
+      <div className="absolute z-0 top-0 left-0 w-full h-full rounded-2xl bg-cyan-500/15 opacity-0 group-hover:opacity-100 group-hover:scale-[1.05] group-active:bg-cyan-500/20 transition-all" />
     </a>
   );
 }

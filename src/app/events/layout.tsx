@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { EventsSearch } from "./components/EventsSearch";
 import { EventsTab } from "./components/EventsNav";
+import { Title } from "@/components/title";
 
 interface Props {
   children: React.ReactNode;
@@ -17,11 +18,8 @@ export default function Layout({ children }: Props) {
           </Button>
         </Link>
       </div>
-      <header className="mb-4">
-        <h1 className="scroll-m-20 font-semibold tracking-tight text-5xl mb-4 block">
-          Shows en Guayaquil
-        </h1>
-      </header>
+
+      <Title title="Shows en Guayaquil" />
 
       <EventsSearch />
       <EventsTab />

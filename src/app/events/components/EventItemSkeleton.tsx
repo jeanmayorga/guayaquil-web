@@ -12,7 +12,7 @@ export function EventItemSkeleton() {
       <div className="relative overflow-hidden bg-gray-150 flex items-center justify-center h-[200px] rounded-xl">
         <Skeleton className="w-full h-[200px]" />
       </div>
-      <div className="py-4">
+      <div className="py-4 pb-2">
         <div className="flex items-center text-cyan-500 font-medium mb-2 text-xs gap-2 transition-all">
           <CalendarIcon />
           <Skeleton className="w-[200px] h-[8px] bg-cyan-200 rounded-full" />

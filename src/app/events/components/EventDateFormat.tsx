@@ -1,9 +1,10 @@
-interface Props {
+export function EventDateFormat({
+  startDate,
+  endDate,
+}: {
   startDate: string;
   endDate: string;
-}
-
-export function EventDateFormat({ startDate, endDate }: Props) {
+}) {
   if (startDate === endDate) {
     return new Date(endDate).toLocaleDateString("es-LA", {
       day: "2-digit",

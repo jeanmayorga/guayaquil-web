@@ -6,7 +6,7 @@ import { CheckCircle, ExclamationCircle } from "@/components/icons";
 import { supabase } from "@/lib/supabase";
 import { EventType } from "../types";
 import { EventItem } from "./EventItem";
-import Loading from "../loading";
+import { EventListSkeleton } from "./EventListSkeleton";
 
 function EventsList() {
   const searchParams = useSearchParams();
@@ -27,20 +27,20 @@ function EventsList() {
     fetchEvents();
   }, [searchParams]);
 
-  if (loading) return <Loading />;
+  if (loading) return <EventListSkeleton />;
 
   return (
     <>
       <section className="my-8 flex justify-center items-center">
-        <span className="text-gray-400 text-sm flex items-center">
+        <span className="text-gray-400 text-xs flex items-center">
           {events.length === 0 ? (
             <>
-              <ExclamationCircle className="w-5 h-5 mr-1" />
+              <ExclamationCircle className="w-4 h-4 mr-1" />
               No hay shows o eventos.
             </>
           ) : (
             <>
-              <CheckCircle className="w-5 h-5 mr-1" />
+              <CheckCircle className="w-4 h-4 mr-1" />
               Actualizado{" "}
               {new Date(events[0]?.last_updated).toLocaleDateString("es-EC", {
                 day: "2-digit",
@@ -54,7 +54,7 @@ function EventsList() {
         </span>
       </section>
       <section>
-        <div className="grid xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2 grid-cols-1 gap-4">
+        <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
           {events.map((event) => (
             <EventItem event={event} key={event.slug} />
           ))}

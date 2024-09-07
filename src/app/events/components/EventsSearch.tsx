@@ -14,19 +14,6 @@ export function EventsSearch() {
   });
 
   const [isSearching, setIsSearching] = useState<boolean>(false);
-  // const [queryInput, setQueryInput] = useState<string>("");
-
-  // useEffect(() => {
-  //   const fn = setTimeout(() => {
-  //     if (queryInput.length > 1) {
-  //       setQuery(queryInput);
-  //     } else {
-  //       setQuery(null);
-  //     }
-  //   }, 500);
-
-  //   return () => clearTimeout(fn);
-  // }, [queryInput]);
 
   return (
     <section className="relative mb-4 rounded-xl">

@@ -5,7 +5,7 @@ import { EventType } from "../types";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { LeftIcon, RightIcon } from "@/components/icons";
-import { Event } from "./Event";
+import { EventItem } from "./EventItem";
 
 interface Props {
   events: EventType[];
@@ -27,7 +27,7 @@ export function EventsSectionScroll({ events }: Props) {
             Eventos en tendencia
           </h2>
 
-          <p className="text-gray-400">
+          <p className="text-gray-400 text-xs">
             Ultima actualización el{" "}
             {new Date(events[0].last_updated).toLocaleDateString("es-EC", {
               day: "2-digit",
@@ -53,7 +53,7 @@ export function EventsSectionScroll({ events }: Props) {
         style={{ scrollBehavior: "smooth" }}
       >
         {events.map((event) => (
-          <Event event={event} key={event.slug} />
+          <EventItem event={event} key={event.slug} className="w-[350px]" />
         ))}
       </div>
       <div className="flex justify-end my-4">
