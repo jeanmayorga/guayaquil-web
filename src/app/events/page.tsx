@@ -1,5 +1,7 @@
 import { Metadata } from "next";
 import EventsList from "./components/EventList";
+import { supabase } from "@/lib/supabase";
+import { EventType } from "./types";
 
 export const metadata: Metadata = {
   title: "Eventos y shows en la ciudad de Guayaquil",
@@ -37,6 +39,23 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Home() {
-  return <EventsList />;
+export const dynamic = "force-dynamic";
+
+export default async function Home({
+  searchParams,
+}: {
+  params: { slug: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  let client = supabase.from("events").select("*");
+
+  if (searchParams.search) {
+    client = client.ilike("name", `%${searchParams.search}%`);
+  }
+
+  const { data } = await client.order("start_date", { ascending: true });
+
+  const events = data as EventType[];
+
+  return <EventsList events={events} />;
 }

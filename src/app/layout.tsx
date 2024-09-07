@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
 import { GeistSans } from "geist/font/sans";
+import { ViewTransitions } from "next-view-transitions";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -14,11 +15,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
-      <body className={GeistSans.className}>
-        {children}
-        <Analytics />
-      </body>
-    </html>
+    <ViewTransitions>
+      <html lang="es">
+        <body className={GeistSans.className}>
+          {children}
+          <Analytics />
+        </body>
+      </html>
+    </ViewTransitions>
   );
 }
