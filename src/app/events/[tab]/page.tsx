@@ -70,7 +70,7 @@ export async function generateMetadata({
       type: "website",
       images: [
         {
-          url: events[0].cover_image || "https://guayaquil.app/block2.jpg",
+          url: events?.[0]?.cover_image || "https://guayaquil.app/block2.jpg",
           width: 1120,
           height: 753,
           alt: title,
