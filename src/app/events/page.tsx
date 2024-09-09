@@ -1,6 +1,6 @@
 import { Metadata } from "next";
-import { EventType } from "./types";
 import { EventPage } from "./components/EventPage";
+import { getEvents } from "./services";
 
 export const metadata: Metadata = {
   title: "Eventos y shows en la ciudad de Guayaquil",
@@ -38,20 +38,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: Record<string, string>;
+export default async function Home({}: // searchParams,
+{
+  // searchParams: Record<string, string>;
 }) {
-  const apiUrl = `${process.env.NEXT_PUBLIC_URL}/api/events`;
-  const queryParams = new URLSearchParams(searchParams).toString();
-  const options: RequestInit = {
-    cache: "no-store",
-  };
-  console.log(`request to ${apiUrl}?${queryParams}`);
-  const request = await fetch(`${apiUrl}?${queryParams}`, options);
-  const response = await request.json();
-  const events: EventType[] = response || [];
+  const tab = "all";
+  const events = await getEvents({ tab });
 
   return <EventPage events={events} />;
 }

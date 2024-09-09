@@ -1,7 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useQueryState } from "nuqs";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 
 interface Tab {
   name: string;
@@ -10,7 +11,7 @@ interface Tab {
 const tabs: Tab[] = [
   {
     name: "Todos",
-    key: "all",
+    key: "",
   },
   {
     name: "Hoy",
@@ -39,27 +40,24 @@ const tabs: Tab[] = [
 ];
 
 export function EventTab() {
-  const [tab, setTab] = useQueryState("tab", { shallow: false });
+  const params = useParams();
+  const tab = params.tab || "";
 
   return (
     <nav className="space-x-1">
       {tabs.map((itemTab) => {
-        const isTabActive = itemTab.key === (tab || "all");
+        const isTabActive = itemTab.key === tab;
         return (
-          <button
-            key={itemTab.key}
-            className={cn(
-              "py-2 px-4 bg-gray-200/80 hover:bbg-cyan-500/50 hover:text-cyan-800 rounded-full text-sm font-medium text-gray-500 transition-all active:scale-95",
-              isTabActive && "bg-cyan-500/50 text-cyan-800"
-            )}
-            onClick={() => {
-              if (isTabActive) return;
-              if (itemTab.key === "all") setTab(null);
-              setTab(itemTab.key);
-            }}
-          >
-            {itemTab.name}
-          </button>
+          <Link href={`/events/${itemTab.key}`} key={itemTab.key}>
+            <button
+              className={cn(
+                "py-2 px-4 bg-gray-200/80 hover:bbg-cyan-500/50 hover:text-cyan-800 rounded-full text-sm font-medium text-gray-500 transition-all active:scale-95",
+                isTabActive && "bg-cyan-500/50 text-cyan-800"
+              )}
+            >
+              {itemTab.name}
+            </button>
+          </Link>
         );
       })}
     </nav>

@@ -9,3 +9,10 @@ export interface EventType {
   url: string;
   last_updated: string;
 }
+
+export interface EventSearchParams {
+  query?: string;
+  page?: string;
+  limit?: string;
+  tab: string;
+}
