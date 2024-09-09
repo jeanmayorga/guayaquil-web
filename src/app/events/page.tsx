@@ -1,4 +1,4 @@
-import next, { Metadata } from "next";
+import { Metadata } from "next";
 import { EventType } from "./types";
 import { EventPage } from "./components/EventPage";
 
@@ -46,10 +46,7 @@ export default async function Home({
   const apiUrl = `${process.env.NEXT_PUBLIC_URL}/api/events`;
   const queryParams = new URLSearchParams(searchParams).toString();
   const options: RequestInit = {
-    // cache: "no-store",
-    next: {
-      revalidate: 3600 * 24,
-    },
+    cache: "no-store",
   };
   console.log(`request to ${apiUrl}?${queryParams}`);
   const request = await fetch(`${apiUrl}?${queryParams}`, options);

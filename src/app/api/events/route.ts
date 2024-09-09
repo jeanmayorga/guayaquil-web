@@ -132,6 +132,8 @@ export async function GET(request: Request) {
       .order("start_date", { ascending: true })
       .order("name", { ascending: false });
 
+    await new Promise((r) => setTimeout(r, 500));
+
     return NextResponse.json(data);
   } catch (error) {
     console.log("Error", error);
