@@ -44,7 +44,7 @@ export function EventTab() {
   const tab = params.tab || "";
 
   return (
-    <nav className="space-x-1 flex overflow-x-auto">
+    <nav className="space-x-1 flex overflow-x-auto no-scrollbar">
       {tabs.map((itemTab) => {
         const isTabActive = itemTab.key === tab;
         return (
