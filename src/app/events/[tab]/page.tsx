@@ -9,10 +9,15 @@ interface Props {
   searchParams: Record<string, string>;
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+  searchParams,
+}: Props): Promise<Metadata> {
   const tab = params.tab;
-  let title = "Eventos y shows en Guayaquil";
+  const query = searchParams.query;
+  const events = await getEvents({ tab, query });
 
+  let title = "Eventos y shows en Guayaquil";
   if (tab === "today") {
     title = "Hoy, eventos y shows en Guayaquil";
   }
@@ -59,7 +64,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: "website",
       images: [
         {
-          url: "https://guayaquil.app/block2.jpg",
+          url: events[0].cover_image || "https://guayaquil.app/block2.jpg",
           width: 1120,
           height: 753,
           alt: title,
