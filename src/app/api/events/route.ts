@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 
+export const dynamic = "force-dynamic";
+
 function getJustDate(date: Date) {
   const stringDate = date.toISOString();
   return stringDate.split("T")[0];
