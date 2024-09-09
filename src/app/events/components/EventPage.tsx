@@ -41,7 +41,6 @@ export function EventPage({ events }: Props) {
                 hour: "2-digit",
                 minute: "2-digit",
                 hour12: false,
-                timeZoneName: "long",
                 timeZone: "America/Guayaquil",
               }).format(new Date(events[0]?.last_updated))}
             </>
