@@ -14,16 +14,13 @@ function EventsList({ events }: Props) {
   return (
     <>
       <BackButton />
-      <Title
-        title="Shows en Guayaquil"
-        style={{ viewTransitionName: `title` }}
-      />
+      <Title title="Shows en Guayaquil" />
 
       <Suspense fallback={<>Cargando..</>}>
         <EventsSearch />
       </Suspense>
       <EventsTab />
-      <section className="my-8 flex justify-center items-center">
+      <section className="my-8">
         <span className="text-gray-400 text-xs flex items-center">
           {!events || events?.length === 0 ? (
             <>
@@ -33,8 +30,9 @@ function EventsList({ events }: Props) {
           ) : (
             <>
               <CheckCircle className="w-4 h-4 mr-1" />
-              Actualizado{" "}
+              Ultima actualización{" "}
               {new Date(events[0]?.last_updated).toLocaleDateString("es-EC", {
+                weekday: "long",
                 day: "2-digit",
                 month: "long",
                 year: "numeric",

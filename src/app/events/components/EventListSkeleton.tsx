@@ -4,13 +4,18 @@ import { BackButton } from "@/components/back-button";
 import { Title } from "@/components/title";
 import { EventsSearch } from "./EventsSearch";
 import { EventsTab } from "./EventsNav";
+import { Suspense } from "react";
 
 export function EventListSkeleton() {
   return (
     <>
       <BackButton />
       <Title title="Shows en Guayaquil" />
-      <EventsSearch />
+
+      <Suspense fallback={<>Cargando..</>}>
+        <EventsSearch />
+      </Suspense>
+
       <EventsTab />
 
       <section className="my-8 flex justify-center items-center">

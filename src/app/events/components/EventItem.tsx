@@ -27,7 +27,7 @@ export function EventItem({ event, className }: Props) {
             alt={event.name}
             className="w-full group-hover:scale-[1.02] transition-all"
           />
-          <div className="absolute top-0 left-0 w-full h-full bg-transparent group-hover:bg-white/20 transition-all" />
+          <div className="absolute z-10 top-0 left-0 w-full h-full bg-black/10 group-hover:bg-white/20 transition-all" />
         </div>
         <div className="py-4 pb-2">
           <div

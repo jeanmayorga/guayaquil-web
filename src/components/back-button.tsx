@@ -6,14 +6,13 @@ import { CSSProperties } from "react";
 interface Props {
   url?: string;
   text?: string;
-  style?: CSSProperties;
 }
 
-export function BackButton({ url, text, style }: Props) {
+export function BackButton({ url, text }: Props) {
   return (
-    <div className="my-16" style={style}>
+    <div className="my-12" style={{ viewTransitionName: `title` }}>
       <Link href={url || "/"}>
-        <Button variant="outline" className="rounded-full">
+        <Button variant="ghost" className="rounded-full">
           <LeftArrowIcon className="h-4 w-4 mr-2" /> {text || "Regresar"}
         </Button>
       </Link>

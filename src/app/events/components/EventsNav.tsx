@@ -18,12 +18,20 @@ const tabs: Tab[] = [
     key: "today",
   },
   {
+    name: "Mañana",
+    key: "tomorrow",
+  },
+  {
     name: "Esta semana",
-    key: "thisWeek",
+    key: "this_week",
+  },
+  {
+    name: "Siguiente semana",
+    key: "next_week",
   },
   {
     name: "Este mes",
-    key: "thisMonth",
+    key: "this_month",
   },
 ];
 
@@ -33,7 +41,7 @@ export function EventsTab() {
   return (
     <nav className="space-x-1">
       {tabs.map((itemTab) => {
-        const isTabActive = itemTab.key === (tab || DEFAULT_TAB);
+        const isTabActive = itemTab.key === (tab || "all");
         return (
           <button
             key={itemTab.key}
@@ -43,6 +51,7 @@ export function EventsTab() {
             )}
             onClick={() => {
               if (isTabActive) return;
+              if (itemTab.key === "all") setTab(null);
               setTab(itemTab.key);
             }}
           >
