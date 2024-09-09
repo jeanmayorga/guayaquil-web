@@ -11,7 +11,7 @@ interface Tab {
 const tabs: Tab[] = [
   {
     name: "Todos",
-    key: "",
+    key: "all",
   },
   {
     name: "Pasados",
@@ -45,7 +45,7 @@ const tabs: Tab[] = [
 
 export function EventTab() {
   const params = useParams();
-  const tab = params.tab || "";
+  const tab = params.tab || "today";
 
   return (
     <nav className="space-x-1 flex overflow-x-auto no-scrollbar">

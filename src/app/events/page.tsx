@@ -45,8 +45,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Home({ params, searchParams }: Props) {
-  const tab = params.tab;
+export default async function Home({ searchParams }: Props) {
+  const tab = "today";
   const query = searchParams.query;
   const events = await getEvents({ tab, query });
 

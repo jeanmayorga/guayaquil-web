@@ -18,6 +18,12 @@ export async function generateMetadata({
   const events = await getEvents({ tab, query });
 
   let title = "Eventos y shows en Guayaquil";
+  if (tab === "all") {
+    title = "Todos los eventos y shows en Guayaquil";
+  }
+  if (tab === "past") {
+    title = "Los eventos y shows pasados en Guayaquil";
+  }
   if (tab === "today") {
     title = "Hoy, eventos y shows en Guayaquil";
   }
