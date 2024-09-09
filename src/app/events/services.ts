@@ -10,13 +10,14 @@ export async function getEvents(options: EventSearchParams) {
     // cache: "force-cache",
     next: {
       revalidate: 3600 * 24,
-      tags: ["collection"],
+      tags: ["events"],
     },
   };
 
   const request = await fetch(fetchUrl, fetchOptions);
   const response = await request.json();
   const events: EventType[] = response || [];
+
   console.log(`request to ${fetchUrl}, response ${events.length} events`);
 
   return events;

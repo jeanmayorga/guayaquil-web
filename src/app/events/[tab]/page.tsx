@@ -12,22 +12,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   let title = "Eventos y shows en Guayaquil";
 
   if (tab === "today") {
-    title = "Hoy eventos y shows en Guayaquil";
+    title = "Hoy, eventos y shows en Guayaquil";
   }
   if (tab === "tomorrow") {
-    title = "Mañana Eventos y shows en Guayaquil";
+    title = "Mañana, ventos y shows en Guayaquil";
   }
   if (tab === "this_week") {
-    title = "Esta semana eventos y shows en Guayaquil";
+    title = "Esta semana, eventos y shows en Guayaquil";
   }
   if (tab === "next_week") {
-    title = "Siguiente semana eventos y shows en Guayaquil";
+    title = "Siguiente semana, eventos y shows en Guayaquil";
   }
   if (tab === "this_month") {
-    title = "Este mes eventos y shows en Guayaquil";
+    title = "Este mes, eventos y shows en Guayaquil";
   }
   if (tab === "next_month") {
-    title = "Siguiente mes eventos y shows en Guayaquil";
+    title = "Siguiente mes, eventos y shows en Guayaquil";
   }
 
   return {

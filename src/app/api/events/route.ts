@@ -18,6 +18,10 @@ export async function GET(request: Request) {
     const tab = searchParams.get("tab");
     const today = new Date();
 
+    console.log("request to supabase", {
+      searchParams: searchParams.toString(),
+    });
+
     let client = supabase.from("events").select("*");
 
     if (tab === "today") {
@@ -126,13 +130,9 @@ export async function GET(request: Request) {
       client = client.range(from, to);
     }
 
-    console.log({ searchParams: searchParams.toString() });
-
     const { data } = await client
       .order("start_date", { ascending: true })
       .order("name", { ascending: false });
-
-    await new Promise((r) => setTimeout(r, 500));
 
     return NextResponse.json(data);
   } catch (error) {
