@@ -2,6 +2,13 @@ import { Metadata } from "next";
 import { EventPage } from "./components/EventPage";
 import { getEvents } from "./services";
 
+interface Props {
+  params: {
+    tab: string;
+  };
+  searchParams: Record<string, string | undefined>;
+}
+
 export const metadata: Metadata = {
   title: "Eventos y shows en la ciudad de Guayaquil",
   description:
@@ -38,12 +45,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Home({}: // searchParams,
-{
-  // searchParams: Record<string, string>;
-}) {
-  const tab = "all";
-  const events = await getEvents({ tab });
+export default async function Home({ params, searchParams }: Props) {
+  const tab = params.tab;
+  const query = searchParams.query;
+  const events = await getEvents({ tab, query });
 
   return <EventPage events={events} />;
 }

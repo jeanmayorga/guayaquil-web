@@ -3,8 +3,10 @@ import { EventPage } from "../components/EventPage";
 import { getEvents } from "../services";
 
 interface Props {
-  params: { tab: string };
-  // searchParams: Record<string, string>;
+  params: {
+    tab: string;
+  };
+  searchParams: Record<string, string>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -67,9 +69,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function Home({ params }: Props) {
+export default async function Home({ params, searchParams }: Props) {
   const tab = params.tab;
-  const events = await getEvents({ tab });
+  const query = searchParams.query;
+  const events = await getEvents({ tab, query });
 
   return <EventPage events={events} />;
 }

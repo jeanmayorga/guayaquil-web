@@ -2,7 +2,13 @@ import { EventSearchParams, EventType } from "./types";
 
 export async function getEvents(options: EventSearchParams) {
   const apiUrl = `${process.env.NEXT_PUBLIC_URL}/api/events`;
+
   const optionsSearchParams = options as unknown as Record<string, string>;
+  Object.keys(optionsSearchParams).forEach((key) =>
+    optionsSearchParams[key] === undefined
+      ? delete optionsSearchParams[key]
+      : {}
+  );
   const searchParams = new URLSearchParams(optionsSearchParams).toString();
 
   const fetchUrl = `${apiUrl}${searchParams ? `?${searchParams}` : ""}`;
