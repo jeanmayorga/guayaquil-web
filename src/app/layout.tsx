@@ -4,6 +4,7 @@ import { GeistSans } from "geist/font/sans";
 import { ViewTransitions } from "next-view-transitions";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   title: "Guayaquil",
@@ -29,6 +30,7 @@ export default function RootLayout({
           {children}
           {/* </div> */}
           <Analytics />
+          <SpeedInsights />
         </body>
       </html>
     </ViewTransitions>

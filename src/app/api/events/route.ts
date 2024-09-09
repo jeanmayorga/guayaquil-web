@@ -121,7 +121,7 @@ export async function GET(request: Request) {
       client = client.ilike("name", `%${query}%`);
     }
 
-    if (page && limit) {
+    if (page || limit) {
       const pageParsed = Number(searchParams.get("page") || 1);
       const limitParsed = Number(searchParams.get("limit") || 100);
       const from = (pageParsed - 1) * limitParsed;

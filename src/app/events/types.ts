@@ -12,7 +12,7 @@ export interface EventType {
 
 export interface EventSearchParams {
   query?: string;
-  page?: string;
-  limit?: string;
+  page?: number;
+  limit?: number;
   tab: string;
 }
