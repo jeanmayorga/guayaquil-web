@@ -6,10 +6,10 @@ import { cn } from "@/lib/utils";
 import { useQueryState } from "nuqs";
 import { useState } from "react";
 
-export function EventsSearch() {
-  const [search, setSearch] = useQueryState("search", {
+export function EventSearch() {
+  const [search, setSearch] = useQueryState("query", {
     shallow: false,
-    throttleMs: 1000,
+    throttleMs: 2000,
     defaultValue: "",
     clearOnDefault: true,
   });

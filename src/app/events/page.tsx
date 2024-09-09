@@ -1,7 +1,6 @@
-import { Metadata } from "next";
-import EventsList from "./components/EventList";
-import { supabase } from "@/lib/supabase";
+import next, { Metadata } from "next";
 import { EventType } from "./types";
+import { EventPage } from "./components/EventPage";
 
 export const metadata: Metadata = {
   title: "Eventos y shows en la ciudad de Guayaquil",
@@ -39,55 +38,23 @@ export const metadata: Metadata = {
   },
 };
 
-export const dynamic = "force-dynamic";
-
 export default async function Home({
   searchParams,
 }: {
-  params: { slug: string };
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Record<string, string>;
 }) {
-  let client = supabase.from("events").select("*");
+  const protocol = process.env.VERCEL_ENV === "local" ? "http" : "https";
+  const apiUrl = `${protocol}://${process.env.VERCEL_URL}/api/events`;
+  const queryParams = new URLSearchParams(searchParams).toString();
+  const options: RequestInit = {
+    // cache: "no-store",
+    next: {
+      revalidate: 3600 * 24,
+    },
+  };
+  const request = await fetch(`${apiUrl}?${queryParams}`, options);
+  const response = await request.json();
+  const events: EventType[] = response || [];
 
-  if (searchParams?.search) {
-    client = client.ilike("name", `%${searchParams.search}%`);
-  }
-
-  const tab = searchParams?.tab;
-  const today = new Date();
-
-  if (tab === "today") {
-    client = client.lte("start_date", today.toISOString());
-    client = client.gte("end_date", today.toISOString());
-  }
-
-  if (tab === "thisWeek") {
-    const startOfWeek = new Date(today);
-    startOfWeek.setDate(today.getDate() - today.getDay());
-
-    const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(startOfWeek.getDate() + 6);
-
-    const startOfWeekString = startOfWeek.toISOString().split("T")[0];
-    const endOfWeekString = endOfWeek.toISOString().split("T")[0];
-
-    client = client
-      .gte("end_date", startOfWeekString)
-      .lte("start_date", endOfWeekString);
-  }
-
-  if (tab === "thisMonth") {
-    const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-    const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-
-    client = client
-      .gte("start_date", startOfMonth.toISOString())
-      .lte("end_date", endOfMonth.toISOString());
-  }
-
-  const { data } = await client.order("start_date", { ascending: true });
-
-  const events = (data || []) as EventType[];
-
-  return <EventsList events={events} />;
+  return <EventPage events={events} />;
 }

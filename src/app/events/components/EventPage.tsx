@@ -3,23 +3,25 @@ import { EventType } from "../types";
 import { EventItem } from "./EventItem";
 import { BackButton } from "@/components/back-button";
 import { Title } from "@/components/title";
-import { EventsSearch } from "./EventsSearch";
-import { EventsTab } from "./EventsNav";
 import { Suspense } from "react";
+import { EventSearch } from "./EventSearch";
+import { EventTab } from "./EventsTab";
 
 interface Props {
   events: EventType[];
 }
-function EventsList({ events }: Props) {
+export function EventPage({ events }: Props) {
   return (
     <>
       <BackButton />
       <Title title="Shows en Guayaquil" />
 
       <Suspense fallback={<>Cargando..</>}>
-        <EventsSearch />
+        <EventSearch />
       </Suspense>
-      <EventsTab />
+
+      <EventTab />
+
       <section className="my-8">
         <span className="text-gray-400 text-xs flex items-center">
           {!events || events?.length === 0 ? (
@@ -53,5 +55,3 @@ function EventsList({ events }: Props) {
     </>
   );
 }
-
-export default EventsList;

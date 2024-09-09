@@ -2,7 +2,6 @@
 
 import { cn } from "@/lib/utils";
 import { useQueryState } from "nuqs";
-import { DEFAULT_TAB } from "../constants";
 
 interface Tab {
   name: string;
@@ -33,9 +32,13 @@ const tabs: Tab[] = [
     name: "Este mes",
     key: "this_month",
   },
+  {
+    name: "Siguiente mes",
+    key: "next_month",
+  },
 ];
 
-export function EventsTab() {
+export function EventTab() {
   const [tab, setTab] = useQueryState("tab", { shallow: false });
 
   return (

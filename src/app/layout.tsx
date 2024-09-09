@@ -3,6 +3,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { GeistSans } from "geist/font/sans";
 import { ViewTransitions } from "next-view-transitions";
 import "./globals.css";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Guayaquil",
@@ -17,8 +18,16 @@ export default function RootLayout({
   return (
     <ViewTransitions>
       <html lang="es">
-        <body className={GeistSans.className}>
+        <body
+          className={cn(
+            GeistSans.className
+            // "grid grid-cols-12"
+          )}
+        >
+          {/* <div className="col-span-2">Hola</div>
+          <div className="col-span-10"> */}
           {children}
+          {/* </div> */}
           <Analytics />
         </body>
       </html>
