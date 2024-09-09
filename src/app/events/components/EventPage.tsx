@@ -33,7 +33,7 @@ export function EventPage({ events }: Props) {
             <>
               <CheckCircle className="w-4 h-4 mr-1" />
               Ultima actualización{" "}
-              {new Date(events[0]?.last_updated).toLocaleDateString("es-EC", {
+              {new Intl.DateTimeFormat("es-EC", {
                 weekday: "long",
                 day: "2-digit",
                 month: "long",
@@ -42,7 +42,7 @@ export function EventPage({ events }: Props) {
                 minute: "2-digit",
                 hour12: false,
                 timeZoneName: "long",
-              })}
+              }).format(new Date(events[0]?.last_updated))}
             </>
           )}
         </span>
