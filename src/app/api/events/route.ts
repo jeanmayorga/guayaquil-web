@@ -137,9 +137,15 @@ export async function GET(request: Request) {
       client = client.range(from, to);
     }
 
-    const { data } = await client
-      .order("start_date", { ascending: true })
-      .order("name", { ascending: false });
+    if (tab === "past") {
+      client = client.order("end_date", { ascending: false });
+    } else {
+      client = client
+        .order("start_date", { ascending: true })
+        .order("name", { ascending: false });
+    }
+
+    const { data } = await client;
 
     return NextResponse.json(data);
   } catch (error) {
