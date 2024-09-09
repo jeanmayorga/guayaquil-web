@@ -43,8 +43,7 @@ export default async function Home({
 }: {
   searchParams: Record<string, string>;
 }) {
-  const protocol = process.env.VERCEL_ENV === "local" ? "http" : "https";
-  const apiUrl = `${protocol}://${process.env.VERCEL_URL}/api/events`;
+  const apiUrl = `${process.env.NEXT_PUBLIC_URL}/api/events`;
   const queryParams = new URLSearchParams(searchParams).toString();
   const options: RequestInit = {
     // cache: "no-store",
