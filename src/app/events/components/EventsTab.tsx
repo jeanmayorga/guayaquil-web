@@ -14,6 +14,10 @@ const tabs: Tab[] = [
     key: "",
   },
   {
+    name: "Pasados",
+    key: "past",
+  },
+  {
     name: "Hoy",
     key: "today",
   },

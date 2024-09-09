@@ -13,7 +13,7 @@ export async function getEvents(options: EventSearchParams) {
 
   const fetchUrl = `${apiUrl}${searchParams ? `?${searchParams}` : ""}`;
   const fetchOptions: RequestInit = {
-    // cache: "force-cache",
+    // cache: "no-cache",
     next: {
       revalidate: 3600 * 24,
       tags: ["events"],

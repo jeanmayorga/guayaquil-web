@@ -8,6 +8,10 @@ interface Props {
   className?: string;
 }
 export function EventItem({ event, className }: Props) {
+  const today = new Date();
+  const eventDate = new Date(event.end_date);
+  const isPastEvent = today > eventDate;
+
   return (
     <a
       href={event.url}
@@ -26,11 +30,19 @@ export function EventItem({ event, className }: Props) {
           alt={event.name}
           className="w-full group-hover:scale-[1.02] transition-all"
         />
-        <div className="absolute z-10 top-0 left-0 w-full h-full bg-black/10 group-hover:bg-white/20 transition-all" />
+        <div
+          className={cn(
+            "absolute z-10 top-0 left-0 w-full h-full bg-black/10 group-hover:bg-white/20 transition-all",
+            isPastEvent && "bg-black/50 group-hover:bg-gray/20"
+          )}
+        />
       </div>
       <div className="py-4 pb-2">
         <div
-          className="flex items-center text-cyan-500 group-hover:text-cyan-600 font-medium mb-1 text-xs gap-2 transition-all"
+          className={cn(
+            "flex items-center text-cyan-500 group-hover:text-cyan-600 font-medium mb-1 text-xs gap-2 transition-all",
+            isPastEvent && "text-gray-500 group-hover:text-gray-600"
+          )}
           style={{ viewTransitionName: `event-calendar-${event.slug}` }}
         >
           <CalendarIcon />
@@ -52,7 +64,12 @@ export function EventItem({ event, className }: Props) {
           {event.location_name}
         </div>
       </div>
-      <div className="absolute z-0 top-0 left-0 w-full h-full rounded-2xl bg-cyan-500/15 opacity-0 group-hover:opacity-100 group-hover:scale-[1.05] group-active:bg-cyan-500/20 transition-all" />
+      <div
+        className={cn(
+          "absolute z-0 top-0 left-0 w-full h-full rounded-2xl bg-cyan-500/15 opacity-0 group-hover:opacity-100 group-hover:scale-[1.05] group-active:bg-cyan-500/20 transition-all",
+          isPastEvent && "bg-gray-500/15 group-active:bg-gray-500/20"
+        )}
+      />
     </a>
   );
 }
