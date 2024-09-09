@@ -17,7 +17,7 @@ export function EventSearch() {
   const [isSearching, setIsSearching] = useState<boolean>(false);
 
   return (
-    <section className="relative mb-4 rounded-xl">
+    <section className="relative mb-4 rounded-xl overflow-hidden">
       <SearchIcon className="h-5 w-5 absolute top-1/2 -translate-y-1/2 text-gray-500 left-3" />
       <Input
         placeholder="Buscar shows o eventos"
