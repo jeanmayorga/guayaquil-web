@@ -1,11 +1,6 @@
 import { CheckCircle, ExclamationCircle } from "@/components/icons";
 import { EventType } from "../types";
 import { EventItem } from "./EventItem";
-import { BackButton } from "@/components/back-button";
-import { Title } from "@/components/title";
-import { Suspense } from "react";
-import { EventSearch } from "./EventSearch";
-import { EventTab } from "./EventsTab";
 
 interface Props {
   events: EventType[];
@@ -13,15 +8,6 @@ interface Props {
 export function EventPage({ events }: Props) {
   return (
     <>
-      <BackButton />
-      <Title title="Shows en Guayaquil" />
-
-      <Suspense fallback={<>Cargando..</>}>
-        <EventSearch />
-      </Suspense>
-
-      <EventTab />
-
       <section className="my-8">
         <span className="text-gray-400 text-xs flex items-center">
           {!events || events?.length === 0 ? (

@@ -9,15 +9,6 @@ import { EventTab } from "./EventsTab";
 export function EventPageSkeleton() {
   return (
     <>
-      <BackButton />
-      <Title title="Shows en Guayaquil" />
-
-      <Suspense fallback={<>Cargando..</>}>
-        <EventSearch />
-      </Suspense>
-
-      <EventTab />
-
       <section className="my-8">
         <span className="text-gray-400 text-xs flex items-center">
           <ArrowPath className="w-4 h-4 mr-1 animate-spin" />
