@@ -26,7 +26,7 @@ export function EventPageSkeleton() {
       </section>
       <section>
         <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
-          {[...Array(9).keys()].map((item) => (
+          {[...Array(6).keys()].map((item) => (
             <EventItemSkeleton key={item} />
           ))}
         </div>
