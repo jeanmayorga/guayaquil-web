@@ -52,6 +52,7 @@ export default async function Home({
       revalidate: 3600 * 24,
     },
   };
+  console.log(`request to ${apiUrl}?${queryParams}`);
   const request = await fetch(`${apiUrl}?${queryParams}`, options);
   const response = await request.json();
   const events: EventType[] = response || [];
