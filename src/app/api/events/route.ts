@@ -31,6 +31,11 @@ export async function GET(request: Request) {
         end_date: getJustDate(today),
       });
     }
+
+    if (tab === "all") {
+      client = client.gte("end_date", getJustDate(today));
+    }
+
     if (tab === "today") {
       client = client.lte("start_date", getJustDate(today));
       client = client.gte("end_date", getJustDate(today));
@@ -40,18 +45,18 @@ export async function GET(request: Request) {
       });
     }
 
-    if (tab === "tomorrow") {
-      const tomorrow = new Date(today);
-      tomorrow.setDate(today.getDate() + 1);
+    // if (tab === "tomorrow") {
+    //   const tomorrow = new Date(today);
+    //   tomorrow.setDate(today.getDate() + 1);
 
-      client = client.lte("start_date", getJustDate(tomorrow));
-      client = client.gte("end_date", getJustDate(tomorrow));
+    //   client = client.lte("start_date", getJustDate(tomorrow));
+    //   client = client.gte("end_date", getJustDate(tomorrow));
 
-      console.log({
-        start_date: getJustDate(tomorrow),
-        end_date: getJustDate(tomorrow),
-      });
-    }
+    //   console.log({
+    //     start_date: getJustDate(tomorrow),
+    //     end_date: getJustDate(tomorrow),
+    //   });
+    // }
 
     if (tab === "this_week") {
       const startOfWeek = new Date(today);
@@ -71,23 +76,6 @@ export async function GET(request: Request) {
       });
     }
 
-    if (tab === "next_week") {
-      const today = new Date();
-      const nextWeekStart = new Date(today);
-      nextWeekStart.setDate(today.getDate() + (7 - today.getDay() + 1)); // Next Monday
-      const nextWeekEnd = new Date(nextWeekStart);
-      nextWeekEnd.setDate(nextWeekStart.getDate() + 6); // Next Sunday
-
-      client = client
-        .lte("start_date", getJustDate(nextWeekEnd))
-        .gte("end_date", getJustDate(nextWeekStart));
-
-      console.log({
-        start_date_lte: getJustDate(nextWeekEnd),
-        end_date_gte: getJustDate(nextWeekStart),
-      });
-    }
-
     if (tab === "this_month") {
       const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
       const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
@@ -102,27 +90,27 @@ export async function GET(request: Request) {
       });
     }
 
-    if (tab === "next_month") {
-      const startOfNextMonth = new Date(
-        today.getFullYear(),
-        today.getMonth() + 1,
-        1
-      );
-      const endOfNextMonth = new Date(
-        today.getFullYear(),
-        today.getMonth() + 2,
-        0
-      );
+    // if (tab === "next_month") {
+    //   const startOfNextMonth = new Date(
+    //     today.getFullYear(),
+    //     today.getMonth() + 1,
+    //     1
+    //   );
+    //   const endOfNextMonth = new Date(
+    //     today.getFullYear(),
+    //     today.getMonth() + 2,
+    //     0
+    //   );
 
-      client = client
-        .lte("start_date", getJustDate(endOfNextMonth))
-        .gte("end_date", getJustDate(startOfNextMonth));
+    //   client = client
+    //     .lte("start_date", getJustDate(endOfNextMonth))
+    //     .gte("end_date", getJustDate(startOfNextMonth));
 
-      console.log({
-        start_date_lte: getJustDate(endOfNextMonth),
-        end_date_gte: getJustDate(startOfNextMonth),
-      });
-    }
+    //   console.log({
+    //     start_date_lte: getJustDate(endOfNextMonth),
+    //     end_date_gte: getJustDate(startOfNextMonth),
+    //   });
+    // }
 
     if (query) {
       client = client.ilike("name", `%${query}%`);

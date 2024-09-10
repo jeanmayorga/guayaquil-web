@@ -9,8 +9,24 @@ interface Props {
 }
 export function EventItem({ event, className }: Props) {
   const today = new Date();
-  const eventDate = new Date(event.end_date);
-  const isPastEvent = today > eventDate;
+  const todayDateWithoutTime = today.toISOString().split("T")[0];
+  const startDate = event.start_date;
+  const endDate = event.end_date;
+  const isPastEvent = today > new Date(endDate);
+  const isUniqueDateEvent = startDate === endDate;
+
+  let isTodayEvent = false;
+
+  if (isUniqueDateEvent && endDate === todayDateWithoutTime) {
+    isTodayEvent = true;
+  }
+  if (
+    !isUniqueDateEvent &&
+    today > new Date(startDate) &&
+    today < new Date(endDate)
+  ) {
+    isTodayEvent = true;
+  }
 
   return (
     <a
@@ -36,6 +52,16 @@ export function EventItem({ event, className }: Props) {
             isPastEvent && "bg-black/50 group-hover:bg-gray/20"
           )}
         />
+        <div
+          className={cn(
+            "hidden absolute top-2 left-2 px-3 py-1 bg-black/50 text-white z-20 text-xs rounded-full font-medium",
+            isPastEvent && "block bg-black/50 text-white",
+            isTodayEvent && "block bg-cyan-500/70 text-white"
+          )}
+        >
+          {isPastEvent && "Evento terminado"}
+          {isTodayEvent && "Hoy"}
+        </div>
       </div>
       <div className="py-4 pb-2">
         <div
