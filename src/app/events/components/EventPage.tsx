@@ -7,40 +7,68 @@ import { useEffect, useRef, useState } from "react";
 import { getEvents } from "../services";
 import { EventItemSkeleton } from "./EventItemSkeleton";
 import { DEFAULT_EVENTS_LIMIT } from "../utils";
+import { useSearchParams } from "next/navigation";
 
 interface Props {
   events: EventType[];
   tab: string;
+  query: string;
 }
 export function EventPage(props: Props) {
+  const searchParams = useSearchParams();
+  const query = searchParams.get("query");
   const containerRef = useRef(null);
   const [events, setEvents] = useState<EventType[]>(props.events);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const [wasSearching, setWasSearching] = useState(false);
+
+  useEffect(() => {
+    const searchLength = query?.length || 0;
+    if (searchLength > 0) {
+      setWasSearching(true);
+    }
+
+    if (wasSearching && searchLength === 0) {
+      setLoading(false);
+      setPage(1);
+      setHasMore(true);
+      setWasSearching(false);
+    }
+  }, [query]);
+
+  useEffect(() => {
+    setEvents(props.events);
+  }, [props.events]);
 
   useEffect(() => {
     async function loadMoreEvents() {
-      if (!loading && hasMore) {
-        setLoading(true);
-        const newPage = page + 1;
-        const newEvents = await getEvents({
-          tab: props.tab,
-          limit: DEFAULT_EVENTS_LIMIT,
-          page: newPage,
-        });
-        setEvents((currentEvents) => [...currentEvents, ...newEvents]);
-        setPage(newPage);
-        setLoading(false);
-        if (newEvents.length !== DEFAULT_EVENTS_LIMIT) setHasMore(false);
-      }
+      setLoading(true);
+      const newPage = page + 1;
+      const newEvents = await getEvents({
+        tab: props.tab,
+        limit: DEFAULT_EVENTS_LIMIT,
+        query: props.query,
+        page: newPage,
+      });
+      setEvents((currentEvents) => [...currentEvents, ...newEvents]);
+      setPage(newPage);
+      setLoading(false);
+      if (newEvents.length !== DEFAULT_EVENTS_LIMIT) setHasMore(false);
     }
 
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries;
         if (entry.isIntersecting) {
-          loadMoreEvents();
+          if (
+            !loading &&
+            hasMore &&
+            props.events.length >= DEFAULT_EVENTS_LIMIT
+          ) {
+            loadMoreEvents();
+          }
         }
       },
       {
@@ -96,9 +124,8 @@ export function EventPage(props: Props) {
               <EventItemSkeleton key={item} />
             ))}
         </div>
-        {props.events.length === DEFAULT_EVENTS_LIMIT && (
-          <div ref={containerRef} />
-        )}
+
+        <div ref={containerRef} />
       </section>
     </>
   );
