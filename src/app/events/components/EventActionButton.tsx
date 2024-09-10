@@ -19,7 +19,6 @@ export function ActionsButton() {
   async function onScrap() {
     const apiUrl = `${process.env.NEXT_PUBLIC_URL}/api/cron`;
     await fetch(apiUrl);
-    await onRevalidate();
   }
 
   return (
