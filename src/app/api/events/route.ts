@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
+import { unstable_cache } from "next/cache";
 
 // export const dynamic = "force-static";
 // export const dynamic = "force-dynamic";
-export const revalidate = 3600 * 24;
+// export const revalidate = 3600 * 24;
 
 function getJustDate(date: Date) {
   const stringDate = date.toISOString();
@@ -135,7 +136,16 @@ export async function GET(request: Request) {
         .order("name", { ascending: false });
     }
 
-    const { data } = await client;
+    const getData = unstable_cache(
+      async () => {
+        const { data } = await client;
+        return data;
+      },
+      [String(tab), String(page), String(limit), String(query)],
+      { revalidate: 3600 * 24, tags: ["events"] }
+    );
+
+    const data = await getData();
 
     return NextResponse.json(data);
   } catch (error) {
