@@ -1,6 +1,2 @@
 // TODO
-// remove missingSuspenseWithCSRBailout from next config
-// Replace images with next js Image
 // add a infinty scroll client side component
-// fix package json to use yarn instead of npm
-// add pasados tab in order to check past events

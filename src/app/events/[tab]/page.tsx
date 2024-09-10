@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { EventPage } from "../components/EventPage";
 import { getEvents } from "../services";
+import { tabs } from "../utils";
 
 interface Props {
   params: {
@@ -78,6 +79,12 @@ export async function generateMetadata({
       ],
     },
   };
+}
+
+export async function generateStaticParams() {
+  return tabs.map((tab) => ({
+    tab: tab.key,
+  }));
 }
 
 export default async function Home({ params, searchParams }: Props) {
