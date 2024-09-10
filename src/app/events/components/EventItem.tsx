@@ -2,6 +2,7 @@ import { CalendarIcon } from "@/components/icons";
 import { EventType } from "../types";
 import { cn } from "@/lib/utils";
 import { EventDateFormat } from "./EventDateFormat";
+import Image from "next/image";
 
 interface Props {
   event: EventType;
@@ -41,9 +42,12 @@ export function EventItem({ event, className }: Props) {
         className="relative z-10 overflow-hidden bg-black flex items-center justify-center h-[200px] rounded-xl"
         style={{ viewTransitionName: `event-image-${event.slug}` }}
       >
-        <img
+        <Image
           src={event.cover_image}
           alt={event.name}
+          height={190}
+          width={250}
+          quality={40}
           className="w-full group-hover:scale-[1.02] transition-all"
         />
         <div
