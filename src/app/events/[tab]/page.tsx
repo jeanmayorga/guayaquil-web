@@ -81,6 +81,10 @@ export async function generateMetadata({
   };
 }
 
+export const revalidate = 3600 * 24;
+
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   return tabs.map((tab) => ({
     tab: tab.key,
