@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 
-export const dynamic = "force-dynamic";
+// export const dynamic = "force-dynamic";
+export const revalidate = 3600 * 24;
+export const tags = ["events"];
 
 function getJustDate(date: Date) {
   const stringDate = date.toISOString();
@@ -45,18 +47,18 @@ export async function GET(request: Request) {
       });
     }
 
-    // if (tab === "tomorrow") {
-    //   const tomorrow = new Date(today);
-    //   tomorrow.setDate(today.getDate() + 1);
+    if (tab === "tomorrow") {
+      const tomorrow = new Date(today);
+      tomorrow.setDate(today.getDate() + 1);
 
-    //   client = client.lte("start_date", getJustDate(tomorrow));
-    //   client = client.gte("end_date", getJustDate(tomorrow));
+      client = client.lte("start_date", getJustDate(tomorrow));
+      client = client.gte("end_date", getJustDate(tomorrow));
 
-    //   console.log({
-    //     start_date: getJustDate(tomorrow),
-    //     end_date: getJustDate(tomorrow),
-    //   });
-    // }
+      console.log({
+        start_date: getJustDate(tomorrow),
+        end_date: getJustDate(tomorrow),
+      });
+    }
 
     if (tab === "this_week") {
       const startOfWeek = new Date(today);
@@ -90,27 +92,27 @@ export async function GET(request: Request) {
       });
     }
 
-    // if (tab === "next_month") {
-    //   const startOfNextMonth = new Date(
-    //     today.getFullYear(),
-    //     today.getMonth() + 1,
-    //     1
-    //   );
-    //   const endOfNextMonth = new Date(
-    //     today.getFullYear(),
-    //     today.getMonth() + 2,
-    //     0
-    //   );
+    if (tab === "next_month") {
+      const startOfNextMonth = new Date(
+        today.getFullYear(),
+        today.getMonth() + 1,
+        1
+      );
+      const endOfNextMonth = new Date(
+        today.getFullYear(),
+        today.getMonth() + 2,
+        0
+      );
 
-    //   client = client
-    //     .lte("start_date", getJustDate(endOfNextMonth))
-    //     .gte("end_date", getJustDate(startOfNextMonth));
+      client = client
+        .lte("start_date", getJustDate(endOfNextMonth))
+        .gte("end_date", getJustDate(startOfNextMonth));
 
-    //   console.log({
-    //     start_date_lte: getJustDate(endOfNextMonth),
-    //     end_date_gte: getJustDate(startOfNextMonth),
-    //   });
-    // }
+      console.log({
+        start_date_lte: getJustDate(endOfNextMonth),
+        end_date_gte: getJustDate(startOfNextMonth),
+      });
+    }
 
     if (query) {
       client = client.ilike("name", `%${query}%`);

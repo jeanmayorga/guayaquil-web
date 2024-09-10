@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { EventPage } from "../components/EventPage";
 import { getEvents } from "../services";
-import { tabs } from "../utils";
+import { DEFAULT_EVENTS_LIMIT, tabs } from "../utils";
 
 interface Props {
   params: {
@@ -81,10 +81,6 @@ export async function generateMetadata({
   };
 }
 
-export const revalidate = 3600 * 24;
-
-export const dynamicParams = false;
-
 export async function generateStaticParams() {
   return tabs.map((tab) => ({
     tab: tab.key,
@@ -94,7 +90,8 @@ export async function generateStaticParams() {
 export default async function Home({ params, searchParams }: Props) {
   const tab = params.tab;
   const query = searchParams.query;
-  const events = await getEvents({ tab, query });
+  const limit = DEFAULT_EVENTS_LIMIT;
+  const events = await getEvents({ tab, query, limit });
 
-  return <EventPage events={events} />;
+  return <EventPage events={events} tab={tab} />;
 }

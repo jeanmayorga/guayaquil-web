@@ -1,11 +1,64 @@
+"use client";
+
 import { CheckCircle, ExclamationCircle } from "@/components/icons";
 import { EventType } from "../types";
 import { EventItem } from "./EventItem";
+import { useEffect, useRef, useState } from "react";
+import { getEvents } from "../services";
+import { EventItemSkeleton } from "./EventItemSkeleton";
+import { DEFAULT_EVENTS_LIMIT } from "../utils";
 
 interface Props {
   events: EventType[];
+  tab: string;
 }
-export function EventPage({ events }: Props) {
+export function EventPage(props: Props) {
+  const containerRef = useRef(null);
+  const [events, setEvents] = useState<EventType[]>(props.events);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+
+  useEffect(() => {
+    async function loadMoreEvents() {
+      if (!loading && hasMore) {
+        setLoading(true);
+        const newPage = page + 1;
+        const newEvents = await getEvents({
+          tab: props.tab,
+          limit: DEFAULT_EVENTS_LIMIT,
+          page: newPage,
+        });
+        setEvents((currentEvents) => [...currentEvents, ...newEvents]);
+        setPage(newPage);
+        setLoading(false);
+        if (newEvents.length !== DEFAULT_EVENTS_LIMIT) setHasMore(false);
+      }
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (entry.isIntersecting) {
+          loadMoreEvents();
+        }
+      },
+      {
+        rootMargin: "10px",
+      }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => {
+      if (containerRef.current) {
+        observer.unobserve(containerRef.current);
+      }
+    };
+  }, [containerRef, page, loading]);
+
   return (
     <>
       <section className="my-8">
@@ -38,7 +91,14 @@ export function EventPage({ events }: Props) {
           {events.map((event) => (
             <EventItem event={event} key={event.slug} />
           ))}
+          {loading &&
+            [...Array(DEFAULT_EVENTS_LIMIT).keys()].map((item) => (
+              <EventItemSkeleton key={item} />
+            ))}
         </div>
+        {props.events.length === DEFAULT_EVENTS_LIMIT && (
+          <div ref={containerRef} />
+        )}
       </section>
     </>
   );
