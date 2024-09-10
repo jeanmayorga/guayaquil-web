@@ -10,13 +10,8 @@ interface Props {
   searchParams: Record<string, string>;
 }
 
-export async function generateMetadata({
-  params,
-  searchParams,
-}: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const tab = params.tab;
-  const query = searchParams.query;
-  const events = await getEvents({ tab, query });
 
   let title = "Eventos y shows en Guayaquil";
   if (tab === "all") {
@@ -71,7 +66,7 @@ export async function generateMetadata({
       type: "website",
       images: [
         {
-          url: events?.[0]?.cover_image || "https://guayaquil.app/block2.jpg",
+          url: "https://guayaquil.app/banner.webp",
           width: 1120,
           height: 753,
           alt: title,
