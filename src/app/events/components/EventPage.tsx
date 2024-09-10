@@ -36,7 +36,7 @@ export function EventPage(props: Props) {
       setHasMore(true);
       setWasSearching(false);
     }
-  }, [query]);
+  }, [query, wasSearching]);
 
   useEffect(() => {
     setEvents(props.events);
@@ -58,6 +58,8 @@ export function EventPage(props: Props) {
       if (newEvents.length !== DEFAULT_EVENTS_LIMIT) setHasMore(false);
     }
 
+    const currentRef = containerRef.current;
+
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries;
@@ -76,16 +78,24 @@ export function EventPage(props: Props) {
       }
     );
 
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
     return () => {
-      if (containerRef.current) {
-        observer.unobserve(containerRef.current);
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
-  }, [containerRef, page, loading]);
+  }, [
+    containerRef,
+    page,
+    loading,
+    props.tab,
+    props.query,
+    props.events.length,
+    hasMore,
+  ]);
 
   return (
     <>

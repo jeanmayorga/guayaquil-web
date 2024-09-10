@@ -3,7 +3,7 @@ import { supabase } from "@/lib/supabase";
 import { unstable_cache } from "next/cache";
 
 // export const dynamic = "force-static";
-// export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 // export const revalidate = 3600 * 24;
 
 function getJustDate(date: Date) {

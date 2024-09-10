@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic"; // static by default, unless reading the request
+
 import { NextResponse } from "next/server";
 import { revalidateTag } from "next/cache";
 
