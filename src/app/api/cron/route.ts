@@ -19,7 +19,7 @@ export async function GET(request: Request) {
     // revalidatePath("/");
     // revalidatePath("/events");
 
-    revalidateTag("events");
+    // revalidateTag("events");
 
     return new Response(`Hello from ${process.env.VERCEL_REGION}`);
   } catch (error) {

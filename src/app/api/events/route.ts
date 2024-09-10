@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 
+// export const dynamic = "force-static";
 // export const dynamic = "force-dynamic";
 export const revalidate = 3600 * 24;
-export const tags = ["events"];
 
 function getJustDate(date: Date) {
   const stringDate = date.toISOString();
