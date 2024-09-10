@@ -142,7 +142,7 @@ export async function GET(request: Request) {
         return data;
       },
       [String(tab), String(page), String(limit), String(query)],
-      { revalidate: 3600 * 24, tags: ["events"] }
+      { revalidate: false, tags: ["events"] }
     );
 
     const data = await getData();

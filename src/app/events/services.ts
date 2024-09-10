@@ -15,7 +15,7 @@ export async function getEvents(options: EventSearchParams) {
   const fetchOptions: RequestInit = {
     // cache: "no-cache",
     next: {
-      revalidate: 3600 * 24,
+      revalidate: false,
       tags: ["events"],
     },
   };
