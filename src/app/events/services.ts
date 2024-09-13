@@ -1,3 +1,5 @@
+"use server";
+
 import { EventSearchParams, EventType } from "./types";
 
 export async function getEvents(options: EventSearchParams) {
