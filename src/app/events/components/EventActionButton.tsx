@@ -12,13 +12,12 @@ import {
 
 export function ActionsButton() {
   async function onRevalidate() {
-    const apiUrl = `${process.env.NEXT_PUBLIC_URL}/api/revalidate`;
-    await fetch(apiUrl);
+    await fetch(`${process.env.NEXT_PUBLIC_URL}/api/events/revalidate`);
     location.reload();
   }
+
   async function onScrap() {
-    const apiUrl = `${process.env.NEXT_PUBLIC_URL}/api/cron`;
-    await fetch(apiUrl);
+    await fetch(`${process.env.NEXT_PUBLIC_URL}/api/events/cron`);
   }
 
   return (
@@ -29,12 +28,12 @@ export function ActionsButton() {
             <EllipsisIcon className="w-5 h-5" />
           </MenubarTrigger>
           <MenubarContent align="end">
-            <MenubarItem onClick={onScrap}>Scrap</MenubarItem>
+            <MenubarItem onClick={onScrap}>Actualizar</MenubarItem>
             <MenubarSeparator />
-            <MenubarItem onClick={onRevalidate}>Limpiar cache</MenubarItem>
-            <MenubarSeparator />
+            <MenubarItem onClick={onRevalidate}>Revalidar</MenubarItem>
+            {/* <MenubarSeparator />
             <MenubarItem>App Store</MenubarItem>
-            <MenubarItem>Play Store</MenubarItem>
+            <MenubarItem>Play Store</MenubarItem> */}
           </MenubarContent>
         </MenubarMenu>
       </Menubar>

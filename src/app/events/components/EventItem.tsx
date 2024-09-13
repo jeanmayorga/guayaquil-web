@@ -13,7 +13,7 @@ export function EventItem({ event, className }: Props) {
   const todayDateWithoutTime = today.toISOString().split("T")[0];
   const startDate = event.start_date;
   const endDate = event.end_date;
-  const isPastEvent = today > new Date(endDate);
+  const isPastEvent = new Date(todayDateWithoutTime) > new Date(endDate);
   const isUniqueDateEvent = startDate === endDate;
 
   let isTodayEvent = false;
