@@ -26,7 +26,7 @@ export async function GET(request: Request) {
     let client = supabase.from("events").select("*");
 
     if (tab === "past") {
-      client = client.lte("end_date", getJustDate(today));
+      client = client.lt("end_date", getJustDate(today));
       console.log({
         start_date: getJustDate(today),
         end_date: getJustDate(today),
