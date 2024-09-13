@@ -11,6 +11,10 @@ import {
 } from "@/components/ui/menubar";
 
 export function ActionsButton() {
+  async function onRefresh() {
+    await onScrap();
+    await onRevalidate();
+  }
   async function onRevalidate() {
     await fetch(`${process.env.NEXT_PUBLIC_URL}/api/events/revalidate`);
     location.reload();
@@ -28,9 +32,11 @@ export function ActionsButton() {
             <EllipsisIcon className="w-5 h-5" />
           </MenubarTrigger>
           <MenubarContent align="end">
-            <MenubarItem onClick={onScrap}>Actualizar</MenubarItem>
+            <MenubarItem onClick={onRefresh}>Actualizar</MenubarItem>
             <MenubarSeparator />
             <MenubarItem onClick={onRevalidate}>Revalidar</MenubarItem>
+            <MenubarSeparator />
+            <MenubarItem onClick={onScrap}>Rescrap</MenubarItem>
             {/* <MenubarSeparator />
             <MenubarItem>App Store</MenubarItem>
             <MenubarItem>Play Store</MenubarItem> */}

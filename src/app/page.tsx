@@ -4,6 +4,7 @@ import { EventsSectionScroll } from "./events/components/section-scroll";
 import { Metadata } from "next";
 import { getEvents } from "./events/services";
 import { Title } from "@/components/title";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Ciudad de Guayaquil",
@@ -48,8 +49,10 @@ export default async function Home() {
   });
 
   return (
-    <main className="my-16">
-      <EventsSectionScroll events={events} />
+    <main>
+      <div className="my-16">
+        <EventsSectionScroll events={events} />
+      </div>
     </main>
   );
 
