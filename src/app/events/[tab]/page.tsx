@@ -87,7 +87,7 @@ export default async function Home({ params, searchParams }: Props) {
   const query = searchParams.query;
   const limit = DEFAULT_EVENTS_LIMIT;
   const page = 1;
-  const events = await getEvents({ tab, query, limit, page });
+  const events = await getEvents({ tab, page, limit, query });
 
   return <EventPage events={events} tab={tab} query={query} />;
 }
