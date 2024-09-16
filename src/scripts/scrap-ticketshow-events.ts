@@ -1,4 +1,6 @@
+import { format } from "date-fns";
 import { supabase } from "../lib/supabase";
+import { TZDate } from "@date-fns/tz";
 
 interface Response {
   id: string;
@@ -30,13 +32,8 @@ function getDateInEcuadorTZ(utcDate: string) {
   return `${year}-${month}-${day}`;
 }
 function getTimeInEcuadorTZ(utcDate: string) {
-  const date = new Date(utcDate);
-  return date.toLocaleTimeString("es-EC", {
-    timeZone: "America/Guayaquil",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  });
+  const tzDate = new TZDate(utcDate, "America/Guayaquil");
+  return format(tzDate, "HH:mm:ss");
 }
 
 async function getEvents(city: string, countByPage: number) {
