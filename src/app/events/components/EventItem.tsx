@@ -1,34 +1,31 @@
-import { CalendarIcon, ClockIcon } from "@/components/icons";
+import { CalendarIcon } from "@/components/icons";
 import { EventType } from "../types";
 import { cn } from "@/lib/utils";
 import { EventDateFormat } from "./EventDateFormat";
 import Image from "next/image";
 import { MapPin } from "lucide-react";
+import {
+  differenceInDays,
+  differenceInHours,
+  isPast,
+  isWithinInterval,
+} from "date-fns";
+import { TZDate } from "@date-fns/tz";
 
 interface Props {
   event: EventType;
   className?: string;
 }
 export function EventItem({ event, className }: Props) {
-  const today = new Date();
-  const todayDateWithoutTime = today.toISOString().split("T")[0];
-  const startDate = event.start_date;
-  const endDate = event.end_date;
-  const isPastEvent = new Date(todayDateWithoutTime) > new Date(endDate);
-  const isUniqueDateEvent = startDate === endDate;
+  const today = new TZDate(new Date(), "America/Guayaquil");
+  const startAt = event.start_at;
+  const endAt = event.end_at;
+  const daysOfDifference = differenceInDays(endAt, startAt);
+  const hoursOfDifference = differenceInHours(endAt, startAt);
+  const isRangeDateEvent = daysOfDifference > 1;
 
-  let isTodayEvent = false;
-
-  if (isUniqueDateEvent && endDate === todayDateWithoutTime) {
-    isTodayEvent = true;
-  }
-  if (
-    !isUniqueDateEvent &&
-    today > new Date(startDate) &&
-    today < new Date(endDate)
-  ) {
-    isTodayEvent = true;
-  }
+  const isToday = isWithinInterval(today, { start: startAt, end: endAt });
+  const isPastEvent = isPast(endAt);
 
   return (
     <a
@@ -58,11 +55,11 @@ export function EventItem({ event, className }: Props) {
           className={cn(
             "hidden absolute top-2 left-2 px-3 py-1 bg-black/50 text-white z-20 text-xs rounded-full font-medium",
             isPastEvent && "block bg-black/50 text-white",
-            isTodayEvent && "block bg-cyan-500/70 text-white"
+            isToday && "block bg-cyan-500/70 text-white"
           )}
         >
           {isPastEvent && "Evento terminado"}
-          {isTodayEvent && "Hoy"}
+          {isToday && "Hoy"}
         </div>
       </div>
       <div className="py-4 pb-2">
