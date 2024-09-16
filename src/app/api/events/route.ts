@@ -7,6 +7,10 @@ import {
   startOfWeek,
   startOfDay,
   endOfDay,
+  isWithinInterval,
+  differenceInDays,
+  differenceInHours,
+  isPast,
 } from "date-fns";
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
@@ -103,13 +107,35 @@ export async function GET(request: Request) {
             .order("name", { ascending: false });
         }
 
-        const { data } = await client;
-        const searchParamsClient = (client.geojson() as unknown as any).url
-          .searchParams;
+        const result = await client;
+        const events = result.data || [];
 
-        console.log(`Request to supabase ->`, searchParamsClient);
-        const events = data || [];
+        // const eventsMapped = events.map((event) => {
+        //   const startAt = event.start_at;
+        //   const endAt = event.end_at;
+        //   const isToday = isWithinInterval(ecuadorDate, {
+        //     start: startAt,
+        //     end: endAt,
+        //   });
+        //   const daysOfDifference = differenceInDays(endAt, startAt);
+        //   const hoursOfDifference = differenceInHours(endAt, startAt);
+        //   const hasDateRange = daysOfDifference > 1;
+        //   const isPastEvent = isPast(endAt);
 
+        //   return {
+        //     ...event,
+        //     dateOptions: {
+        //       isToday,
+        //       isPastEvent,
+        //       daysOfDifference,
+        //       hoursOfDifference,
+        //       hasDateRange,
+        //     },
+        //   };
+        // });
+
+        const searchParamsClient = (client.geojson() as any).url.searchParams;
+        console.log(`Supabase ->`, searchParams, searchParamsClient);
         return events;
       },
       [String(tab), String(page), String(limit), String(query)],

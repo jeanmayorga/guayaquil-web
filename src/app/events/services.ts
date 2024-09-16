@@ -26,7 +26,7 @@ export async function getEvents(options: EventSearchParams) {
   const response = await request.json();
   const events: EventType[] = response || [];
 
-  console.log(`request to ${fetchUrl}, response ${events.length} events`);
+  console.log(`Client fetch -> ${searchParams} -> count ${events.length}`);
 
   return events;
 }
