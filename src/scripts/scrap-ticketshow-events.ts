@@ -113,7 +113,7 @@ export default async function main() {
     })
     .filter(
       (event, index, self) =>
-        index === self.findIndex((e) => e.slug === event.slug)
+        index === self.findLastIndex((e) => e.slug === event.slug)
     );
 
   const data = await supabase.from("events").upsert(mapped, {

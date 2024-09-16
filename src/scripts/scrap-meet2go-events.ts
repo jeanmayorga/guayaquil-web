@@ -69,37 +69,40 @@ export default async function main() {
   const samborondonEvents = await getEventsFromCity("Samborondón");
   const events = [...guayaquilEvents, ...samborondonEvents];
 
-  const mapped = events.map((m2gEvent) => {
-    console.log(
-      `meet2go: ${m2gEvent.start_date} ${m2gEvent.start_time} ${m2gEvent.name}`
-    );
+  const mapped = events
+    .map((m2gEvent) => {
+      console.log(
+        `meet2go: ${m2gEvent.start_date} ${m2gEvent.start_time} ${m2gEvent.name}`
+      );
 
-    const tickets = m2gEvent.tickets.map((ticket) => {
+      const tickets = m2gEvent.tickets.map((ticket) => {
+        return {
+          title: ticket.sale_price_name,
+          price: ticket.sale_price,
+          description: ticket.description,
+        };
+      });
+
       return {
-        title: ticket.sale_price_name,
-        price: ticket.sale_price,
-        description: ticket.description,
+        cover_image: `https://d20zx9sjn15rrf.cloudfront.net/assets/${m2gEvent.cover_image}?width=350&format=auto&quality=100`,
+        name: m2gEvent.name,
+        slug: `m2g-${m2gEvent.slug}`,
+        url: `https://www.meet2go.com/ev/${m2gEvent.slug}`,
+        start_date: m2gEvent.start_date,
+        end_date: m2gEvent.end_date,
+        start_time: m2gEvent.start_time,
+        end_time: m2gEvent.end_time,
+        start_at: `${m2gEvent.start_date} ${m2gEvent.start_time}`,
+        end_at: `${m2gEvent.end_date} ${m2gEvent.end_time}`,
+        location_name: `${m2gEvent.venue.name}, ${m2gEvent.venue.city}`,
+        tickets,
+        last_updated: new Date().toISOString(),
       };
-    });
-
-    return {
-      cover_image: `https://d20zx9sjn15rrf.cloudfront.net/assets/${m2gEvent.cover_image}?width=350&format=auto&quality=100`,
-      name: m2gEvent.name,
-      slug: `m2g-${m2gEvent.slug}`,
-      url: `https://www.meet2go.com/ev/${m2gEvent.slug}`,
-      start_date: m2gEvent.start_date,
-      end_date: m2gEvent.end_date,
-      start_time: m2gEvent.start_time,
-      end_time: m2gEvent.end_time,
-      start_at: `${m2gEvent.start_date} ${m2gEvent.start_time}`,
-      end_at: `${m2gEvent.end_date} ${m2gEvent.end_time}`,
-      location_name: `${m2gEvent.venue.name}, ${m2gEvent.venue.city}`,
-      tickets,
-      last_updated: new Date().toISOString(),
-    };
-  });
-
-  console.log(mapped);
+    })
+    .filter(
+      (event, index, self) =>
+        index === self.findLastIndex((e) => e.slug === event.slug)
+    );
 
   const data = await supabase.from("events").upsert(mapped, {
     ignoreDuplicates: false,

@@ -17,7 +17,6 @@ import {
   format,
   isPast,
   isWithinInterval,
-  Locale,
 } from "date-fns";
 import { TZDate } from "@date-fns/tz";
 import { es } from "date-fns/locale/es";
@@ -179,8 +178,8 @@ export function DateText({ startAt, endAt }: DateTextProps) {
 
   function text() {
     if (daysOfDifference) {
-      const date1 = format(startAt, "d 'de' LLLL", { locale: es });
-      const date2 = format(endAt, "d 'de' LLLL", { locale: es });
+      const date1 = format(startAt, "d 'de' LLL", { locale: es });
+      const date2 = format(endAt, "d 'de' LLL", { locale: es });
       const time = format(startAt, "H:mm bbbb", { locale: es });
       return `${date1} hasta ${date2}, ${time}`;
     }
