@@ -1,8 +1,9 @@
-import { CalendarIcon } from "@/components/icons";
+import { CalendarIcon, ClockIcon } from "@/components/icons";
 import { EventType } from "../types";
 import { cn } from "@/lib/utils";
 import { EventDateFormat } from "./EventDateFormat";
 import Image from "next/image";
+import { MapPin } from "lucide-react";
 
 interface Props {
   event: EventType;
@@ -38,10 +39,7 @@ export function EventItem({ event, className }: Props) {
         className
       )}
     >
-      <div
-        className="relative z-10 overflow-hidden bg-black flex items-center justify-center h-[200px] rounded-xl"
-        style={{ viewTransitionName: `event-image-${event.slug}` }}
-      >
+      <div className="relative z-10 overflow-hidden bg-black flex items-center justify-center h-[200px] rounded-xl">
         <Image
           src={event.cover_image}
           alt={event.name}
@@ -68,30 +66,27 @@ export function EventItem({ event, className }: Props) {
         </div>
       </div>
       <div className="py-4 pb-2">
+        <div className="font-medium text-lg truncate text-gray-600 group-hover:text-gray-950 transition-all">
+          {event.name}
+        </div>
+        <div className="flex items-center text-gray-400 group-hover:text-gray-500 text-xs gap-2 transition-all mb-1">
+          <MapPin className="w-4 h-4" />
+          {event.location_name}
+        </div>
+
         <div
           className={cn(
             "flex items-center text-cyan-500 group-hover:text-cyan-600 font-medium mb-1 text-xs gap-2 transition-all",
             isPastEvent && "text-gray-500 group-hover:text-gray-600"
           )}
-          style={{ viewTransitionName: `event-calendar-${event.slug}` }}
         >
-          <CalendarIcon />
+          <CalendarIcon className="w-4 h-4" />
           <EventDateFormat
             startDate={event.start_date}
             endDate={event.end_date}
+            startTime={event.start_time}
+            endTime={event.end_time}
           />
-        </div>
-        <div
-          className="font-medium text-lg truncate text-gray-600 group-hover:text-gray-950 transition-all"
-          style={{ viewTransitionName: `event-name-${event.slug}` }}
-        >
-          {event.name}
-        </div>
-        <div
-          className="flex items-center text-gray-400 group-hover:text-gray-500 text-sm transition-all"
-          style={{ viewTransitionName: `event-location-${event.slug}` }}
-        >
-          {event.location_name}
         </div>
       </div>
       <div

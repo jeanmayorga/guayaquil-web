@@ -1,13 +1,10 @@
+import { TZDate } from "@date-fns/tz";
+import { add, endOfWeek, Duration, endOfMonth, startOfMonth } from "date-fns";
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { unstable_cache } from "next/cache";
 
 export const dynamic = "force-dynamic";
-
-function getJustDate(date: Date) {
-  const stringDate = date.toISOString();
-  return stringDate.split("T")[0];
-}
 
 export async function GET(request: Request) {
   try {
@@ -17,100 +14,59 @@ export async function GET(request: Request) {
     const page = searchParams.get("page");
     const limit = searchParams.get("limit");
     const tab = searchParams.get("tab");
-    const today = new Date();
-
-    console.log("request to supabase", {
-      searchParams: searchParams.toString(),
-    });
 
     let client = supabase.from("events").select("*");
 
+    const ecuadorDate = new TZDate(new Date(), "America/Guayaquil");
+    const todayISO = ecuadorDate.toISOString();
+
     if (tab === "past") {
-      client = client.lt("end_date", getJustDate(today));
-      console.log({
-        start_date: getJustDate(today),
-        end_date: getJustDate(today),
-      });
+      client = client.lt("end_at", todayISO);
     }
 
     if (tab === "all") {
-      client = client.gte("end_date", getJustDate(today));
+      client = client.gte("end_at", todayISO);
     }
 
     if (tab === "today") {
-      client = client.lte("start_date", getJustDate(today));
-      client = client.gte("end_date", getJustDate(today));
-      console.log({
-        start_date: getJustDate(today),
-        end_date: getJustDate(today),
-      });
+      client = client.lte("start_at", todayISO).gte("end_at", todayISO);
     }
 
     if (tab === "tomorrow") {
-      const tomorrow = new Date(today);
-      tomorrow.setDate(today.getDate() + 1);
+      const options: Duration = { days: 1 };
+      const tomorrowISO = add(ecuadorDate, options).toISOString();
 
-      client = client.lte("start_date", getJustDate(tomorrow));
-      client = client.gte("end_date", getJustDate(tomorrow));
-
-      console.log({
-        start_date: getJustDate(tomorrow),
-        end_date: getJustDate(tomorrow),
-      });
+      client = client.lte("start_at", tomorrowISO).gte("end_at", tomorrowISO);
     }
 
     if (tab === "this_week") {
-      const startOfWeek = new Date(today);
-      startOfWeek.setDate(
-        today.getDate() - today.getDay() + (today.getDay() === 0 ? -6 : 1)
-      ); // Monday
-      const endOfWeek = new Date(startOfWeek);
-      endOfWeek.setDate(startOfWeek.getDate() + 6); // Sunday
+      const startOfWeekISO = todayISO;
+      const endOfWeekISO = endOfWeek(ecuadorDate, {
+        weekStartsOn: 1,
+      }).toISOString();
 
       client = client
-        .lte("start_date", getJustDate(endOfWeek))
-        .gte("end_date", getJustDate(startOfWeek));
-
-      console.log({
-        start_date_lte: getJustDate(endOfWeek),
-        end_date_gte: getJustDate(startOfWeek),
-      });
+        .lte("start_at", startOfWeekISO)
+        .gte("end_at", endOfWeekISO);
     }
 
     if (tab === "this_month") {
-      const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-      const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+      const startOfMonthISO = startOfMonth(ecuadorDate).toISOString();
+      const endOfMonthISO = endOfMonth(ecuadorDate).toISOString();
 
       client = client
-        .lte("start_date", getJustDate(endOfMonth))
-        .gte("end_date", getJustDate(startOfMonth));
-
-      console.log({
-        start_date_lte: getJustDate(endOfMonth),
-        end_date_gte: getJustDate(startOfMonth),
-      });
+        .gte("start_at", startOfMonthISO)
+        .lte("end_at", endOfMonthISO);
     }
 
     if (tab === "next_month") {
-      const startOfNextMonth = new Date(
-        today.getFullYear(),
-        today.getMonth() + 1,
-        1
-      );
-      const endOfNextMonth = new Date(
-        today.getFullYear(),
-        today.getMonth() + 2,
-        0
-      );
+      const nextMonth = add(ecuadorDate, { months: 1 });
+      const startOfNextMonthISO = startOfMonth(nextMonth).toISOString();
+      const endOfMonthISO = endOfMonth(nextMonth).toISOString();
 
       client = client
-        .lte("start_date", getJustDate(endOfNextMonth))
-        .gte("end_date", getJustDate(startOfNextMonth));
-
-      console.log({
-        start_date_lte: getJustDate(endOfNextMonth),
-        end_date_gte: getJustDate(startOfNextMonth),
-      });
+        .gte("start_at", startOfNextMonthISO)
+        .lte("end_at", endOfMonthISO);
     }
 
     if (query) {
@@ -127,16 +83,21 @@ export async function GET(request: Request) {
     }
 
     if (tab === "past") {
-      client = client.order("end_date", { ascending: false });
+      client = client.order("start_at", { ascending: true });
     } else {
       client = client
-        .order("start_date", { ascending: true })
+        .order("start_at", { ascending: true })
         .order("name", { ascending: false });
     }
 
     const getData = unstable_cache(
       async () => {
         const { data } = await client;
+        const searchParams = (client.geojson() as unknown as any).url
+          .searchParams;
+
+        console.log(`Request to supabase ->`, searchParams);
+
         return data;
       },
       [String(tab), String(page), String(limit), String(query)],
@@ -148,6 +109,6 @@ export async function GET(request: Request) {
     return NextResponse.json(data);
   } catch (error) {
     console.log("Error", error);
-    return NextResponse.json({ ok: false });
+    return NextResponse.json([]);
   }
 }

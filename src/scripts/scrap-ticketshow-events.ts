@@ -5,32 +5,38 @@ interface Response {
   nombre: string;
   fechaevento: string;
   fechaeventofin: string;
-  horario: [
-    {
-      id: string;
-      idEventoHijo: string;
-      fecha: string;
-      horaInicio: string;
-      horaFin: string;
-    }
-  ];
   lugar: string;
+  ciudad: string;
   imagenpequeña: string;
   imagenmediana: string;
   redirectlink: string;
   title?: string;
 }
 
-function dateInEcuadorFormat(isoDateString: string) {
-  const dateUTC = new Date(isoDateString);
-  const options: Intl.DateTimeFormatOptions = {
+function getDateInEcuadorTZ(utcDate: string) {
+  const date = new Date(utcDate);
+  const unformatted = date
+    .toLocaleDateString("es-EC", {
+      timeZone: "America/Guayaquil",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    })
+    .split("/");
+  const year = unformatted[2];
+  const month = unformatted[1];
+  const day = unformatted[0];
+
+  return `${year}-${month}-${day}`;
+}
+function getTimeInEcuadorTZ(utcDate: string) {
+  const date = new Date(utcDate);
+  return date.toLocaleTimeString("es-EC", {
     timeZone: "America/Guayaquil",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  };
-  const dateInEcuador = dateUTC.toLocaleDateString("sv-SE", options);
-  return dateInEcuador;
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
 }
 
 async function getEvents(city: string, countByPage: number) {
@@ -80,26 +86,37 @@ export default async function main() {
   });
   const events = results.flat();
 
-  const mapped = events.map((tsEvent) => {
-    const start_date = dateInEcuadorFormat(tsEvent.fechaevento);
-    const end_date = dateInEcuadorFormat(tsEvent.fechaeventofin);
+  const mapped = events
+    .map((tsEvent) => {
+      const start_date = getDateInEcuadorTZ(tsEvent.fechaevento);
+      const end_date = getDateInEcuadorTZ(tsEvent.fechaeventofin);
+      const start_time = getTimeInEcuadorTZ(tsEvent.fechaevento);
+      const end_time = getTimeInEcuadorTZ(tsEvent.fechaeventofin);
 
-    console.log(
-      `ticketShow: mapped ${tsEvent.nombre} startDate: ${start_date} endDate: ${end_date}`
+      console.log(
+        `ticketShow: ${tsEvent.nombre} - startDate: ${start_date} ${start_time} - endDate: ${end_date} ${end_time}`
+      );
+      return {
+        cover_image: tsEvent.imagenmediana || tsEvent.imagenpequeña,
+        name: tsEvent.nombre.trim(),
+        slug: `ts-${tsEvent.id}`,
+        url:
+          tsEvent.redirectlink ||
+          `https://www.ticketshow.com.ec/evento/${tsEvent.title}`,
+        start_date: start_date,
+        start_time: start_time,
+        end_date: end_date,
+        end_time: end_time,
+        start_at: `${start_date} ${start_time}`,
+        end_at: `${end_date} ${end_time}`,
+        location_name: `${tsEvent.lugar.trim()}, ${tsEvent.ciudad.trim()}`,
+        last_updated: new Date().toISOString(),
+      };
+    })
+    .filter(
+      (event, index, self) =>
+        index === self.findIndex((e) => e.slug === event.slug)
     );
-    return {
-      cover_image: tsEvent.imagenmediana || tsEvent.imagenpequeña,
-      name: tsEvent.nombre,
-      slug: `ts-${tsEvent.id}`,
-      url:
-        tsEvent.redirectlink ||
-        `https://www.ticketshow.com.ec/evento/${tsEvent.title}`,
-      start_date: start_date,
-      end_date: end_date,
-      location_name: tsEvent.lugar,
-      last_updated: new Date().toISOString(),
-    };
-  });
 
   const data = await supabase.from("events").upsert(mapped, {
     ignoreDuplicates: false,

@@ -9,10 +9,13 @@ interface Response {
     end_date: string;
     start_time: string;
     end_time: string;
-    promotional_tag: string | null;
+    description: string; //
+    information: string; //
+    important_information: string; //
     venue: {
-      address: string;
       name: string;
+      city: string; //
+      address: string; //
     };
   }[];
 }
@@ -23,10 +26,11 @@ async function getEventsFromCity(city: string) {
   const ecuadorDate = new Date(now.getTime() - 5 * 60 * 60 * 1000);
 
   const queryParams = new URLSearchParams({
-    fields: "slug,name,cover_image,start_date,end_date,venue.name",
+    fields:
+      "slug,name,cover_image,start_date,end_date,start_time,end_time,venue.name,venue.city,venue.address,description,information,important_information",
     limit: "-1",
     sort: "start_date",
-    "filter[end_date][_gte]": ecuadorDate.toISOString(),
+    "filter[end_date][_lte]": ecuadorDate.toISOString(),
     "filter[status][_eq]": "published",
     "filter[venue][city][_in]": city,
   });
@@ -63,7 +67,7 @@ export default async function main() {
 
   const mapped = events.map((m2gEvent) => {
     console.log(
-      `meet2go: mapped ${m2gEvent.name} startDate: ${m2gEvent.start_date} endDate: ${m2gEvent.end_date}`
+      `meet2go: ${m2gEvent.name} - startDate: ${m2gEvent.start_date} ${m2gEvent.start_time} - endDate: ${m2gEvent.end_date} ${m2gEvent.end_time}`
     );
     return {
       cover_image: `https://d20zx9sjn15rrf.cloudfront.net/assets/${m2gEvent.cover_image}?width=350&format=auto&quality=100`,
@@ -72,7 +76,11 @@ export default async function main() {
       url: `https://www.meet2go.com/ev/${m2gEvent.slug}`,
       start_date: m2gEvent.start_date,
       end_date: m2gEvent.end_date,
-      location_name: m2gEvent.venue.name,
+      start_time: m2gEvent.start_time,
+      end_time: m2gEvent.end_time,
+      start_at: `${m2gEvent.start_date} ${m2gEvent.start_time}`,
+      end_at: `${m2gEvent.end_date} ${m2gEvent.end_time}`,
+      location_name: `${m2gEvent.venue.name}, ${m2gEvent.venue.city}`,
       last_updated: new Date().toISOString(),
     };
   });

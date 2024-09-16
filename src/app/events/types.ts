@@ -4,7 +4,9 @@ export interface EventType {
   name: string;
   slug: string;
   start_date: string;
+  start_time: string;
   end_date: string;
+  end_time: string;
   location_name: string;
   url: string;
   last_updated: string;
