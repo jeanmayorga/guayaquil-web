@@ -1,5 +1,14 @@
 import { TZDate } from "@date-fns/tz";
-import { add, endOfWeek, Duration, endOfMonth, startOfMonth } from "date-fns";
+import {
+  add,
+  endOfWeek,
+  Duration,
+  endOfMonth,
+  startOfMonth,
+  startOfWeek,
+  startOfDay,
+  endOfDay,
+} from "date-fns";
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { unstable_cache } from "next/cache";
@@ -33,21 +42,22 @@ export async function GET(request: Request) {
     }
 
     if (tab === "tomorrow") {
-      const options: Duration = { days: 1 };
-      const tomorrowISO = add(ecuadorDate, options).toISOString();
+      const tomorrow = add(ecuadorDate, { days: 1 });
+      const startOfDayISO = startOfDay(tomorrow).toISOString();
+      const endOfDayISO = endOfDay(tomorrow).toISOString();
 
-      client = client.lte("start_at", tomorrowISO).gte("end_at", tomorrowISO);
+      client = client.gte("start_at", startOfDayISO).lte("end_at", endOfDayISO);
     }
 
     if (tab === "this_week") {
-      const startOfWeekISO = todayISO;
+      const startOfWeekISO = startOfWeek(ecuadorDate).toISOString();
       const endOfWeekISO = endOfWeek(ecuadorDate, {
         weekStartsOn: 1,
       }).toISOString();
 
       client = client
-        .lte("start_at", startOfWeekISO)
-        .gte("end_at", endOfWeekISO);
+        .gte("start_at", startOfWeekISO)
+        .lte("end_at", endOfWeekISO);
     }
 
     if (tab === "this_month") {
@@ -98,7 +108,7 @@ export async function GET(request: Request) {
 
         console.log(`Request to supabase ->`, searchParams);
 
-        return data;
+        return data || [];
       },
       [String(tab), String(page), String(limit), String(query)],
       { revalidate: false, tags: ["events"] }
