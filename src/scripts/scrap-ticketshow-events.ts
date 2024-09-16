@@ -93,9 +93,7 @@ export default async function main() {
       const start_time = getTimeInEcuadorTZ(tsEvent.fechaevento);
       const end_time = getTimeInEcuadorTZ(tsEvent.fechaeventofin);
 
-      console.log(
-        `ticketShow: ${tsEvent.nombre} - startDate: ${start_date} ${start_time} - endDate: ${end_date} ${end_time}`
-      );
+      console.log(`ticketShow: ${start_date} ${start_time} ${tsEvent.nombre}`);
       return {
         cover_image: tsEvent.imagenmediana || tsEvent.imagenpequeña,
         name: tsEvent.nombre.trim(),
@@ -121,12 +119,15 @@ export default async function main() {
   const data = await supabase.from("events").upsert(mapped, {
     ignoreDuplicates: false,
     onConflict: "slug",
+    count: "estimated",
   });
 
   if (data.error) {
     console.error("Error al hacer upsert:", data.error);
-    return;
+    return 0;
   }
 
   console.log(`ticketShow total: ${events.length}`);
+
+  return data.count || 0;
 }

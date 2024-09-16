@@ -30,7 +30,7 @@ async function getEventsFromCity(city: string) {
       "slug,name,cover_image,start_date,end_date,start_time,end_time,venue.name,venue.city,venue.address,description,information,important_information",
     limit: "-1",
     sort: "start_date",
-    "filter[end_date][_lte]": ecuadorDate.toISOString(),
+    "filter[end_date][_gte]": ecuadorDate.toISOString(),
     "filter[status][_eq]": "published",
     "filter[venue][city][_in]": city,
   });
@@ -67,7 +67,7 @@ export default async function main() {
 
   const mapped = events.map((m2gEvent) => {
     console.log(
-      `meet2go: ${m2gEvent.name} - startDate: ${m2gEvent.start_date} ${m2gEvent.start_time} - endDate: ${m2gEvent.end_date} ${m2gEvent.end_time}`
+      `meet2go: ${m2gEvent.start_date} ${m2gEvent.start_time} ${m2gEvent.name}`
     );
     return {
       cover_image: `https://d20zx9sjn15rrf.cloudfront.net/assets/${m2gEvent.cover_image}?width=350&format=auto&quality=100`,
@@ -88,12 +88,15 @@ export default async function main() {
   const data = await supabase.from("events").upsert(mapped, {
     ignoreDuplicates: false,
     onConflict: "slug",
+    count: "estimated",
   });
 
   if (data.error) {
     console.error("Error al hacer upsert:", data.error);
-    return;
+    return 0;
   }
 
-  console.log(`meet2go: total ${events.length}`);
+  console.log(`meet2go: scrap ${events.length} upsert ${data.count}`);
+
+  return data.count || 0;
 }

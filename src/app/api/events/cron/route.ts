@@ -7,16 +7,15 @@ import { revalidateTag } from "next/cache";
 
 export async function GET() {
   try {
-    console.log("start scrap");
-    await scrapMeet2Go();
-    await scrapTicketShow();
-    console.log("close scrap");
+    const meet2GoEvents = await scrapMeet2Go();
+    const ticketShowEvents = await scrapTicketShow();
 
     revalidateTag("events");
 
     return Response.json({
       ok: true,
-      data: `Hello from ${process.env.VERCEL_REGION}`,
+      total: meet2GoEvents + ticketShowEvents,
+      region: process.env.VERCEL_REGION,
     });
   } catch (error) {
     console.log("Error", error);
