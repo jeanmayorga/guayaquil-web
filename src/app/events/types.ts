@@ -12,6 +12,13 @@ export interface EventType {
   location_name: string;
   url: string;
   last_updated: string;
+  tickets:
+    | {
+        title: string;
+        description: string;
+        price: number;
+      }[]
+    | null;
 }
 
 export interface EventSearchParams {
