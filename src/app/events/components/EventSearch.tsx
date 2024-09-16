@@ -3,10 +3,12 @@
 import { SearchIcon } from "@/components/icons";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 import { useQueryState } from "nuqs";
 import { useState } from "react";
 
 export function EventSearch() {
+  const router = useRouter();
   const [search, setSearch] = useQueryState("query", {
     shallow: false,
     throttleMs: 2000,
@@ -27,6 +29,9 @@ export function EventSearch() {
         )}
         onFocus={() => setIsSearching(true)}
         onChange={(e) => setSearch(e.target.value)}
+        onClick={() => {
+          router.push("/events/all");
+        }}
         value={search || ""}
       />
       <span
