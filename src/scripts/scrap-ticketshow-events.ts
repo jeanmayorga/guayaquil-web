@@ -16,20 +16,8 @@ interface Response {
 }
 
 function getDateInEcuadorTZ(utcDate: string) {
-  const date = new Date(utcDate);
-  const unformatted = date
-    .toLocaleDateString("es-EC", {
-      timeZone: "America/Guayaquil",
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    })
-    .split("/");
-  const year = unformatted[2];
-  const month = unformatted[1];
-  const day = unformatted[0];
-
-  return `${year}-${month}-${day}`;
+  const tzDate = new TZDate(utcDate, "America/Guayaquil");
+  return format(tzDate, "yyyy-MM-dd");
 }
 function getTimeInEcuadorTZ(utcDate: string) {
   const tzDate = new TZDate(utcDate, "America/Guayaquil");
@@ -58,6 +46,7 @@ async function getEvents(city: string, countByPage: number) {
       method: "POST",
       mode: "cors",
       credentials: "omit",
+      cache: "no-cache",
     }
   );
 

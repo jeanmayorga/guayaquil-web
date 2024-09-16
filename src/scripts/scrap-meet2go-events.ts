@@ -59,6 +59,7 @@ async function getEventsFromCity(city: string) {
     headers,
     body: null,
     method: "GET",
+    cache: "no-cache",
   });
   const response = (await request.json()) as Response;
   return response.data;
