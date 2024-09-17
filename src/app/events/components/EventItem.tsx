@@ -31,8 +31,8 @@ function Badge({ children, active }: BadgeProps) {
   return (
     <div
       className={cn(
-        "px-3 py-1 z-20 text-xs rounded-full bg-black/80 text-white flex items-center gap-1",
-        active && "bg-cyan-500/70 text-white"
+        "px-3 py-1 z-20 text-xs rounded-full bg-black/90 text-white flex items-center gap-1 font-medium shadow-md",
+        active && "bg-cyan-500/90 text-white"
       )}
     >
       {children}
@@ -91,9 +91,8 @@ interface TodayBadgeProps {
   today: Date;
   startAt: string;
   endAt: string;
-  event: EventType;
 }
-function TodayBadge({ today, startAt, endAt, event }: TodayBadgeProps) {
+function TodayBadge({ today, startAt, endAt }: TodayBadgeProps) {
   const isPastEvent = isPast(endAt);
   if (isPastEvent) return null;
 
@@ -101,6 +100,7 @@ function TodayBadge({ today, startAt, endAt, event }: TodayBadgeProps) {
     start: startOfDay(startAt),
     end: endOfDay(endAt),
   });
+
   if (isToday) {
     return (
       <Badge active>
@@ -241,12 +241,7 @@ export function EventItem({ event, className }: Props) {
         />
         <div className={cn("absolute bottom-2 left-2")}>
           <div className="flex overflow-x-auto gap-2">
-            <TodayBadge
-              startAt={startAt}
-              endAt={endAt}
-              today={today}
-              event={event}
-            />
+            <TodayBadge startAt={startAt} endAt={endAt} today={today} />
             <DurationBadge startAt={startAt} endAt={endAt} />
             <EndedBadge endAt={endAt} />
           </div>
