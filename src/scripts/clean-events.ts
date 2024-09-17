@@ -1,15 +1,17 @@
+import { TZDate } from "@date-fns/tz";
 import { supabase } from "../lib/supabase";
+import { startOfMonth, subMonths } from "date-fns";
 
 export default async function main() {
   console.log("cleanEvents: start");
 
-  const now = new Date();
-  const ecuadorDate = new Date(now.getTime() - 5 * 60 * 60 * 1000);
+  const tzDate = new TZDate(new Date(), "America/Guayaquil");
+  const startOfLastMonth = startOfMonth(subMonths(tzDate, 1));
 
   const data = await supabase
     .from("events")
     .select("*")
-    .lt("end_date", ecuadorDate.toISOString());
+    .lte("end_at", startOfLastMonth.toISOString());
 
   if (data.error) {
     console.error("Error al get events:", data.error);
@@ -17,7 +19,7 @@ export default async function main() {
   }
 
   const ids = data.data.map((event) => {
-    console.log("cleanEvents", event);
+    console.log("cleanEvents", event.slug);
     return event.id;
   });
 

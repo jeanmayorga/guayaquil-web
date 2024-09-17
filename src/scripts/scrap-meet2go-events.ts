@@ -33,9 +33,9 @@ async function getEventsFromCity(city: string) {
   const queryParams = new URLSearchParams({
     fields:
       "slug,name,cover_image,start_date,end_date,start_time,end_time,venue.name,venue.city,venue.address,description,information,important_information,tickets.sale_price,tickets.sale_price_name,tickets.description",
-    limit: "-1",
+    limit: "50",
     sort: "start_date",
-    "filter[end_date][_gte]": ecuadorDate.toISOString(),
+    "filter[end_date][_lte]": ecuadorDate.toISOString(),
     "filter[status][_eq]": "published",
     "filter[venue][city][_in]": city,
   });
@@ -66,9 +66,18 @@ async function getEventsFromCity(city: string) {
 }
 
 export default async function main() {
+  const gye = await getEventsFromCity(
+    "GUAYAQUIL,Guayaqul,Guayaquil,guayaquil,Samborondón,Samborondon,samborondon"
+  );
+  const GuayaqulEvents = await getEventsFromCity("Guayaqul");
   const guayaquilEvents = await getEventsFromCity("Guayaquil");
   const samborondonEvents = await getEventsFromCity("Samborondón");
-  const events = [...guayaquilEvents, ...samborondonEvents];
+  const events = [
+    ...gye,
+    ...GuayaqulEvents,
+    ...guayaquilEvents,
+    ...samborondonEvents,
+  ];
 
   const mapped = events
     .map((m2gEvent) => {

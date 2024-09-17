@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "scrap:m2g": "tsx --env-file=.env ./src/scripts/scrap-meet2go-events.ts",
-    "scrap:ts": "tsx --env-file=.env ./src/scripts/scrap-ticketshow-events.ts"
+    "scrap:ts": "tsx --env-file=.env ./src/scripts/scrap-ticketshow-events.ts",
+    "scrap:clear": "tsx --env-file=.env ./src/scripts/clean-events.ts"
   },
   "dependencies": {
     "@date-fns/tz": "^1.0.1",

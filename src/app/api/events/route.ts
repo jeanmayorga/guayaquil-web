@@ -46,16 +46,6 @@ export async function GET(request: Request) {
           client = client.lte("start_at", todayISO).gte("end_at", todayISO);
         }
 
-        if (tab === "tomorrow") {
-          const tomorrow = add(ecuadorDate, { days: 1 });
-          const startOfDayISO = startOfDay(tomorrow).toISOString();
-          const endOfDayISO = endOfDay(tomorrow).toISOString();
-
-          client = client
-            .gte("start_at", startOfDayISO)
-            .lte("end_at", endOfDayISO);
-        }
-
         if (tab === "this_week") {
           const startOfWeekISO = startOfWeek(ecuadorDate).toISOString();
           const endOfWeekISO = endOfWeek(ecuadorDate, {
@@ -100,7 +90,7 @@ export async function GET(request: Request) {
         }
 
         if (tab === "past") {
-          client = client.order("start_at", { ascending: true });
+          client = client.order("start_at", { ascending: false });
         } else {
           client = client
             .order("start_at", { ascending: true })

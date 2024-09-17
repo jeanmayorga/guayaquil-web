@@ -14,9 +14,11 @@ import {
   differenceInDays,
   differenceInHours,
   differenceInMonths,
+  endOfDay,
   format,
   isPast,
   isWithinInterval,
+  startOfDay,
 } from "date-fns";
 import { TZDate } from "@date-fns/tz";
 import { es } from "date-fns/locale/es";
@@ -89,12 +91,16 @@ interface TodayBadgeProps {
   today: Date;
   startAt: string;
   endAt: string;
+  event: EventType;
 }
-function TodayBadge({ today, startAt, endAt }: TodayBadgeProps) {
+function TodayBadge({ today, startAt, endAt, event }: TodayBadgeProps) {
   const isPastEvent = isPast(endAt);
   if (isPastEvent) return null;
 
-  const isToday = isWithinInterval(today, { start: startAt, end: endAt });
+  const isToday = isWithinInterval(today, {
+    start: startOfDay(startAt),
+    end: endOfDay(endAt),
+  });
   if (isToday) {
     return (
       <Badge active>
@@ -105,8 +111,8 @@ function TodayBadge({ today, startAt, endAt }: TodayBadgeProps) {
   }
 
   const isTomorrow = isWithinInterval(addDays(today, 1), {
-    start: startAt,
-    end: endAt,
+    start: startOfDay(startAt),
+    end: endOfDay(endAt),
   });
   if (isTomorrow) {
     return (
@@ -235,7 +241,12 @@ export function EventItem({ event, className }: Props) {
         />
         <div className={cn("absolute bottom-2 left-2")}>
           <div className="flex overflow-x-auto gap-2">
-            <TodayBadge startAt={startAt} endAt={endAt} today={today} />
+            <TodayBadge
+              startAt={startAt}
+              endAt={endAt}
+              today={today}
+              event={event}
+            />
             <DurationBadge startAt={startAt} endAt={endAt} />
             <EndedBadge endAt={endAt} />
           </div>

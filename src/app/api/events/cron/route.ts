@@ -3,12 +3,15 @@ export const dynamic = "force-dynamic"; // static by default, unless reading the
 import { NextResponse } from "next/server";
 import scrapMeet2Go from "../../../../scripts/scrap-meet2go-events";
 import scrapTicketShow from "../../../../scripts/scrap-ticketshow-events";
+import cleanEvents from "../../../../scripts/clean-events";
 import { revalidateTag } from "next/cache";
 
 export async function GET() {
   try {
     const meet2GoEvents = await scrapMeet2Go();
     const ticketShowEvents = await scrapTicketShow();
+
+    await cleanEvents();
 
     revalidateTag("events");
 
