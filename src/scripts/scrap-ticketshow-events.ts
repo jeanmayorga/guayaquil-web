@@ -62,6 +62,13 @@ async function getEvents(city: string, countByPage: number) {
   return response;
 }
 
+function extractFirstPrice(priceText: string) {
+  const regex = /\$\s*(\d{1,3}(?:[.,]\d{2})?)/;
+  const match = priceText.match(regex);
+  const price = match?.[1].replace(",", ".");
+  return Number(price);
+}
+
 async function getEventTickets(url: string) {
   try {
     const response = await fetch(url);
@@ -75,19 +82,13 @@ async function getEventTickets(url: string) {
       // Usar el primer selector si el elemento existe
       $("#divTableLocalidades table tbody tr").each((index, element) => {
         const title = $(element).find("th").eq(0).text().trim();
-        const price = $(element)
-          .find("th")
-          .eq(1)
-          .text()
-          .replace("$", "")
-          .replace("+ IVA", "")
-          .trim();
+        const price = $(element).find("th").eq(1).text().trim();
         const description = $(element).find("th").eq(2).text().trim();
 
         if (title && price && description) {
           data.push({
             title,
-            price: Number(price),
+            price: extractFirstPrice(price),
             description,
           });
         }
@@ -98,19 +99,13 @@ async function getEventTickets(url: string) {
       // Usar el segundo selector si el primer elemento no existe
       $("#divSynopsisConten table tbody tr").each((index, element) => {
         const title = $(element).find("th").eq(0).text().trim();
-        const price = $(element)
-          .find("th")
-          .eq(1)
-          .text()
-          .replace("$", "")
-          .replace("+ IVA", "")
-          .trim();
+        const price = $(element).find("th").eq(1).text().trim();
         const description = $(element).find("th").eq(2).text().trim();
 
         if (title && price && description) {
           data.push({
             title,
-            price: Number(price),
+            price: extractFirstPrice(price),
             description,
           });
         }
@@ -219,7 +214,7 @@ export default async function main() {
   return data.count || 0;
 }
 
-// async function main() {
+// async function main2() {
 //   const result = await getEventTickets(
 //     "https://sale.ticketshow.com.ec/rps/synopsis.aspx?evento=8641&nombreEvento=La_Noche_Soda_&_Rock_Latino_&ciudad=Samborondon"
 //   );
