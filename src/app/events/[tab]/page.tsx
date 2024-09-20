@@ -21,22 +21,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title = "Los eventos y shows pasados en Guayaquil";
   }
   if (tab === "today") {
-    title = "Hoy, eventos y shows en Guayaquil";
+    title = "Eventos y shows de hoy en Guayaquil ";
   }
   if (tab === "tomorrow") {
-    title = "Mañana, ventos y shows en Guayaquil";
+    title = "Eventos y shows de mañana en Guayaquil";
   }
   if (tab === "this_week") {
-    title = "Esta semana, eventos y shows en Guayaquil";
+    title = "Los eventos de esta semana en Guayaquil";
   }
   if (tab === "next_week") {
     title = "Siguiente semana, eventos y shows en Guayaquil";
   }
   if (tab === "this_month") {
     title = "Este mes, eventos y shows en Guayaquil";
-  }
-  if (tab === "next_month") {
-    title = "Siguiente mes, eventos y shows en Guayaquil";
   }
 
   return {
@@ -77,9 +74,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  return tabs.map((tab) => ({
-    tab: tab.key,
-  }));
+  return tabs.map((tab) => ({ tab: tab.key }));
 }
 
 export default async function Home({ params, searchParams }: Props) {

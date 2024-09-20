@@ -22,6 +22,7 @@ import {
 } from "date-fns";
 import { TZDate } from "@date-fns/tz";
 import { es } from "date-fns/locale/es";
+import { CountdownText } from "./CountdownText";
 
 interface BadgeProps {
   children?: React.ReactNode;
@@ -43,13 +44,28 @@ function Badge({ children, active }: BadgeProps) {
 interface DurationBadgeProps {
   startAt: string;
   endAt: string;
+  today: Date;
 }
-function DurationBadge({ startAt, endAt }: DurationBadgeProps) {
+function DurationBadge({ startAt, endAt, today }: DurationBadgeProps) {
   const daysOfDifference = differenceInDays(endAt, startAt);
   const hoursOfDifference = differenceInHours(endAt, startAt);
 
   const isPastEvent = isPast(endAt);
   const durationWord = isPastEvent ? "Duró" : "Dura";
+
+  const isToday = isWithinInterval(today, {
+    start: startOfDay(startAt),
+    end: endOfDay(endAt),
+  });
+
+  if (isToday) {
+    return (
+      <Badge>
+        <ClockIcon className="w-4 h-4" />
+        <CountdownText startAt={startAt} today={today} />
+      </Badge>
+    );
+  }
 
   if (daysOfDifference >= 30) {
     const monthsOfDifference = differenceInMonths(endAt, startAt);
@@ -135,7 +151,7 @@ function EndedBadge({ endAt }: EndedBadgeProps) {
   return (
     <Badge>
       <NoSymbolIcon className="w-3 h-3" />
-      Ya terminó
+      Ya se terminó
     </Badge>
   );
 }
@@ -242,7 +258,7 @@ export function EventItem({ event, className }: Props) {
         <div className={cn("absolute bottom-2 left-2")}>
           <div className="flex overflow-x-auto gap-2">
             <TodayBadge startAt={startAt} endAt={endAt} today={today} />
-            <DurationBadge startAt={startAt} endAt={endAt} />
+            <DurationBadge startAt={startAt} endAt={endAt} today={today} />
             <EndedBadge endAt={endAt} />
           </div>
         </div>
