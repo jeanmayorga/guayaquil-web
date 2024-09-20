@@ -7,10 +7,6 @@ import {
   startOfWeek,
   startOfDay,
   endOfDay,
-  isWithinInterval,
-  differenceInDays,
-  differenceInHours,
-  isPast,
 } from "date-fns";
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
@@ -43,18 +39,25 @@ export async function GET(request: Request) {
         }
 
         if (tab === "today") {
-          client = client.lte("start_at", todayISO).gte("end_at", todayISO);
+          const startOfDayISO = startOfDay(ecuadorDate).toISOString();
+          const endOfDayISO = endOfDay(ecuadorDate).toISOString();
+
+          client = client
+            .lte("start_at", endOfDayISO)
+            .gte("end_at", startOfDayISO);
         }
 
         if (tab === "this_week") {
-          const startOfWeekISO = startOfWeek(ecuadorDate).toISOString();
+          const startOfWeekISO = startOfWeek(ecuadorDate, {
+            weekStartsOn: 1,
+          }).toISOString();
           const endOfWeekISO = endOfWeek(ecuadorDate, {
             weekStartsOn: 1,
           }).toISOString();
 
           client = client
-            .gte("start_at", startOfWeekISO)
-            .lte("end_at", endOfWeekISO);
+            .lte("start_at", endOfWeekISO)
+            .gte("end_at", startOfWeekISO);
         }
 
         if (tab === "this_month") {
