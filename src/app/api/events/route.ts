@@ -43,8 +43,8 @@ export async function GET(request: Request) {
           const endOfDayISO = endOfDay(ecuadorDate).toISOString();
 
           client = client
-            .lte("start_at", endOfDayISO)
-            .gte("end_at", startOfDayISO);
+            .lte("start_at", endOfDayISO) // Eventos que empezaron antes o durante hoy
+            .gte("end_at", startOfDayISO); // Eventos que terminan hoy o después
         }
 
         if (tab === "this_week") {

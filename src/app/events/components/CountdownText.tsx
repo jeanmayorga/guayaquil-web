@@ -1,5 +1,6 @@
 "use client";
 
+import { TZDate } from "@date-fns/tz";
 import {
   differenceInHours,
   differenceInMinutes,
@@ -22,7 +23,7 @@ export function CountdownText({ startAt, today }: CountdownTextProps) {
   useEffect(() => {
     const updateCountdown = () => {
       const startDate = new Date(startAt);
-      const now = new Date();
+      const now = new TZDate(new Date(), "America/Guayaquil");
       now.setFullYear(startDate.getFullYear());
       now.setMonth(startDate.getMonth());
       now.setDate(startDate.getDate());
@@ -53,19 +54,25 @@ export function CountdownText({ startAt, today }: CountdownTextProps) {
     return () => clearInterval(interval);
   }, [startAt]);
 
+  function formatTime(time?: number, afix: string = "") {
+    let timeString = String(time);
+
+    if (timeString.length === 1) {
+      timeString = timeString.padStart(2, "0");
+    }
+
+    return `${timeString}${afix}`;
+  }
+
   if (eventStarted) {
     return <span>En curso</span>;
   }
 
   return (
     <span>
-      Empieza en{" "}
-      {timeRemaining.hours &&
-        `${String(timeRemaining.hours).padStart(2, "0")}:`}
-      {timeRemaining.minutes &&
-        `${String(timeRemaining.minutes).padStart(2, "0")}:`}
-      {timeRemaining.seconds &&
-        `${String(timeRemaining.seconds).padStart(2, "0")}`}
+      Empieza en {formatTime(timeRemaining.hours, ":")}
+      {formatTime(timeRemaining.minutes, ":")}
+      {formatTime(timeRemaining.seconds)}
     </span>
   );
 }
