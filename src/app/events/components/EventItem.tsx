@@ -139,16 +139,16 @@ interface PriceTextProps {
   tickets: EventType["tickets"];
 }
 function PriceText({ tickets }: PriceTextProps) {
-  if (!tickets || tickets.length === 0) return null;
+  // if (!tickets || tickets.length === 0) return null;
 
-  const lowerPrice = tickets.reduce(
-    (min, ticket) => Math.min(min, ticket.price),
-    Infinity
-  );
-  const higherPrice = tickets.reduce(
-    (max, ticket) => Math.max(max, ticket.price),
-    -Infinity
-  );
+  // const lowerPrice = tickets.reduce(
+  //   (min, ticket) => Math.min(min, ticket.price),
+  //   Infinity
+  // );
+  // const higherPrice = tickets.reduce(
+  //   (max, ticket) => Math.max(max, ticket.price),
+  //   -Infinity
+  // );
 
   return (
     <div
@@ -157,13 +157,13 @@ function PriceText({ tickets }: PriceTextProps) {
       )}
     >
       <PriceIcon className="w-4 h-4" />
-      {lowerPrice === higherPrice ? (
+      {/* {lowerPrice === higherPrice ? (
         <>Desde {lowerPrice} USD</>
       ) : (
         <>
           Desde {lowerPrice} USD hasta {higherPrice} USD
         </>
-      )}
+      )} */}
     </div>
   );
 }

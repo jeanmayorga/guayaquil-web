@@ -27,17 +27,16 @@ export function EventPage(props: Props) {
   const [wasSearching, setWasSearching] = useState(false);
 
   useEffect(() => {
-    const searchLength = query?.length || 0;
-    if (searchLength > 0) {
-      setWasSearching(true);
-    }
-
-    if (wasSearching && searchLength === 0) {
-      setLoading(false);
-      setPage(1);
-      setHasMore(true);
-      setWasSearching(false);
-    }
+    // const searchLength = query?.length || 0;
+    // if (searchLength > 0) {
+    //   setWasSearching(true);
+    // }
+    // if (wasSearching && searchLength === 0) {
+    //   setLoading(false);
+    //   setPage(1);
+    //   setHasMore(true);
+    //   setWasSearching(false);
+    // }
   }, [query, wasSearching]);
 
   useEffect(() => {
@@ -69,8 +68,9 @@ export function EventPage(props: Props) {
         if (entry.isIntersecting) {
           if (
             !loading &&
-            hasMore &&
-            props.events.length >= DEFAULT_EVENTS_LIMIT
+            hasMore
+            // &&
+            // props.events.length >= DEFAULT_EVENTS_LIMIT
           ) {
             loadMoreEvents();
           }
@@ -96,7 +96,7 @@ export function EventPage(props: Props) {
     loading,
     props.tab,
     props.query,
-    props.events.length,
+    // props.events.length,
     hasMore,
   ]);
 
@@ -104,7 +104,8 @@ export function EventPage(props: Props) {
     <>
       <section className="my-8">
         <span className="text-gray-400 text-xs flex items-center">
-          {!events || events?.length === 0 ? (
+          {!events ? (
+            // {!events || events?.length === 0 ? (
             <>
               <ExclamationCircle className="w-4 h-4 mr-1" />
               No hay shows o eventos.
