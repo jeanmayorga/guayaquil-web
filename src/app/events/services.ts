@@ -32,7 +32,7 @@ export async function getEvents(options: EventSearchParams) {
   const response = (await request.json()) as GetEventsResult;
 
   const result: GetEventsResult = {
-    events: response.events || [],
+    events: response?.events || [],
     lastCacheUpdate: response.lastCacheUpdate,
     lastEventUpdate: response.lastEventUpdate,
   };
