@@ -155,6 +155,10 @@ export async function GET(request: Request) {
     return NextResponse.json(data);
   } catch (error) {
     console.log("Error", error);
-    return NextResponse.json([]);
+    return NextResponse.json({
+      lastCacheUpdate: null,
+      lastEventUpdate: null,
+      events: [],
+    });
   }
 }

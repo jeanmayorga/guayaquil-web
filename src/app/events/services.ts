@@ -21,11 +21,11 @@ export async function getEvents(options: EventSearchParams) {
 
   const fetchUrl = `${apiUrl}${searchParams ? `?${searchParams}` : ""}`;
   const fetchOptions: RequestInit = {
-    // cache: "no-cache",
-    next: {
-      revalidate: false,
-      tags: ["events"],
-    },
+    cache: "no-cache",
+    // next: {
+    //   revalidate: false,
+    //   tags: ["events"],
+    // },
   };
 
   const request = await fetch(fetchUrl, fetchOptions);
@@ -33,8 +33,8 @@ export async function getEvents(options: EventSearchParams) {
 
   const result: GetEventsResult = {
     events: response?.events || [],
-    lastCacheUpdate: response.lastCacheUpdate,
-    lastEventUpdate: response.lastEventUpdate,
+    lastCacheUpdate: response?.lastCacheUpdate,
+    lastEventUpdate: response?.lastEventUpdate,
   };
 
   console.log(
