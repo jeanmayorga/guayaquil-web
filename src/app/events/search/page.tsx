@@ -1,40 +1,14 @@
 import { Metadata } from "next";
 import { EventPage } from "../components/EventPage";
 import { getEvents } from "../services";
-import { DEFAULT_EVENTS_LIMIT, tabs } from "../utils";
+import { DEFAULT_EVENTS_LIMIT } from "../utils";
 
 interface Props {
-  params: {
-    tab: string;
-  };
   searchParams: Record<string, string>;
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const tab = params.tab;
-
-  let title = "Eventos y shows en Guayaquil";
-  if (tab === "all") {
-    title = "Todos los eventos y shows en Guayaquil";
-  }
-  if (tab === "past") {
-    title = "Los eventos y shows pasados en Guayaquil";
-  }
-  if (tab === "today") {
-    title = "Eventos y shows de hoy en Guayaquil ";
-  }
-  if (tab === "tomorrow") {
-    title = "Eventos y shows de mañana en Guayaquil";
-  }
-  if (tab === "this_week") {
-    title = "Los eventos de esta semana en Guayaquil";
-  }
-  if (tab === "next_week") {
-    title = "Siguiente semana, eventos y shows en Guayaquil";
-  }
-  if (tab === "this_month") {
-    title = "Este mes, eventos y shows en Guayaquil";
-  }
+export async function generateMetadata(): Promise<Metadata> {
+  const title = "Buscar eventos y shows en Guayaquil";
 
   return {
     title,
@@ -73,16 +47,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export async function generateStaticParams() {
-  return tabs.map((tab) => ({ tab: tab.key }));
-}
-
-export default async function Home({ params }: Props) {
-  const tab = params.tab;
-  const query = undefined;
+export default async function Home({ searchParams }: Props) {
+  const tab = "all";
+  const query = searchParams.query;
   const limit = DEFAULT_EVENTS_LIMIT;
   const page = 1;
   const events = await getEvents({ tab, page, limit, query });
 
-  return <EventPage events={events} tab={tab} />;
+  return <EventPage events={events} tab={tab} query={query} />;
 }

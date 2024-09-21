@@ -12,7 +12,7 @@ import { useSearchParams } from "next/navigation";
 interface Props {
   events: EventType[];
   tab: string;
-  query: string;
+  query?: string;
 }
 export function EventPage(props: Props) {
   const searchParams = useSearchParams();

@@ -30,7 +30,7 @@ export function EventSearch() {
         onFocus={() => setIsSearching(true)}
         onChange={(e) => setSearch(e.target.value)}
         onClick={() => {
-          router.push("/events/all");
+          router.push("/events/search");
         }}
         value={search || ""}
       />
