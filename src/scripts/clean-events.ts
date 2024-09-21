@@ -19,7 +19,7 @@ export default async function main() {
   }
 
   const ids = data.data.map((event) => {
-    console.log("cleanEvents", event.slug);
+    console.log("cleanEvents", event.slug, event.endAt, startOfLastMonth);
     return event.id;
   });
 
