@@ -35,7 +35,7 @@ async function getEventsFromCity(city: string) {
       "slug,name,cover_image,start_date,end_date,start_time,end_time,venue.name,venue.city,venue.address,description,information,important_information,tickets.sale_price,tickets.sale_price_name,tickets.description",
     limit: "50",
     sort: "start_date",
-    "filter[end_date][_lte]": ecuadorDate.toISOString(),
+    "filter[end_date][_gte]": ecuadorDate.toISOString(),
     "filter[status][_eq]": "published",
     "filter[venue][city][_in]": city,
   });

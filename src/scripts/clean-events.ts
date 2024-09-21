@@ -19,7 +19,12 @@ export default async function main() {
   }
 
   const ids = data.data.map((event) => {
-    console.log("cleanEvents", event.slug, event.endAt, startOfLastMonth);
+    console.log(
+      "cleanEvents",
+      event.slug,
+      event.end_at,
+      startOfLastMonth.toISOString()
+    );
     return event.id;
   });
 
