@@ -66,9 +66,9 @@ export function CountdownText({ startAt, endAt, today }: CountdownTextProps) {
   function formatTime(time?: number, afix: string = "") {
     let timeString = String(time);
 
-    // if (timeString.length === 1) {
-    //   timeString = timeString.padStart(2, "0");
-    // }
+    if (timeString.length === 1) {
+      timeString = timeString.padStart(2, "0");
+    }
 
     return `${timeString}${afix}`;
   }
