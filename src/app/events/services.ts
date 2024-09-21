@@ -32,7 +32,7 @@ export async function getEvents(options: EventSearchParams) {
   const response = await request.json();
 
   console.log(
-    `Client fetch -> ${searchParams} -> count ${response.events.length}`
+    `Client fetch -> ${searchParams} -> count ${(response.events || [])?.length}`
   );
 
   return response as GetEventsResult;
