@@ -38,7 +38,7 @@ export async function getEvents(options: EventSearchParams) {
   };
 
   console.log(
-    `Client fetch -> ${searchParams} -> count ${response.events.length}`
+    `Client fetch -> ${searchParams} -> count ${result.events.length}`
   );
 
   return result;
