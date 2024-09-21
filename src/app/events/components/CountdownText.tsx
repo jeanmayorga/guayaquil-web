@@ -1,18 +1,23 @@
 "use client";
 
+import { Badge } from "@/components/badge";
+import { ClockIcon } from "@/components/icons";
 import { TZDate } from "@date-fns/tz";
 import {
   differenceInHours,
   differenceInMinutes,
   differenceInSeconds,
+  isPast,
 } from "date-fns";
 import { useEffect, useState } from "react";
 
 interface CountdownTextProps {
   startAt: string;
+  endAt: string;
   today: Date;
 }
-export function CountdownText({ startAt, today }: CountdownTextProps) {
+export function CountdownText({ startAt, endAt, today }: CountdownTextProps) {
+  const isPastEvent = isPast(endAt);
   const [eventStarted, setEventStarted] = useState(true);
   const [timeRemaining, setTimeRemaining] = useState({
     hours: 0,
@@ -22,6 +27,10 @@ export function CountdownText({ startAt, today }: CountdownTextProps) {
 
   useEffect(() => {
     const updateCountdown = () => {
+      if (isPastEvent) {
+        setEventStarted(true);
+        clearInterval(interval);
+      }
       const startDate = new Date(startAt);
       const now = new TZDate(new Date(), "America/Guayaquil");
       now.setFullYear(startDate.getFullYear());
@@ -52,7 +61,7 @@ export function CountdownText({ startAt, today }: CountdownTextProps) {
     const interval = setInterval(updateCountdown, 1000);
 
     return () => clearInterval(interval);
-  }, [startAt]);
+  }, [startAt, isPastEvent]);
 
   function formatTime(time?: number, afix: string = "") {
     let timeString = String(time);
@@ -64,15 +73,25 @@ export function CountdownText({ startAt, today }: CountdownTextProps) {
     return `${timeString}${afix}`;
   }
 
+  if (isPastEvent) {
+    return null;
+  }
+
   if (eventStarted) {
-    return <span>En curso</span>;
+    return (
+      <Badge>
+        <ClockIcon className="w-4 h-4" />
+        En curso
+      </Badge>
+    );
   }
 
   return (
-    <span>
+    <Badge>
+      <ClockIcon className="w-4 h-4" />
       Empieza en {formatTime(timeRemaining.hours, ":")}
       {formatTime(timeRemaining.minutes, ":")}
       {formatTime(timeRemaining.seconds)}
-    </span>
+    </Badge>
   );
 }

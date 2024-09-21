@@ -23,23 +23,7 @@ import {
 import { TZDate } from "@date-fns/tz";
 import { es } from "date-fns/locale/es";
 import { CountdownText } from "./CountdownText";
-
-interface BadgeProps {
-  children?: React.ReactNode;
-  active?: boolean;
-}
-function Badge({ children, active }: BadgeProps) {
-  return (
-    <div
-      className={cn(
-        "px-3 py-1 z-20 text-xs rounded-full bg-black/90 text-white flex items-center gap-1 font-medium shadow-md",
-        active && "bg-cyan-500/90 text-white"
-      )}
-    >
-      {children}
-    </div>
-  );
-}
+import { Badge } from "@/components/badge";
 
 interface DurationBadgeProps {
   startAt: string;
@@ -59,12 +43,7 @@ function DurationBadge({ startAt, endAt, today }: DurationBadgeProps) {
   });
 
   if (isToday) {
-    return (
-      <Badge>
-        <ClockIcon className="w-4 h-4" />
-        <CountdownText startAt={startAt} today={today} />
-      </Badge>
-    );
+    return <CountdownText startAt={startAt} endAt={endAt} today={today} />;
   }
 
   if (daysOfDifference >= 30) {
@@ -202,8 +181,9 @@ export function DateText({ startAt, endAt }: DateTextProps) {
     if (daysOfDifference) {
       const date1 = format(startAt, "d 'de' LLL", { locale: es });
       const date2 = format(endAt, "d 'de' LLL", { locale: es });
-      const time = format(startAt, "H:mm bbbb", { locale: es });
-      return `${date1} hasta ${date2}, ${time}`;
+      const time1 = format(startAt, "H:mm bbbb", { locale: es });
+
+      return `${date1} hasta ${date2}, ${time1}`;
     }
     return format(startAt, "d 'de' LLLL 'del' yyyy H:mm bbbb", { locale: es });
   }
