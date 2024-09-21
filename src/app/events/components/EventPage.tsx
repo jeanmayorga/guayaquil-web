@@ -11,6 +11,8 @@ import { useSearchParams } from "next/navigation";
 
 interface Props {
   events: EventType[];
+  lastCacheUpdate: string;
+  lastEventUpdate: string;
   tab: string;
   query?: string;
 }
@@ -46,12 +48,13 @@ export function EventPage(props: Props) {
     async function loadMoreEvents() {
       setLoading(true);
       const newPage = page + 1;
-      const newEvents = await getEvents({
+      const response = await getEvents({
         tab: props.tab,
         limit: DEFAULT_EVENTS_LIMIT,
         query: props.query,
         page: newPage,
       });
+      const newEvents = response.events;
       setEvents((currentEvents) => [...currentEvents, ...newEvents]);
       setPage(newPage);
       setLoading(false);
@@ -119,7 +122,7 @@ export function EventPage(props: Props) {
                 minute: "2-digit",
                 hour12: false,
                 timeZone: "America/Guayaquil",
-              }).format(new Date(events[0]?.last_updated))}
+              }).format(new Date(props.lastCacheUpdate))}
             </>
           )}
         </span>

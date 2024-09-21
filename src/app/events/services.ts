@@ -2,6 +2,12 @@
 
 import { EventSearchParams, EventType } from "./types";
 
+export interface GetEventsResult {
+  events: EventType[];
+  lastCacheUpdate: string;
+  lastEventUpdate: string;
+}
+
 export async function getEvents(options: EventSearchParams) {
   const apiUrl = `${process.env.NEXT_PUBLIC_URL}/api/events`;
 
@@ -24,9 +30,10 @@ export async function getEvents(options: EventSearchParams) {
 
   const request = await fetch(fetchUrl, fetchOptions);
   const response = await request.json();
-  const events: EventType[] = response || [];
 
-  console.log(`Client fetch -> ${searchParams} -> count ${events.length}`);
+  console.log(
+    `Client fetch -> ${searchParams} -> count ${response.events.length}`
+  );
 
-  return events;
+  return response as GetEventsResult;
 }

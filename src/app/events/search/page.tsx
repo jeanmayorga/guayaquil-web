@@ -52,7 +52,14 @@ export default async function Home({ searchParams }: Props) {
   const query = searchParams.query;
   const limit = DEFAULT_EVENTS_LIMIT;
   const page = 1;
-  const events = await getEvents({ tab, page, limit, query });
+  const response = await getEvents({ tab, page, limit, query });
 
-  return <EventPage events={events} tab={tab} query={query} />;
+  return (
+    <EventPage
+      lastCacheUpdate={response.lastCacheUpdate}
+      lastEventUpdate={response.lastEventUpdate}
+      events={response.events}
+      tab={tab}
+    />
+  );
 }

@@ -103,6 +103,21 @@ export async function GET(request: Request) {
         const result = await client;
         const events = result.data || [];
 
+        const lastEventUpdateEvent = events.reduce((latest, current) => {
+          return new Date(current.last_updated) > new Date(latest.last_updated)
+            ? current
+            : latest;
+        }, events[0]);
+
+        const response = {
+          lastCacheUpdate: todayISO,
+          lastEventUpdate: new TZDate(
+            lastEventUpdateEvent.last_updated,
+            "America/Guayaquil"
+          ),
+          events,
+        };
+
         // const eventsMapped = events.map((event) => {
         //   const startAt = event.start_at;
         //   const endAt = event.end_at;
@@ -129,7 +144,7 @@ export async function GET(request: Request) {
 
         const searchParamsClient = (client.geojson() as any).url.searchParams;
         console.log(`Supabase ->`, searchParams, searchParamsClient);
-        return events;
+        return response;
       },
       [String(tab), String(page), String(limit), String(query)],
       { revalidate: false, tags: ["events"] }
