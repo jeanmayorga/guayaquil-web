@@ -29,11 +29,17 @@ export async function getEvents(options: EventSearchParams) {
   };
 
   const request = await fetch(fetchUrl, fetchOptions);
-  const response = await request.json();
+  const response = (await request.json()) as GetEventsResult;
+
+  const result: GetEventsResult = {
+    events: response.events || [],
+    lastCacheUpdate: response.lastCacheUpdate,
+    lastEventUpdate: response.lastEventUpdate,
+  };
 
   console.log(
-    `Client fetch -> ${searchParams} -> count ${(response.events || [])?.length}`
+    `Client fetch -> ${searchParams} -> count ${response.events.length}`
   );
 
-  return response as GetEventsResult;
+  return result;
 }
