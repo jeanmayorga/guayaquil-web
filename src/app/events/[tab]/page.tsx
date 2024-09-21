@@ -10,7 +10,7 @@ interface Props {
   searchParams: Record<string, string>;
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export function generateMetadata({ params }: Props): Metadata {
   const tab = params.tab;
 
   let title = "Eventos y shows en Guayaquil";
@@ -78,18 +78,25 @@ export async function generateStaticParams() {
 }
 
 export default async function Home({ params }: Props) {
-  const tab = params.tab;
-  const query = undefined;
-  const limit = DEFAULT_EVENTS_LIMIT;
-  const page = 1;
-  const response = await getEvents({ tab, page, limit, query });
+  try {
+    const tab = params.tab;
+    const query = undefined;
+    const limit = DEFAULT_EVENTS_LIMIT;
+    const page = 1;
+    const response = await getEvents({ tab, page, limit, query });
 
-  return (
-    <EventPage
-      lastCacheUpdate={response.lastCacheUpdate}
-      lastEventUpdate={response.lastEventUpdate}
-      events={response.events}
-      tab={tab}
-    />
-  );
+    if (response) {
+      return (
+        <EventPage
+          lastCacheUpdate={response.lastCacheUpdate}
+          lastEventUpdate={response.lastEventUpdate}
+          events={response.events}
+          tab={tab}
+        />
+      );
+    }
+  } catch (error) {
+    console.error("Error fetching events:", error);
+    return <div>Error fetching events</div>;
+  }
 }
