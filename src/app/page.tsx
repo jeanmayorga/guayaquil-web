@@ -43,7 +43,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const events = await getEvents({
+  const response = await getEvents({
     tab: "all",
     limit: 7,
   });
@@ -51,7 +51,7 @@ export default async function Home() {
   return (
     <main>
       <div className="my-16">
-        <EventsSectionScroll events={events} />
+        <EventsSectionScroll events={response.events} />
       </div>
     </main>
   );
