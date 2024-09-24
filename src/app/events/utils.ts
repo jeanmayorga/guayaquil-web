@@ -12,10 +12,10 @@ export const tabs: Tab[] = [
     name: "Todos",
     key: "all",
   },
-  {
-    name: "Hoy",
-    key: "today",
-  },
+  // {
+  //   name: "Hoy",
+  //   key: "today",
+  // },
   // {
   //   name: "Mañana",
   //   key: "tomorrow",

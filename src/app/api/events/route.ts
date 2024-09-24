@@ -104,7 +104,8 @@ export async function GET(request: Request) {
         const events = result.data || [];
 
         const lastEventUpdateEvent = events.reduce((latest, current) => {
-          return new Date(current.last_updated) > new Date(latest.last_updated)
+          return new Date(current?.last_updated) >
+            new Date(latest?.last_updated)
             ? current
             : latest;
         }, events[0]);
