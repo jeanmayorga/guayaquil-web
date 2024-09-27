@@ -87,9 +87,10 @@ async function getEventTickets(url: string) {
 
         if (title && price && description) {
           data.push({
-            title,
             price: extractFirstPrice(price),
-            description,
+            title: description,
+            description: `Ticketshow`,
+            name: title,
           });
         }
       });
@@ -104,9 +105,10 @@ async function getEventTickets(url: string) {
 
         if (title && price && description) {
           data.push({
-            title,
             price: extractFirstPrice(price),
-            description,
+            title: description,
+            description: `Ticketshow`,
+            name: title,
           });
         }
       });
@@ -127,8 +129,9 @@ async function getTickets(localidad: Response["localidad"], url: string) {
       if (localidad.precio === ".00") return null;
 
       return {
-        title: localidad.nombre,
-        description: localidad.descripcion,
+        title: localidad.descripcion,
+        description: `Ticketshow`,
+        name: localidad.nombre,
         price: Number(localidad.precio),
       };
     })

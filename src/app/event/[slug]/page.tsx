@@ -116,7 +116,7 @@ export default async function Page({ params }: Props) {
             </div>
 
             <a href={event.url} target="_blank" className="w-full my-8">
-              <Button className="rounded-full w-full" variant="default">
+              <Button className="rounded-full w-full" variant="secondary">
                 Comprar entradas
               </Button>
             </a>
