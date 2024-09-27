@@ -40,6 +40,9 @@ export const metadata: Metadata = {
       },
     ],
   },
+  alternates: {
+    canonical: `/`,
+  },
 };
 
 export default async function Home() {

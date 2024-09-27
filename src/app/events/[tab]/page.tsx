@@ -75,6 +75,9 @@ export function generateMetadata({ params }: Props): Metadata {
         },
       ],
     },
+    alternates: {
+      canonical: `/events/${tab}`,
+    },
   };
 }
 

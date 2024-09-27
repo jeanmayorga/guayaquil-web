@@ -57,6 +57,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         },
       ],
     },
+    alternates: {
+      canonical: `/event/${event.slug}`,
+    },
   };
 }
 
