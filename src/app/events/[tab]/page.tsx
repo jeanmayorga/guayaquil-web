@@ -79,7 +79,7 @@ export function generateMetadata({ params }: Props): Metadata {
 }
 
 export function generateStaticParams() {
-  return tabs.map((tab) => ({ tab: tab.key }));
+  return tabs;
 }
 
 export default async function Home({ params }: Props) {
