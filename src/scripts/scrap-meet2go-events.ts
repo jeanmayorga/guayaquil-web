@@ -131,5 +131,3 @@ export default async function main() {
 
   return data.count || 0;
 }
-
-main();

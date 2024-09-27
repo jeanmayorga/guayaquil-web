@@ -40,7 +40,7 @@ export async function getEvents(options: GetEventEventsSearchParams) {
   };
 
   console.log(
-    `Client fetch -> ${searchParams} -> count ${result.events.length}`
+    `Client fetch -> ${searchParams} -> count ${result.events.length} -> log ${options.log}`
   );
 
   return result;
@@ -71,7 +71,7 @@ export async function getEvent(options: GetEventSearchParams) {
     lastCacheUpdate: response?.lastCacheUpdate,
   };
 
-  console.log(`Client fetch -> ${searchParams}`);
+  console.log(`Client fetch -> ${searchParams} -> log ${options.log}`);
 
   return result;
 }

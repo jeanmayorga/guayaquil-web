@@ -27,8 +27,11 @@ export interface GetEventEventsSearchParams {
   page?: number;
   limit?: number;
   tab?: string;
+
+  log?: string;
 }
 
 export interface GetEventSearchParams {
   slug: string;
+  log?: string;
 }

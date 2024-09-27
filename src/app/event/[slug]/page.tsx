@@ -13,7 +13,7 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const slug = params.slug;
-  const response = await getEvent({ slug });
+  const response = await getEvent({ slug, log: "generateMetadata" });
   const event = response.event;
 
   return {
@@ -68,7 +68,7 @@ export async function generateStaticParams() {
 
 export default async function Page({ params }: Props) {
   const slug = params.slug;
-  const response = await getEvent({ slug });
+  const response = await getEvent({ slug, log: "Page" });
   const event = response.event;
 
   if (!event) {
