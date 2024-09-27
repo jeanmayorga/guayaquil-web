@@ -34,7 +34,7 @@ export async function GET() {
 
     revalidateTag("events");
 
-    notifyGoogleAboutSitemapChange();
+    await notifyGoogleAboutSitemapChange();
 
     return Response.json({
       ok: true,
