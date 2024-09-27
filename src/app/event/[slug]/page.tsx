@@ -59,12 +59,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-// export async function generateStaticParams() {
-//   const response = await getEvents({ limit: 200 });
-//   const events = response.events;
+export async function generateStaticParams() {
+  const response = await getEvents({ limit: 200 });
+  const events = response.events;
 
-//   return events.map((event) => ({ slug: event.slug }));
-// }
+  return events.map((event) => ({ slug: event.slug }));
+}
 
 export default async function Page({ params }: Props) {
   const slug = params.slug;
