@@ -1,3 +1,5 @@
+"use client";
+
 import {
   CalendarIcon,
   CheckBadgeIcon,
@@ -24,7 +26,7 @@ import { TZDate } from "@date-fns/tz";
 import { es } from "date-fns/locale/es";
 import { CountdownText } from "./CountdownText";
 import { Badge } from "@/components/badge";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 
 interface DurationBadgeProps {
   startAt: string;
@@ -212,16 +214,24 @@ export function EventItem({ event, className }: Props) {
 
   const isPastEvent = isPast(endAt);
 
+  function handleLinkClick() {
+    const scrollY = window.scrollY;
+    localStorage.setItem("scrollPosition", scrollY.toString());
+  }
+
   return (
     <Link
       href={`/event/${event.slug}`}
-      // target="_blank"
       className={cn(
         "w-full flex-none rounded-2xl group transition-all relative",
         className
       )}
+      onClick={handleLinkClick}
     >
-      <div className="relative z-10 overflow-hidden bg-black flex items-center justify-center h-[200px] rounded-xl">
+      <div
+        className="relative z-10 overflow-hidden bg-black flex items-center justify-center h-[200px] rounded-xl"
+        style={{ viewTransitionName: `event-image-${event.slug}` }}
+      >
         <Image
           src={event.cover_image}
           alt={event.name}
@@ -245,7 +255,10 @@ export function EventItem({ event, className }: Props) {
         </div>
       </div>
       <div className="py-4 pb-2">
-        <div className="font-medium text-lg truncate text-gray-600 group-hover:text-gray-950 transition-all">
+        <div
+          className="font-medium text-lg truncate text-gray-600 group-hover:text-gray-950 transition-all"
+          style={{ viewTransitionName: `event-name-${event.slug}` }}
+        >
           {event.name}
         </div>
         <div className="flex items-center text-gray-400 group-hover:text-gray-500 text-xs gap-2 transition-all mb-1">

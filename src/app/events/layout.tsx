@@ -16,7 +16,7 @@ export default function Layout({ children }: Props) {
         <BackButton />
         <ActionsButton />
       </div>
-      <Title title="Eventos en Guayaquil" />
+      <Title title="Eventos" />
       <Suspense fallback={<>Cargando..</>}>
         <EventSearch />
       </Suspense>

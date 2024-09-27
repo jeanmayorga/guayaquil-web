@@ -49,11 +49,13 @@ export default async function Home() {
   });
 
   return (
-    <main>
-      <div className="my-16">
+    <>
+      {/* <main className="container mx-auto max-w-5xl px-4 ms:px-0 mb-10"> */}
+      <div>
         <EventsSectionScroll events={response.events} />
       </div>
-    </main>
+      {/* </main> */}
+    </>
   );
 
   // return (

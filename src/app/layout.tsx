@@ -26,14 +26,14 @@ export default function RootLayout({
           content="pzLChC3XsCNZpXUcP4jBhm83YPDTt5x9vvdvlQ8QuVg"
         />
         <body className={cn(GeistSans.className)}>
-          <div className="bg-cyan-500 py-4 px-4 flex items-center justify-center">
+          <div className="bg-cyan-500 py-2 px-4 flex items-center justify-center">
             <Link href="/">
               <Image
                 src="/gye-logo.png"
                 alt="logo"
-                width={150}
-                height={150}
-                className="w-20 h-24"
+                width={110}
+                height={110}
+                className="w-16 h-20"
               />
             </Link>
           </div>
