@@ -6,6 +6,25 @@ import scrapTicketShow from "../../../../scripts/scrap-ticketshow-events";
 import cleanEvents from "../../../../scripts/clean-events";
 import { revalidateTag } from "next/cache";
 
+const notifyGoogleAboutSitemapChange = async () => {
+  const sitemapUrl = "https://www.guayaquil.app/sitemap.xml";
+
+  try {
+    await fetch(sitemapUrl);
+    const response = await fetch(
+      `https://www.google.com/ping?sitemap=${sitemapUrl}`
+    );
+
+    if (response.ok) {
+      console.log("Sitemap submitted successfully.");
+    } else {
+      console.log(`Failed to submit sitemap. Status: ${response.status}`);
+    }
+  } catch (error) {
+    console.error("Error submitting sitemap:", error);
+  }
+};
+
 export async function GET() {
   try {
     const meet2GoEvents = await scrapMeet2Go();
@@ -14,6 +33,8 @@ export async function GET() {
     await cleanEvents();
 
     revalidateTag("events");
+
+    notifyGoogleAboutSitemapChange();
 
     return Response.json({
       ok: true,
