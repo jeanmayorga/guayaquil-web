@@ -103,19 +103,8 @@ export async function GET(request: Request) {
         const result = await client;
         const events = result.data || [];
 
-        const lastEventUpdateEvent = events.reduce((latest, current) => {
-          return new Date(current?.last_updated) >
-            new Date(latest?.last_updated)
-            ? current
-            : latest;
-        }, events[0]);
-
         const response = {
           lastCacheUpdate: todayISO,
-          lastEventUpdate: new TZDate(
-            lastEventUpdateEvent.last_updated,
-            "America/Guayaquil"
-          ),
           events,
         };
 

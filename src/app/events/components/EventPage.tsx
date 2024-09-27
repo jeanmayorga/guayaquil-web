@@ -12,7 +12,6 @@ import { useSearchParams } from "next/navigation";
 interface Props {
   events: EventType[];
   lastCacheUpdate: string;
-  lastEventUpdate: string;
   tab: string;
   query?: string;
 }

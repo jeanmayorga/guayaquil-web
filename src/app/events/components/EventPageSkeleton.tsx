@@ -1,10 +1,5 @@
 import { ArrowPath } from "@/components/icons";
 import { EventItemSkeleton } from "./EventItemSkeleton";
-import { BackButton } from "@/components/back-button";
-import { Title } from "@/components/title";
-import { Suspense } from "react";
-import { EventSearch } from "./EventSearch";
-import { EventTab } from "./EventsTab";
 
 export function EventPageSkeleton() {
   return (

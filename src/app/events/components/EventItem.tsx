@@ -24,6 +24,7 @@ import { TZDate } from "@date-fns/tz";
 import { es } from "date-fns/locale/es";
 import { CountdownText } from "./CountdownText";
 import { Badge } from "@/components/badge";
+import Link from "next/link";
 
 interface DurationBadgeProps {
   startAt: string;
@@ -212,9 +213,9 @@ export function EventItem({ event, className }: Props) {
   const isPastEvent = isPast(endAt);
 
   return (
-    <a
-      href={event.url}
-      target="_blank"
+    <Link
+      href={`/event/${event.slug}`}
+      // target="_blank"
       className={cn(
         "w-full flex-none rounded-2xl group transition-all relative",
         className
@@ -260,6 +261,6 @@ export function EventItem({ event, className }: Props) {
           isPastEvent && "bg-gray-500/15 group-active:bg-gray-500/20"
         )}
       />
-    </a>
+    </Link>
   );
 }

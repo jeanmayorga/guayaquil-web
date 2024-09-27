@@ -57,7 +57,6 @@ export default async function Home({ searchParams }: Props) {
   return (
     <EventPage
       lastCacheUpdate={response.lastCacheUpdate}
-      lastEventUpdate={response.lastEventUpdate}
       events={response.events}
       tab={tab}
     />

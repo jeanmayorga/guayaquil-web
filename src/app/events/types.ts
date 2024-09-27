@@ -15,15 +15,20 @@ export interface EventType {
   tickets:
     | {
         title: string;
+        name?: string;
         description: string;
         price: number;
       }[]
     | null;
 }
 
-export interface EventSearchParams {
+export interface GetEventEventsSearchParams {
   query?: string;
   page?: number;
   limit?: number;
-  tab: string;
+  tab?: string;
+}
+
+export interface GetEventSearchParams {
+  slug: string;
 }

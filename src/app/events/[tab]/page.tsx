@@ -41,6 +41,11 @@ export function generateMetadata({ params }: Props): Metadata {
     description:
       "Descubre los eventos y shows más destacados en Guayaquil. Mantente al tanto de los próximos conciertos, exposiciones, festivales y más, organizados cronológicamente para que no te pierdas nada.",
     keywords: [
+      "shows",
+      "eventos",
+      "conciertos",
+      "teatro",
+      "obras",
       "Eventos en Guayaquil",
       "Shows en Guayaquil",
       "Conciertos Guayaquil",
@@ -55,11 +60,11 @@ export function generateMetadata({ params }: Props): Metadata {
     ],
     robots: "index, follow",
     openGraph: {
-      siteName: "Eventos en Guayaquil",
+      siteName: "Eventos y shows en Guayaquil",
       title,
       description:
-        "Explora los eventos y shows más importantes en Guayaquil. Encuentra lo que está sucediendo en la ciudad y planifica tu próxima salida.",
-      url: "https://guayaquil.app/eventos",
+        "Explora los eventos y shows en Guayaquil. Encuentra lo que está sucediendo en la ciudad y planifica tu próxima salida.",
+      url: `https://guayaquil.app/events/${tab}`,
       type: "website",
       images: [
         {
@@ -87,7 +92,6 @@ export default async function Home({ params }: Props) {
   return (
     <EventPage
       lastCacheUpdate={response.lastCacheUpdate}
-      lastEventUpdate={response.lastEventUpdate}
       events={response.events}
       tab={tab}
     />

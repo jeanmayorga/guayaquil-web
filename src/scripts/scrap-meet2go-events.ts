@@ -20,6 +20,7 @@ interface Response {
     tickets: {
       sale_price: number;
       sale_price_name: string;
+      name: string | undefined;
       description: string;
     }[];
   }[];
@@ -32,7 +33,7 @@ async function getEventsFromCity(city: string) {
 
   const queryParams = new URLSearchParams({
     fields:
-      "slug,name,cover_image,start_date,end_date,start_time,end_time,venue.name,venue.city,venue.address,description,information,important_information,tickets.sale_price,tickets.sale_price_name,tickets.description",
+      "slug,name,cover_image,start_date,end_date,start_time,end_time,venue.name,venue.city,venue.address,description,information,important_information,tickets.sale_price,tickets.sale_price_name,tickets.description,tickets.name",
     limit: "50",
     sort: "start_date",
     "filter[end_date][_gte]": ecuadorDate.toISOString(),
@@ -89,6 +90,7 @@ export default async function main() {
         return {
           title: ticket.sale_price_name,
           price: ticket.sale_price,
+          name: ticket.name,
           description: ticket.description,
         };
       });
@@ -129,3 +131,5 @@ export default async function main() {
 
   return data.count || 0;
 }
+
+main();
