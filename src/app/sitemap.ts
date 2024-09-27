@@ -6,7 +6,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const domain = "https://www.guayaquil.app";
 
   const tabsPages: MetadataRoute.Sitemap = tabs.map((tab) => ({
-    url: `${domain}/events/${tab}`,
+    url: `${domain}/events/${tab.key}`,
     lastModified: new Date(),
     changeFrequency: "daily",
     priority: 1,
