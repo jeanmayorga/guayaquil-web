@@ -256,7 +256,7 @@ export function EventItem({ event, className }: Props) {
       </div>
       <div className="py-4 pb-2">
         <div
-          className="font-medium text-lg truncate text-gray-600 group-hover:text-gray-950 transition-all"
+          className="font-medium text-lg truncate dark:text-white/90 text-gray-600 group-hover:text-gray-950 dark:group-hover:text-white transition-all"
           style={{ viewTransitionName: `event-name-${event.slug}` }}
         >
           {event.name}
@@ -270,8 +270,9 @@ export function EventItem({ event, className }: Props) {
       </div>
       <div
         className={cn(
-          "absolute z-0 top-0 left-0 w-full h-full rounded-2xl bg-cyan-500/15 opacity-0 group-hover:opacity-100 group-hover:scale-[1.05] group-active:bg-cyan-500/20 transition-all",
-          isPastEvent && "bg-gray-500/15 group-active:bg-gray-500/20"
+          "absolute z-0 top-0 left-0 w-full h-full rounded-2xl bg-cyan-500/15 dark:bg-cyan-500/20 opacity-0 group-hover:opacity-100 group-hover:scale-[1.05] group-active:bg-cyan-500/20 transition-all",
+          isPastEvent &&
+            "bg-gray-500/15 group-active:bg-gray-500/20 dark:bg-gray-500/20 dark:group-active:bg-gray-500/20"
         )}
       />
     </Link>

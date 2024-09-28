@@ -20,7 +20,7 @@ export function EventsSectionScroll({ events }: Props) {
   };
 
   return (
-    <div className="my-24">
+    <div className="my-12">
       <div className="mb-4 flex items-center justify-between container mx-auto max-w-5xl px-4">
         <div>
           <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">

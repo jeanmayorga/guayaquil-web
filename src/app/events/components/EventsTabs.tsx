@@ -43,8 +43,9 @@ export function EventTabs() {
           <Link href={tab.pathname} key={tab.pathname}>
             <button
               className={cn(
-                "py-2 px-4 bg-gray-200/80 hover:bbg-cyan-500/50 hover:text-cyan-800 rounded-full text-sm font-medium text-gray-500 transition-all active:scale-95 text-nowrap",
-                isTabActive && "bg-cyan-500/50 text-cyan-800"
+                "py-2 px-4 bg-gray-200/80 dark:bg-gray-700/80 hover:bg-cyan-500/50 hover:text-cyan-800 rounded-full text-sm font-medium text-gray-500 dark:text-gray-400 transition-all active:scale-95 text-nowrap",
+                isTabActive &&
+                  "bg-cyan-500/50 dark:bg-cyan-500/50 text-cyan-800 dark:text-white/70"
               )}
             >
               {tab.name}

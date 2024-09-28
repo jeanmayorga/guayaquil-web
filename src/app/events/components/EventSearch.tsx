@@ -25,7 +25,7 @@ export function EventSearch() {
         placeholder="Buscar shows o eventos"
         className={cn(
           isSearching ? "w-[calc(100%-80px)]" : "w-full",
-          "bg-gray-100 rounded-xl pl-11 text-gray-500 placeholder:text-gray-400 text-base border-0 transition-all duration-300"
+          "bg-gray-100 dark:bg-gray-700 rounded-xl pl-11 text-gray-500 dark:text-gray-300 placeholder:text-gray-400 text-base border-0 transition-all duration-300"
         )}
         onFocus={() => setIsSearching(true)}
         onChange={(e) => setSearch(e.target.value)}
