@@ -33,7 +33,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <div className="bg-cyan-500 py-2 px-4 flex items-center justify-center">
+            <div className="bg-cyan-500 dark:bg-black dark:border-b dark:border-b-gray-800 py-2 px-4 flex items-center justify-center">
               <Link href="/">
                 <Image
                   src="/gye-logo.png"
