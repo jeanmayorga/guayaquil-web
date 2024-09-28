@@ -135,7 +135,7 @@ export default async function Page({ params }: Props) {
         {event.tickets?.map((ticket) => (
           <a
             key={`${ticket.title}-${ticket.price}-${ticket.name}`}
-            className="grid grid-cols-1 lg:grid-cols-6 border border-gray-100 rounded-lg lg:rounded-full px-4 lg:px-8 py-4 lg:py-1 mb-4 hover:bg-gray-100 transition-all"
+            className="grid grid-cols-1 lg:grid-cols-6 border border-gray-100 dark:border-gray-700 rounded-lg lg:rounded-3xl px-4 lg:px-6 py-4 lg:py-2 mb-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all"
             href={event.url}
             target="_blank"
           >
@@ -143,14 +143,14 @@ export default async function Page({ params }: Props) {
               {ticket.title}
             </div>
             <div className="col-span-4 flex items-start justify-center flex-col">
-              <span className="block text-black text-bold text-base">
+              <span className="block dark:text-white text-black text-bold text-base">
                 {ticket.name}
               </span>
               <span className="text-gray-400 text-sm block">
                 {ticket.description}
               </span>
             </div>
-            <div className="flex items-center lg:justify-end text-gray-800 text-sm">
+            <div className="flex items-center lg:justify-end dark:text-white text-gray-800 text-sm">
               $ {ticket.price.toFixed(2)} USD
             </div>
           </a>
