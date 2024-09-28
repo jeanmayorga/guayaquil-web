@@ -39,11 +39,11 @@ export function ActionsButton() {
             <EllipsisIcon className="w-5 h-5" />
           </MenubarTrigger>
           <MenubarContent align="end">
-            <MenubarItem onClick={onRefresh}>Actualizar</MenubarItem>
+            {/* <MenubarItem onClick={onRefresh}>Actualizar</MenubarItem> */}
             <MenubarSeparator />
-            <MenubarItem onClick={onRevalidate}>Revalidar</MenubarItem>
+            <MenubarItem onClick={onRevalidate}>Actualizar</MenubarItem>
             <MenubarSeparator />
-            <MenubarItem onClick={onScrap}>Rescrap</MenubarItem>
+            {/* <MenubarItem onClick={onScrap}>Rescrap</MenubarItem> */}
             <MenubarSeparator />
             <MenubarItem onClick={() => setTheme("light")}>Light</MenubarItem>
             <MenubarItem onClick={() => setTheme("dark")}>Dark</MenubarItem>
