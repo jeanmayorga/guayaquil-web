@@ -4,24 +4,20 @@ import { getEvents } from "../services";
 import { DEFAULT_EVENTS_LIMIT, metadata } from "../utils";
 import { EventTab } from "../types";
 
-const tab: EventTab = "all";
-
-interface Props {
-  searchParams: Record<string, string>;
-}
+const tab: EventTab = "today";
 
 export function generateMetadata(): Metadata {
-  const title = "Buscar eventos y shows en Guayaquil";
+  const title = "Eventos y shows de hoy en Guayaquil";
 
   return metadata({ title, tab });
 }
 
-export default async function Home({ searchParams }: Props) {
+export default async function Page() {
   const response = await getEvents({
     tab,
     page: 1,
     limit: DEFAULT_EVENTS_LIMIT,
-    query: searchParams.query,
+    query: undefined,
   });
 
   return (

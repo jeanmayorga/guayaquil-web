@@ -1,24 +1,28 @@
 "use client";
 
 import { CheckCircle, ExclamationCircle } from "@/components/icons";
-import { EventType } from "../types";
+import { EventTab, EventType } from "../types";
 import { EventItem } from "./EventItem";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { getEvents } from "../services";
 import { EventItemSkeleton } from "./EventItemSkeleton";
 import { DEFAULT_EVENTS_LIMIT } from "../utils";
 import { useSearchParams } from "next/navigation";
+import { EventTabs } from "./EventsTabs";
+import { EventSearch } from "./EventSearch";
+import { EventsPageHeader } from "./EventsPageHeader";
 
 interface Props {
   events: EventType[];
   lastCacheUpdate: string;
-  tab: string;
+  tab: EventTab;
   query?: string;
 }
-export function EventPage(props: Props) {
+export function EventsPage(props: Props) {
   const searchParams = useSearchParams();
   const query = searchParams.get("query");
   const containerRef = useRef(null);
+
   const [events, setEvents] = useState<EventType[]>(props.events);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -100,6 +104,7 @@ export function EventPage(props: Props) {
 
   return (
     <>
+      <EventsPageHeader />
       <section className="my-8">
         <span className="text-gray-400 text-xs flex items-center">
           {!events || events?.length === 0 ? (

@@ -47,7 +47,7 @@ export async function GET(request: Request) {
             .gte("end_at", startOfDayISO); // Eventos que terminan hoy o después
         }
 
-        if (tab === "this_week") {
+        if (tab === "this-week") {
           const startOfWeekISO = startOfWeek(ecuadorDate, {
             weekStartsOn: 1,
           }).toISOString();
@@ -60,7 +60,7 @@ export async function GET(request: Request) {
             .gte("end_at", startOfWeekISO);
         }
 
-        if (tab === "this_month") {
+        if (tab === "this-month") {
           const startOfMonthISO = startOfMonth(ecuadorDate).toISOString();
           const endOfMonthISO = endOfMonth(ecuadorDate).toISOString();
 
@@ -69,7 +69,7 @@ export async function GET(request: Request) {
             .lte("end_at", endOfMonthISO);
         }
 
-        if (tab === "next_month") {
+        if (tab === "next-month") {
           const nextMonth = add(ecuadorDate, { months: 1 });
           const startOfNextMonthISO = startOfMonth(nextMonth).toISOString();
           const endOfMonthISO = endOfMonth(nextMonth).toISOString();

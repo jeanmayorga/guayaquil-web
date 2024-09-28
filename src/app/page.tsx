@@ -48,7 +48,7 @@ export const metadata: Metadata = {
 export default async function Home() {
   const response = await getEvents({
     tab: "all",
-    limit: 7,
+    limit: 9,
   });
 
   return (

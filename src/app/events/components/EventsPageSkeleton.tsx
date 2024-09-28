@@ -1,9 +1,11 @@
 import { ArrowPath } from "@/components/icons";
 import { EventItemSkeleton } from "./EventItemSkeleton";
+import { EventsPageHeader } from "./EventsPageHeader";
 
-export function EventPageSkeleton() {
+export function EventsPageSkeleton() {
   return (
     <>
+      <EventsPageHeader />
       <section className="my-8">
         <span className="text-gray-400 text-xs flex items-center">
           <ArrowPath className="w-4 h-4 mr-1 animate-spin" />

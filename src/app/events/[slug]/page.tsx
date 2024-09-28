@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       siteName: `${event?.name} en Guayaquil`,
       title: event?.name,
       description: `${event?.name}, ${event.location_name}`,
-      url: `https://guayaquil.app/event/${event.slug}`,
+      url: `https://guayaquil.app/events/${event.slug}`,
       type: "website",
       images: [
         {
@@ -58,7 +58,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ],
     },
     alternates: {
-      canonical: `/event/${event.slug}`,
+      canonical: `/events/${event.slug}`,
     },
   };
 }

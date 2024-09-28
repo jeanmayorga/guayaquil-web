@@ -7,11 +7,11 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 interface Props {
-  url?: string;
+  to?: string;
   text?: string;
 }
 
-export function BackButton({ url, text }: Props) {
+export function BackButton({ to, text }: Props) {
   const router = useTransitionRouter();
 
   async function goBack() {
@@ -27,7 +27,7 @@ export function BackButton({ url, text }: Props) {
     }
   }
 
-  if (!url) {
+  if (!to) {
     return (
       <div
         className="my-6 md:my-12"
@@ -45,7 +45,7 @@ export function BackButton({ url, text }: Props) {
       className="my-6 md:my-12"
       // style={{ viewTransitionName: `title` }}
     >
-      <Link href={url || "/"}>
+      <Link href={to || "/"}>
         <Button variant="ghost" className="rounded-full">
           <LeftArrowIcon className="h-4 w-4 mr-2" /> {text || "Regresar"}
         </Button>

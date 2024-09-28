@@ -28,7 +28,7 @@ export function EventsSectionScroll({ events }: Props) {
           </h2>
         </div>
         <div>
-          <Link href="/events/today">
+          <Link href="/events/this-week">
             <Button variant="outline" className=" rounded-full">
               Ver todos
             </Button>

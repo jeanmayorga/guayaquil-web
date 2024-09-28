@@ -221,7 +221,7 @@ export function EventItem({ event, className }: Props) {
 
   return (
     <Link
-      href={`/event/${event.slug}`}
+      href={`/events/${event.slug}`}
       className={cn(
         "w-full flex-none rounded-2xl group transition-all relative",
         className

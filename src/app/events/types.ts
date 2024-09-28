@@ -1,3 +1,10 @@
+export type EventTab =
+  | "past"
+  | "all"
+  | "today"
+  | "this-week"
+  | "this-month"
+  | "next-month";
 export interface EventType {
   id: number;
   cover_image: string;
@@ -26,7 +33,7 @@ export interface GetEventEventsSearchParams {
   query?: string;
   page?: number;
   limit?: number;
-  tab?: string;
+  tab?: EventTab;
 
   log?: string;
 }
