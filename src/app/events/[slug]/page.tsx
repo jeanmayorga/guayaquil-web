@@ -149,6 +149,7 @@ export default async function Page({ params }: Props) {
             slug={slug}
             last_updated={event.last_updated}
             last_cached={response.lastCacheUpdate}
+            created_at={event.created_at}
           />
         </div>
 

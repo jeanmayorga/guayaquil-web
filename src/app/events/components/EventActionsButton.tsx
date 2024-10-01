@@ -17,8 +17,14 @@ interface Props {
   slug: string;
   last_updated: string;
   last_cached: string;
+  created_at: string;
 }
-export function EventActionsButton({ slug, last_cached, last_updated }: Props) {
+export function EventActionsButton({
+  slug,
+  last_cached,
+  last_updated,
+  created_at,
+}: Props) {
   const [isLoading, setIsLoading] = useState(false);
 
   async function onRevalidate() {
@@ -47,7 +53,7 @@ export function EventActionsButton({ slug, last_cached, last_updated }: Props) {
           <MenubarItem onClick={onRevalidate}>Actualizar</MenubarItem>
           <MenubarSeparator />
           <MenubarItem disabled>
-            Updated in db at{" "}
+            Updated at{" "}
             {new Intl.DateTimeFormat("es-EC", {
               day: "2-digit",
               month: "2-digit",
@@ -59,7 +65,7 @@ export function EventActionsButton({ slug, last_cached, last_updated }: Props) {
             }).format(new Date(last_updated))}
           </MenubarItem>
           <MenubarItem disabled>
-            Cached in next at{" "}
+            Cached at{" "}
             {new Intl.DateTimeFormat("es-EC", {
               day: "2-digit",
               month: "2-digit",
@@ -69,6 +75,18 @@ export function EventActionsButton({ slug, last_cached, last_updated }: Props) {
               hour12: false,
               timeZone: "America/Guayaquil",
             }).format(new Date(last_cached))}
+          </MenubarItem>
+          <MenubarItem disabled>
+            Created at{" "}
+            {new Intl.DateTimeFormat("es-EC", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: false,
+              timeZone: "America/Guayaquil",
+            }).format(new Date(created_at))}
           </MenubarItem>
         </MenubarContent>
       </MenubarMenu>
