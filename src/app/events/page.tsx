@@ -59,7 +59,7 @@ export function generateMetadata(): Metadata {
       ],
     },
     alternates: {
-      canonical: `/events`,
+      canonical: `https://guayaquil.app/events`,
     },
   };
 }

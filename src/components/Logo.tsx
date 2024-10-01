@@ -13,7 +13,7 @@ export function Logo() {
       alt="logo"
       width={110}
       height={110}
-      className="w-16 h-20"
+      className="w-16 h-20 aspect-square"
     />
   );
 }

@@ -28,7 +28,7 @@ export function ActionsButton() {
     <div className="flex justify-end">
       <Menubar className="rounded-full">
         <MenubarMenu>
-          <MenubarTrigger className="rounded-full p-1">
+          <MenubarTrigger className="rounded-full p-1" aria-label="Opciones">
             <EllipsisIcon className="w-5 h-5" />
           </MenubarTrigger>
           <MenubarContent align="end">
