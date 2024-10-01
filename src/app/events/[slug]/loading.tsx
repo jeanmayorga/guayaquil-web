@@ -5,7 +5,7 @@ import { MapPin } from "lucide-react";
 export default async function Loading() {
   return (
     <>
-      <section className="relative w-full p-12 bg-cyan-500 overflow-hidden">
+      <section className="relative w-full p-12 dark:bg-black bg-slate-700 overflow-hidden">
         <Container className="relative">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div className="flex items-center justify-start">
