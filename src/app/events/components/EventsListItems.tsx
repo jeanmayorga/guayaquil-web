@@ -83,8 +83,8 @@ export function EventsListItems({ initialEvents }: Props) {
   return (
     <section>
       <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
-        {events.map((event) => (
-          <EventItem event={event} key={event.slug} />
+        {events.map((event, idx) => (
+          <EventItem event={event} key={event.slug} idx={idx} />
         ))}
         {loading &&
           [...Array(DEFAULT_EVENTS_LIMIT).keys()].map((item) => (

@@ -206,8 +206,9 @@ export function DateText({ startAt, endAt }: DateTextProps) {
 interface Props {
   event: EventType;
   className?: string;
+  idx: number;
 }
-export function EventItem({ event, className }: Props) {
+export function EventItem({ event, className, idx }: Props) {
   const today = new TZDate(new Date(), "America/Guayaquil");
   const startAt = event.start_at;
   const endAt = event.end_at;
@@ -238,7 +239,13 @@ export function EventItem({ event, className }: Props) {
           height={190}
           width={250}
           quality={40}
-          className="w-full group-hover:scale-[1.02] transition-all"
+          className="w-full group-hover:scale-[1.02] transition-all opacity-0"
+          onLoad={(event) => {
+            const image = event.target as HTMLElement;
+            setTimeout(() => {
+              image.classList.remove("opacity-0");
+            }, idx * 30);
+          }}
         />
         <div
           className={cn(
@@ -259,6 +266,7 @@ export function EventItem({ event, className }: Props) {
           className="font-medium text-lg truncate dark:text-white/90 text-gray-600 group-hover:text-gray-950 dark:group-hover:text-white transition-all"
           style={{ viewTransitionName: `event-name-${event.slug}` }}
         >
+          {idx}
           {event.name}
         </div>
         <div className="flex items-center text-gray-400 group-hover:text-gray-500 text-xs gap-2 transition-all mb-1">

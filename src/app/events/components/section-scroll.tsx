@@ -41,8 +41,13 @@ export function EventsSectionScroll({ events }: Props) {
           className="flex space-x-4 p-4 overflow-x-auto no-scrollbar"
           style={{ scrollBehavior: "smooth" }}
         >
-          {events.map((event) => (
-            <EventItem event={event} key={event.slug} className="w-[350px]" />
+          {events.map((event, idx) => (
+            <EventItem
+              event={event}
+              key={event.slug}
+              className="w-[350px]"
+              idx={idx}
+            />
           ))}
         </div>
       </div>
