@@ -43,7 +43,7 @@ export function BackButton({ to, text }: Props) {
   return (
     <div
       className="my-6 md:my-12"
-      // style={{ viewTransitionName: `title` }}
+      // style={{ viewTransitionName: "back-button" }}
     >
       <Link href={to || "/"}>
         <Button variant="ghost" className="rounded-full">

@@ -1,6 +1,8 @@
 import { Metadata } from "next";
+import { EventTab } from "./types";
 
 export const DEFAULT_EVENTS_LIMIT = 9;
+export const DEFAULT_EVENTS_TAB: EventTab = "today";
 
 export function metadata({
   title,

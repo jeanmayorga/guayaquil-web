@@ -2,7 +2,7 @@
 
 import {
   EventType,
-  GetEventEventsSearchParams,
+  GetEventEventsOptions,
   GetEventSearchParams,
 } from "./types";
 
@@ -13,7 +13,7 @@ export interface GetEventsResult {
   lastCacheUpdate: string;
 }
 
-export async function getEvents(options: GetEventEventsSearchParams) {
+export async function getEvents(options: GetEventEventsOptions) {
   const optionsSearchParams = options as unknown as Record<string, string>;
   Object.keys(optionsSearchParams).forEach((key) =>
     optionsSearchParams[key] === undefined
@@ -33,6 +33,8 @@ export async function getEvents(options: GetEventEventsSearchParams) {
 
   const request = await fetch(fetchUrl, fetchOptions);
   const response = await request.json();
+
+  // await new Promise((r) => setTimeout(r, 2000));
 
   const result: GetEventsResult = {
     events: response?.events || [],
@@ -65,6 +67,7 @@ export async function getEvent(options: GetEventSearchParams) {
 
   const request = await fetch(fetchUrl, fetchOptions);
   const response = await request.json();
+  // await new Promise((r) => setTimeout(r, 2000));
 
   const result: GetEventResult = {
     event: response?.event,

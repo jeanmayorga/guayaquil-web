@@ -8,6 +8,9 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import Image from "next/image";
 import Link from "next/link";
 import { ThemeProvider } from "./theme-provider";
+import { ModeToggle } from "@/components/mode-toggle";
+import { Container } from "@/components/container";
+import { Logo } from "@/components/Logo";
 
 export const metadata: Metadata = {
   title: "Guayaquil",
@@ -33,16 +36,15 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <div className="bg-cyan-500 dark:bg-black dark:border-b dark:border-b-gray-800 py-2 px-4 flex items-center justify-center">
-              <Link href="/">
-                <Image
-                  src="/gye-logo.png"
-                  alt="logo"
-                  width={110}
-                  height={110}
-                  className="w-16 h-20"
-                />
-              </Link>
+            <div className="dark:bg-black dark:border-b-gray-800 border-b py-2 px-4">
+              <Container className="flex items-center justify-center relative">
+                <Link href="/" className="">
+                  <Logo />
+                </Link>
+                <div className="absolute right-0">
+                  <ModeToggle />
+                </div>
+              </Container>
             </div>
             {children}
             <Analytics />

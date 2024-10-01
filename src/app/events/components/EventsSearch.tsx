@@ -3,23 +3,27 @@
 import { SearchIcon } from "@/components/icons";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
 import { useQueryState } from "nuqs";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
-export function EventSearch() {
-  const router = useRouter();
+export function EventsSearch() {
   const [search, setSearch] = useQueryState("query", {
     shallow: false,
     throttleMs: 2000,
     defaultValue: "",
     clearOnDefault: true,
   });
+  const [_tab, setTab] = useQueryState("tab");
+
+  const doSearch = useCallback((query: string) => {
+    setSearch(query);
+    setTab("all");
+  }, []);
 
   const [isSearching, setIsSearching] = useState<boolean>(false);
 
   return (
-    <section className="relative mb-4 rounded-xl overflow-hidden">
+    <section className="relative mb-4 rounded-full overflow-hidden">
       <SearchIcon className="h-5 w-5 absolute top-1/2 -translate-y-1/2 text-gray-500 left-3" />
       <Input
         placeholder="Buscar shows o eventos"
@@ -28,10 +32,7 @@ export function EventSearch() {
           "bg-gray-100 dark:bg-gray-700 rounded-xl pl-11 text-gray-500 dark:text-gray-300 placeholder:text-gray-400 text-base border-0 transition-all duration-300"
         )}
         onFocus={() => setIsSearching(true)}
-        onChange={(e) => setSearch(e.target.value)}
-        onClick={() => {
-          router.push("/events/search");
-        }}
+        onChange={(e) => doSearch(e.target.value)}
         value={search || ""}
       />
       <span

@@ -33,14 +33,7 @@ export const tabs = [
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const domain = "https://www.guayaquil.app";
 
-  const tabsPages: MetadataRoute.Sitemap = tabs.map((tab) => ({
-    url: `${domain}${tab.pathname}`,
-    lastModified: new Date(),
-    changeFrequency: "daily",
-    priority: 1,
-  }));
-
-  const eventsResponse = await getEvents({ limit: 200 });
+  const eventsResponse = await getEvents({ limit: 200, log: "sitemap" });
 
   const eventPages: MetadataRoute.Sitemap = eventsResponse.events.map(
     (event) => ({
@@ -58,7 +51,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "daily",
       priority: 1,
     },
-    ...tabsPages,
+    {
+      url: `${domain}/events`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 1,
+    },
     ...eventPages,
   ];
 }

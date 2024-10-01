@@ -1,46 +1,54 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { usePathname } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Link } from "next-view-transitions";
+import { DEFAULT_EVENTS_TAB } from "../utils";
 
 export const tabs = [
   {
     name: "Pasados",
-    pathname: "/events/past",
+    key: "past",
+    pathname: "/events?tab=past",
   },
   {
     name: "Todos",
-    pathname: "/events/all",
+    key: "all",
+    pathname: "/events?tab=all",
   },
   {
     name: "Hoy",
-    pathname: "/events/today",
+    key: "today",
+    pathname: "/events?tab=today",
   },
   {
     name: "Esta semana",
-    pathname: "/events/this-week",
+    key: "this-week",
+    pathname: "/events?tab=this-week",
   },
   {
     name: "Este mes",
-    pathname: "/events/this-month",
+    key: "this-month",
+    pathname: "/events?tab=this-month",
   },
   {
     name: "Siguiente mes",
-    pathname: "/events/next-month",
+    key: "next-month",
+    pathname: "/events?tab=next-month",
   },
 ];
 
-export function EventTabs() {
-  const pathname = usePathname();
+export function EventsTabs() {
+  const searchParams = useSearchParams();
+  const currentTab = searchParams.get("tab") || DEFAULT_EVENTS_TAB;
 
   return (
     <nav className="space-x-1 flex overflow-x-auto no-scrollbar">
       {tabs.map((tab) => {
-        const isTabActive = tab.pathname === pathname;
+        const isTabActive = tab.key === currentTab;
 
         return (
-          <Link href={tab.pathname} key={tab.pathname}>
+          <Link href={`/events?tab=${tab.key}`} key={tab.key}>
             <button
               className={cn(
                 "py-2 px-4 bg-gray-200/80 dark:bg-gray-700/80 hover:bg-cyan-500/50 hover:text-cyan-800 rounded-full text-sm font-medium text-gray-500 dark:text-gray-400 transition-all active:scale-95 text-nowrap",

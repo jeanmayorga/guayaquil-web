@@ -29,12 +29,11 @@ export interface EventType {
     | null;
 }
 
-export interface GetEventEventsSearchParams {
+export interface GetEventEventsOptions {
   query?: string;
   page?: number;
   limit?: number;
   tab?: EventTab;
-
   log?: string;
 }
 
