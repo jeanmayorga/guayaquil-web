@@ -106,7 +106,7 @@ export default async function main() {
         end_time: m2gEvent.end_time,
         start_at: `${m2gEvent.start_date} ${m2gEvent.start_time}`,
         end_at: `${m2gEvent.end_date} ${m2gEvent.end_time}`,
-        location_name: `${m2gEvent.venue.name}, ${m2gEvent.venue.city}`,
+        location_name: `${m2gEvent.venue.address}, ${m2gEvent.venue.name}, ${m2gEvent.venue.city}`,
         description: m2gEvent.description,
         information: `${m2gEvent.information ? `${m2gEvent.information}\n` : ""}${m2gEvent.important_information}`,
         tickets,
@@ -135,3 +135,5 @@ export default async function main() {
 
   return data.count || 0;
 }
+
+// main();

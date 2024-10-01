@@ -9,7 +9,7 @@ interface Response {
   nombre: string;
   fechaevento: string;
   fechaeventofin: string;
-  lugar: string;
+  lugar: string; //
   ciudad: string;
   imagenpequeña: string;
   imagenmediana: string;

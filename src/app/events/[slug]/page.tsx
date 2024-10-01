@@ -188,19 +188,40 @@ export default async function Page({ params }: Props) {
         )}
 
         {event.description && (
-          <section className="gap-8">
+          <section className="mb-12 gap-8">
             <div className="scroll-m-20 font-semibold tracking-tight text-3xl mb-4 block">
               Descripción
             </div>
             <div
-              className="text-gray-500"
+              className="text-gray-500 dark:text-gray-300"
               dangerouslySetInnerHTML={{
-                __html: event.description.replace(
-                  /<p\b([^>]*)>/g,
-                  '<p class="mb-4">'
-                ),
+                __html: event.description
+                  .replace(/<p\b([^>]*)>/g, '<p class="mb-4">')
+                  .replace(/<\/?span[^>]*>/g, ""),
               }}
             />
+          </section>
+        )}
+
+        {event.location_name && (
+          <section className="gap-8">
+            <div className="scroll-m-20 font-semibold tracking-tight text-3xl mb-4 block">
+              Lugar
+            </div>
+
+            <div className="text-gray-500 dark:text-gray-400 mb-4">
+              {event.location_name}
+            </div>
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${event.location_name}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src={`https://maps.googleapis.com/maps/api/staticmap?size=640x400&zoom=14&maptype=roadmap\&markers=size:mid%7Ccolor:red%7C${event.location_name}&key=AIzaSyBn6Gu0M2bZgVZ-NioKAVtrrGc1yKraYk0`}
+                className="rounded-2xl w-full lg:w-auto shadow"
+              />
+            </a>
           </section>
         )}
         <div className="h-[100px] w-full" />
