@@ -3,7 +3,7 @@ import { BackButton } from "@/components/back-button";
 import { Container } from "@/components/container";
 import { LeftArrowIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import { MapPin } from "lucide-react";
+import { CheckCircle, MapPin, TimerIcon } from "lucide-react";
 import { Metadata } from "next";
 import { Link } from "next-view-transitions";
 import Image from "next/image";
@@ -130,6 +130,35 @@ export default async function Page({ params }: Props) {
                   Comprar entradas
                 </Button>
               </a>
+
+              <div className="flex text-xs text-gray-200">
+                <TimerIcon className="w-4 h-4 mr-1" />
+                Ultima actualización:
+                {new Intl.DateTimeFormat("es-EC", {
+                  weekday: "long",
+                  day: "2-digit",
+                  month: "long",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: false,
+                  timeZone: "America/Guayaquil",
+                }).format(new Date(response.lastCacheUpdate))}
+              </div>
+              <div className="flex text-xs text-gray-200">
+                <TimerIcon className="w-4 h-4 mr-1" />
+                Ultimo cambio:
+                {new Intl.DateTimeFormat("es-EC", {
+                  weekday: "long",
+                  day: "2-digit",
+                  month: "long",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: false,
+                  timeZone: "America/Guayaquil",
+                }).format(new Date(response.event.last_updated))}
+              </div>
             </div>
           </div>
         </Container>
