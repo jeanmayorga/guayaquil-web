@@ -3,7 +3,7 @@
 import { Link, useTransitionRouter } from "next-view-transitions";
 import { Button } from "./ui/button";
 import { LeftArrowIcon } from "./icons";
-import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
 interface Props {
@@ -12,6 +12,8 @@ interface Props {
 }
 
 export function BackButton({ to, text }: Props) {
+  const searchParams = useSearchParams();
+  const searchParamsStringify = searchParams.toString();
   const router = useTransitionRouter();
 
   async function goBack() {
@@ -26,6 +28,19 @@ export function BackButton({ to, text }: Props) {
       localStorage.removeItem("scrollPosition");
     }
   }
+
+  function goBackUrl() {
+    const url = to || "/";
+    const searchParams = localStorage.getItem("searchParams");
+    if (searchParams) return `${url}?${searchParams}`;
+    return url;
+  }
+
+  useEffect(() => {
+    if (searchParamsStringify) {
+      localStorage.setItem("searchParams", searchParamsStringify);
+    }
+  }, [searchParamsStringify]);
 
   if (!to) {
     return (
@@ -45,7 +60,7 @@ export function BackButton({ to, text }: Props) {
       className="my-6 md:my-12"
       // style={{ viewTransitionName: "back-button" }}
     >
-      <Link href={to || "/"}>
+      <Link href={goBackUrl()}>
         <Button variant="ghost" className="rounded-full">
           <LeftArrowIcon className="h-4 w-4 mr-2" /> {text || "Regresar"}
         </Button>

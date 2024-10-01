@@ -167,7 +167,7 @@ export default async function main() {
   });
   const events = results.flat();
 
-  const mapped: Omit<EventType, "id">[] = [];
+  const mapped: Omit<EventType, "id" | "created_at">[] = [];
 
   for (const tsEvent of events) {
     const start_date = getDateInEcuadorTZ(tsEvent.fechaevento);
@@ -183,7 +183,7 @@ export default async function main() {
     const information = `${tsEvent.description}\n\n${tsEvent.keywords}`;
 
     console.log(`ticketShow: ${start_date} ${start_time} ${tsEvent.nombre}`);
-    const newEvent: Omit<EventType, "id"> = {
+    const newEvent: Omit<EventType, "id" | "created_at"> = {
       cover_image: tsEvent.imagenmediana || tsEvent.imagenpequeña,
       name: tsEvent.nombre.trim(),
       slug: `ts-${tsEvent.id}`,
@@ -233,4 +233,4 @@ export default async function main() {
 //   return;
 // }
 
-main();
+// main();
