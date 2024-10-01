@@ -3,33 +3,6 @@ import { getEvents } from "./events/services";
 
 export const revalidate = 3600;
 
-export const tabs = [
-  {
-    name: "Pasados",
-    pathname: "/events/past",
-  },
-  {
-    name: "Todos",
-    pathname: "/events/all",
-  },
-  {
-    name: "Hoy",
-    pathname: "/events/today",
-  },
-  {
-    name: "Esta semana",
-    pathname: "/events/this-week",
-  },
-  {
-    name: "Este mes",
-    pathname: "/events/this-month",
-  },
-  {
-    name: "Siguiente mes",
-    pathname: "/events/next-month",
-  },
-];
-
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const domain = "https://www.guayaquil.app";
 
