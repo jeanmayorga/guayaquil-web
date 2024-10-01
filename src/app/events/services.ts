@@ -61,7 +61,7 @@ export async function getEvent(options: GetEventSearchParams) {
     // cache: "no-cache",
     next: {
       revalidate: false,
-      tags: ["events"],
+      tags: ["events", options.slug],
     },
   };
 

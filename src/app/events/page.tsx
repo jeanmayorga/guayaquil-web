@@ -3,13 +3,13 @@ import { EventTab, GetEventEventsOptions } from "./types";
 import { Metadata } from "next";
 import { Suspense } from "react";
 import { BackButton } from "@/components/back-button";
-import { ActionsButton } from "./components/EventActionButton";
 import { EventsSearch } from "./components/EventsSearch";
 import { EventsTabs } from "./components/EventsTabs";
 import { Container } from "@/components/container";
 import { EventsListSkeleton } from "./components/EventsListSkeleton";
 import { EventsList } from "./components/EventsList";
 import { Title } from "@/components/title";
+import { EventsActionsButton } from "./components/EventsActionsButton";
 
 interface Props {
   searchParams: Record<string, string>;
@@ -43,7 +43,7 @@ export function generateMetadata(): Metadata {
     ],
     robots: "index, follow",
     openGraph: {
-      siteName: "Eventos y shows en Guayaquil",
+      siteName: "Guayaquil",
       title,
       description:
         "Explora los eventos y shows en Guayaquil. Encuentra lo que está sucediendo en la ciudad y planifica tu próxima salida.",
@@ -77,7 +77,7 @@ export default async function Page({ searchParams }: Props) {
     <Container>
       <div className="flex items-center justify-between">
         <BackButton to="/" />
-        <ActionsButton />
+        <EventsActionsButton />
       </div>
 
       <Title title="Eventos" />

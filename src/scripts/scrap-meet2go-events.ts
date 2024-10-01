@@ -107,6 +107,8 @@ export default async function main() {
         start_at: `${m2gEvent.start_date} ${m2gEvent.start_time}`,
         end_at: `${m2gEvent.end_date} ${m2gEvent.end_time}`,
         location_name: `${m2gEvent.venue.name}, ${m2gEvent.venue.city}`,
+        description: m2gEvent.description,
+        information: `${m2gEvent.information ? `${m2gEvent.information}\n` : ""}${m2gEvent.important_information}`,
         tickets,
         last_updated: new Date().toISOString(),
       };
@@ -115,6 +117,8 @@ export default async function main() {
       (event, index, self) =>
         index === self.findLastIndex((e) => e.slug === event.slug)
     );
+
+  console.log(mapped);
 
   const data = await supabase.from("events").upsert(mapped, {
     ignoreDuplicates: false,

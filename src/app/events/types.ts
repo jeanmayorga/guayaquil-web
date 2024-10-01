@@ -19,6 +19,8 @@ export interface EventType {
   location_name: string;
   url: string;
   last_updated: string;
+  description: string | null;
+  information: string | null;
   tickets:
     | {
         title: string;

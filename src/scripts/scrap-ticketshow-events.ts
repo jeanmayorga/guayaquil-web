@@ -15,6 +15,9 @@ interface Response {
   imagenmediana: string;
   redirectlink: string;
   title?: string;
+  informacion: string;
+  description: string;
+  keywords: string;
   localidad: {
     nombre: string;
     precio: string;
@@ -88,9 +91,9 @@ async function getEventTickets(url: string) {
         if (title && price && description) {
           data.push({
             price: extractFirstPrice(price),
-            title: description,
-            description: `Ticketshow`,
             name: title,
+            title: `Ticketshow`,
+            description: description,
           });
         }
       });
@@ -106,9 +109,9 @@ async function getEventTickets(url: string) {
         if (title && price && description) {
           data.push({
             price: extractFirstPrice(price),
-            title: description,
-            description: `Ticketshow`,
             name: title,
+            title: `Ticketshow`,
+            description: description,
           });
         }
       });
@@ -129,8 +132,8 @@ async function getTickets(localidad: Response["localidad"], url: string) {
       if (localidad.precio === ".00") return null;
 
       return {
-        title: localidad.descripcion,
-        description: `Ticketshow`,
+        title: `Ticketshow`,
+        description: localidad.descripcion,
         name: localidad.nombre,
         price: Number(localidad.precio),
       };
@@ -177,6 +180,8 @@ export default async function main() {
       `https://www.ticketshow.com.ec/evento/${tsEvent.title}`;
     const tickets = await getTickets(tsEvent.localidad, url);
 
+    const information = `${tsEvent.description}\n\n${tsEvent.keywords}`;
+
     console.log(`ticketShow: ${start_date} ${start_time} ${tsEvent.nombre}`);
     const newEvent: Omit<EventType, "id"> = {
       cover_image: tsEvent.imagenmediana || tsEvent.imagenpequeña,
@@ -192,6 +197,8 @@ export default async function main() {
       tickets: tickets,
       location_name: `${tsEvent.lugar.trim()}, ${tsEvent.ciudad.trim()}`,
       last_updated: new Date().toISOString(),
+      description: tsEvent.informacion,
+      information,
     };
     mapped.push(newEvent);
   }
@@ -226,4 +233,4 @@ export default async function main() {
 //   return;
 // }
 
-// main();
+main();

@@ -31,7 +31,7 @@ export async function GET(request: Request) {
         return response;
       },
       [String(slug)],
-      { revalidate: false, tags: ["events"] }
+      { revalidate: false, tags: ["events", String(slug)] }
     );
 
     const data = await getData();

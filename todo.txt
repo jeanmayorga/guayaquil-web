@@ -1,2 +1,4 @@
-// TODO
-// add a infinty scroll client side component
+
+// add a google map in order to chech the locations
+
+// add movies

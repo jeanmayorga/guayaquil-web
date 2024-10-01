@@ -1,35 +1,42 @@
 "use client";
 
-import { EllipsisIcon } from "@/components/icons";
 import {
   Menubar,
   MenubarContent,
   MenubarItem,
   MenubarMenu,
-  MenubarSeparator,
   MenubarTrigger,
 } from "@/components/ui/menubar";
+import { revalidateEvents } from "../actions";
+import { useState } from "react";
+import { EllipsisVertical, LoaderCircle } from "lucide-react";
+import { sleep } from "@/lib/sleep";
 
-export function ActionsButton() {
-  async function onRefresh() {
-    await onScrap();
-    await onRevalidate();
-  }
+export function EventsActionsButton() {
+  const [isLoading, setIsLoading] = useState(false);
+
   async function onRevalidate() {
-    await fetch(`${process.env.NEXT_PUBLIC_URL}/api/events/revalidate`);
+    setIsLoading(true);
+    await revalidateEvents();
+    await sleep(1000);
+    setIsLoading(false);
     location.reload();
-  }
-
-  async function onScrap() {
-    await fetch(`${process.env.NEXT_PUBLIC_URL}/api/events/cron`);
   }
 
   return (
     <div className="flex justify-end">
       <Menubar className="rounded-full">
         <MenubarMenu>
-          <MenubarTrigger className="rounded-full p-1" aria-label="Opciones">
-            <EllipsisIcon className="w-5 h-5" />
+          <MenubarTrigger
+            className="rounded-full p-1"
+            aria-label="Opciones"
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <LoaderCircle className="w-4 h-4 animate-spin" />
+            ) : (
+              <EllipsisVertical className="w-4 h-4" />
+            )}
           </MenubarTrigger>
           <MenubarContent align="end">
             {/* <MenubarItem onClick={onRefresh}>Actualizar</MenubarItem> */}
