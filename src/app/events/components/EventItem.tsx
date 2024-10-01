@@ -266,7 +266,6 @@ export function EventItem({ event, className, idx }: Props) {
           className="font-medium text-lg truncate dark:text-white/90 text-gray-600 group-hover:text-gray-950 dark:group-hover:text-white transition-all"
           style={{ viewTransitionName: `event-name-${event.slug}` }}
         >
-          {idx}
           {event.name}
         </div>
         <div className="flex items-center text-gray-400 group-hover:text-gray-500 text-xs gap-2 transition-all mb-1">
