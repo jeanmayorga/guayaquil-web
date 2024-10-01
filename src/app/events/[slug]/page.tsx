@@ -97,7 +97,7 @@ export default async function Page({ params }: Props) {
 
   return (
     <>
-      <section className="relative w-full p-12 bg-cyan-500 overflow-hidden">
+      <section className="relative w-full p-12 bg-gray-800 overflow-hidden">
         <Image
           src={event.cover_image}
           alt="cover blur"
@@ -153,6 +153,22 @@ export default async function Page({ params }: Props) {
           />
         </div>
 
+        {event.description && (
+          <section className="mb-12 gap-8">
+            <div className="scroll-m-20 font-semibold tracking-tight text-3xl mb-4 block">
+              Descripción
+            </div>
+            <div
+              className="text-gray-500 dark:text-gray-300"
+              dangerouslySetInnerHTML={{
+                __html: event.description
+                  .replace(/<p\b([^>]*)>/g, '<p class="mb-4">')
+                  .replace(/<\/?span[^>]*>/g, ""),
+              }}
+            />
+          </section>
+        )}
+
         {event.tickets && event.tickets.length > 0 && (
           <section className="mb-12 gap-8">
             <div className="scroll-m-20 font-semibold tracking-tight text-3xl mb-4 block">
@@ -184,22 +200,6 @@ export default async function Page({ params }: Props) {
                 </div>
               </a>
             ))}
-          </section>
-        )}
-
-        {event.description && (
-          <section className="mb-12 gap-8">
-            <div className="scroll-m-20 font-semibold tracking-tight text-3xl mb-4 block">
-              Descripción
-            </div>
-            <div
-              className="text-gray-500 dark:text-gray-300"
-              dangerouslySetInnerHTML={{
-                __html: event.description
-                  .replace(/<p\b([^>]*)>/g, '<p class="mb-4">')
-                  .replace(/<\/?span[^>]*>/g, ""),
-              }}
-            />
           </section>
         )}
 

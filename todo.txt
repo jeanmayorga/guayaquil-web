@@ -1,4 +1,1 @@
-
-// add a google map in order to chech the locations
-
 // add movies
