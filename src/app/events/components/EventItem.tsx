@@ -122,6 +122,18 @@ function TodayBadge({ today, startAt, endAt }: TodayBadgeProps) {
   }
   return null;
 }
+
+interface NewBadgeProps {
+  createdAt: string;
+  today: TZDate;
+}
+function NewBadge({ createdAt, today }: NewBadgeProps) {
+  const createdAtEcuadorTime = new TZDate(createdAt, "America/Guayaquil");
+  const days = differenceInDays(today, createdAtEcuadorTime);
+
+  if (days < 2) return <Badge active>New</Badge>;
+  return null;
+}
 interface EndedBadgeProps {
   endAt: string;
 }
@@ -212,6 +224,7 @@ export function EventItem({ event, className, idx }: Props) {
   const today = new TZDate(new Date(), "America/Guayaquil");
   const startAt = event.start_at;
   const endAt = event.end_at;
+  const createdAt = event.created_at;
 
   const isPastEvent = isPast(endAt);
 
@@ -255,6 +268,7 @@ export function EventItem({ event, className, idx }: Props) {
         />
         <div className={cn("absolute bottom-2 left-2")}>
           <div className="flex overflow-x-auto gap-2">
+            <NewBadge createdAt={createdAt} today={today} />
             <TodayBadge startAt={startAt} endAt={endAt} today={today} />
             <DurationBadge startAt={startAt} endAt={endAt} today={today} />
             <EndedBadge endAt={endAt} />
