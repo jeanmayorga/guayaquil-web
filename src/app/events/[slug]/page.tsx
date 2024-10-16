@@ -12,6 +12,7 @@ import { es } from "date-fns/locale/es";
 import { EventBackButton } from "../components/EvemtGoBackButton";
 import { Suspense } from "react";
 import { EventNewBadge } from "../components/EventNewBadge";
+import { TodayBadge, DurationBadge, EndedBadge } from "../components/EventItem";
 
 interface Props {
   params: {
@@ -99,7 +100,7 @@ export default async function Page({ params }: Props) {
 
   return (
     <>
-      <section className="relative w-full p-12 bg-gray-800 overflow-hidden mb-16">
+      <section className="relative w-full py-12 bg-gray-800 overflow-hidden mb-16">
         <Image
           src={event.cover_image}
           alt="cover blur"
@@ -155,9 +156,9 @@ export default async function Page({ params }: Props) {
           <div className="flex overflow-x-auto gap-2 mt-8">
             <Suspense>
               <EventNewBadge createdAt={createdAt} />
-              {/* <TodayBadge startAt={startAt} endAt={endAt} />
+              <TodayBadge startAt={startAt} endAt={endAt} />
               <DurationBadge startAt={startAt} endAt={endAt} />
-              <EndedBadge endAt={endAt} /> */}
+              <EndedBadge endAt={endAt} />
             </Suspense>
           </div>
         </Container>
