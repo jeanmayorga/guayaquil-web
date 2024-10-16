@@ -74,7 +74,9 @@ export default async function Page({ searchParams }: Props) {
   return (
     <Container>
       <div className="flex items-center justify-between my-8">
-        <EventBackButton />
+        <Suspense fallback={<>Cargando..</>}>
+          <EventBackButton />
+        </Suspense>
         <EventsActionsButton />
       </div>
 

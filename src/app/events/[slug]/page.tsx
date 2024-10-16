@@ -10,14 +10,8 @@ import { EventBestImage } from "../components/EventBestImage";
 import { format } from "date-fns";
 import { es } from "date-fns/locale/es";
 import { EventBackButton } from "../components/EvemtGoBackButton";
-import {
-  DurationBadge,
-  EndedBadge,
-  NewBadge,
-  TodayBadge,
-} from "../components/EventItem";
-import { TZDate } from "@date-fns/tz";
 import { Suspense } from "react";
+import { EventNewBadge } from "../components/EventNewBadge";
 
 interface Props {
   params: {
@@ -84,7 +78,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const response = await getEvents({ limit: 200 });
+  const response = await getEvents({ limit: 200, log: "generateStaticParams" });
   const events = response.events;
 
   return events.map((event) => ({ slug: event.slug }));
@@ -159,10 +153,12 @@ export default async function Page({ params }: Props) {
             </div>
           </div>
           <div className="flex overflow-x-auto gap-2 mt-8">
-            <NewBadge createdAt={createdAt} />
-            <TodayBadge startAt={startAt} endAt={endAt} />
-            <DurationBadge startAt={startAt} endAt={endAt} />
-            <EndedBadge endAt={endAt} />
+            <Suspense>
+              <EventNewBadge createdAt={createdAt} />
+              {/* <TodayBadge startAt={startAt} endAt={endAt} />
+              <DurationBadge startAt={startAt} endAt={endAt} />
+              <EndedBadge endAt={endAt} /> */}
+            </Suspense>
           </div>
         </Container>
       </section>

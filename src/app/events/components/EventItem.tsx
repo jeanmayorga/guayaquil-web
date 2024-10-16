@@ -27,12 +27,14 @@ import { es } from "date-fns/locale/es";
 import { CountdownText } from "./CountdownText";
 import { Badge } from "@/components/badge";
 import { Link } from "next-view-transitions";
+import { EventNewBadge } from "./EventNewBadge";
 
 interface DurationBadgeProps {
   startAt: string;
   endAt: string;
 }
 export function DurationBadge({ startAt, endAt }: DurationBadgeProps) {
+  if (!startAt || !endAt) return null;
   const daysOfDifference = differenceInDays(endAt, startAt);
   const hoursOfDifference = differenceInHours(endAt, startAt);
 
@@ -90,6 +92,7 @@ interface TodayBadgeProps {
   endAt: string;
 }
 export function TodayBadge({ startAt, endAt }: TodayBadgeProps) {
+  if (!startAt || !endAt) return null;
   const isPastEvent = isPast(endAt);
   const today = new TZDate(new Date(), "America/Guayaquil");
   if (isPastEvent) return null;
@@ -123,21 +126,11 @@ export function TodayBadge({ startAt, endAt }: TodayBadgeProps) {
   return null;
 }
 
-interface NewBadgeProps {
-  createdAt: string;
-}
-export function NewBadge({ createdAt }: NewBadgeProps) {
-  const today = new TZDate(new Date(), "America/Guayaquil");
-  const createdAtEcuadorTime = new TZDate(createdAt, "America/Guayaquil");
-  const days = differenceInDays(today, createdAtEcuadorTime);
-
-  if (days < 2) return <Badge active>Nuevo</Badge>;
-  return null;
-}
 interface EndedBadgeProps {
   endAt: string;
 }
 export function EndedBadge({ endAt }: EndedBadgeProps) {
+  if (!endAt) return null;
   const isPastEvent = isPast(endAt);
 
   if (!isPastEvent) return null;
@@ -269,7 +262,7 @@ export function EventItem({ event, className, idx }: Props) {
         />
         <div className={cn("absolute bottom-2 left-2")}>
           <div className="flex overflow-x-auto gap-2">
-            <NewBadge createdAt={createdAt} />
+            <EventNewBadge createdAt={createdAt} />
             <TodayBadge startAt={startAt} endAt={endAt} />
             <DurationBadge startAt={startAt} endAt={endAt} />
             <EndedBadge endAt={endAt} />
