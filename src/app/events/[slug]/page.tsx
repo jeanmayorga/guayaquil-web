@@ -1,5 +1,4 @@
 import { getEvent, getEvents } from "@/app/events/services";
-import { BackButton } from "@/components/back-button";
 import { Container } from "@/components/container";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CalendarIcon } from "lucide-react";
@@ -8,8 +7,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { EventActionsButton } from "../components/EventActionsButton";
 import { EventBestImage } from "../components/EventBestImage";
-import { cn } from "@/lib/utils";
-import { differenceInDays, format, isPast } from "date-fns";
+import { format } from "date-fns";
 import { es } from "date-fns/locale/es";
 import { EventBackButton } from "../components/EvemtGoBackButton";
 import {
@@ -19,6 +17,7 @@ import {
   TodayBadge,
 } from "../components/EventItem";
 import { TZDate } from "@date-fns/tz";
+import { Suspense } from "react";
 
 interface Props {
   params: {
@@ -100,7 +99,6 @@ export default async function Page({ params }: Props) {
     return notFound();
   }
 
-  const today = new TZDate(new Date(), "America/Guayaquil");
   const startAt = event.start_at;
   const endAt = event.end_at;
   const createdAt = event.created_at;
@@ -118,14 +116,16 @@ export default async function Page({ params }: Props) {
         />
         <Container className="relative">
           <div className="flex items-center justify-between mb-12">
-            <EventBackButton />
+            <Suspense fallback={<>Cargando..</>}>
+              <EventBackButton />
 
-            <EventActionsButton
-              slug={slug}
-              last_updated={event.last_updated}
-              last_cached={response.lastCacheUpdate}
-              created_at={event.created_at}
-            />
+              <EventActionsButton
+                slug={slug}
+                last_updated={event.last_updated}
+                last_cached={response.lastCacheUpdate}
+                created_at={event.created_at}
+              />
+            </Suspense>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div className="flex items-center justify-start">
@@ -159,9 +159,9 @@ export default async function Page({ params }: Props) {
             </div>
           </div>
           <div className="flex overflow-x-auto gap-2 mt-8">
-            <NewBadge createdAt={createdAt} today={today} />
-            <TodayBadge startAt={startAt} endAt={endAt} today={today} />
-            <DurationBadge startAt={startAt} endAt={endAt} today={today} />
+            <NewBadge createdAt={createdAt} />
+            <TodayBadge startAt={startAt} endAt={endAt} />
+            <DurationBadge startAt={startAt} endAt={endAt} />
             <EndedBadge endAt={endAt} />
           </div>
         </Container>

@@ -31,12 +31,12 @@ import { Link } from "next-view-transitions";
 interface DurationBadgeProps {
   startAt: string;
   endAt: string;
-  today: Date;
 }
-export function DurationBadge({ startAt, endAt, today }: DurationBadgeProps) {
+export function DurationBadge({ startAt, endAt }: DurationBadgeProps) {
   const daysOfDifference = differenceInDays(endAt, startAt);
   const hoursOfDifference = differenceInHours(endAt, startAt);
 
+  const today = new TZDate(new Date(), "America/Guayaquil");
   const isPastEvent = isPast(endAt);
   const durationWord = isPastEvent ? "Duró" : "Dura";
 
@@ -86,12 +86,12 @@ export function DurationBadge({ startAt, endAt, today }: DurationBadgeProps) {
 }
 
 interface TodayBadgeProps {
-  today: Date;
   startAt: string;
   endAt: string;
 }
-export function TodayBadge({ today, startAt, endAt }: TodayBadgeProps) {
+export function TodayBadge({ startAt, endAt }: TodayBadgeProps) {
   const isPastEvent = isPast(endAt);
+  const today = new TZDate(new Date(), "America/Guayaquil");
   if (isPastEvent) return null;
 
   const isToday = isWithinInterval(today, {
@@ -125,9 +125,9 @@ export function TodayBadge({ today, startAt, endAt }: TodayBadgeProps) {
 
 interface NewBadgeProps {
   createdAt: string;
-  today: TZDate;
 }
-export function NewBadge({ createdAt, today }: NewBadgeProps) {
+export function NewBadge({ createdAt }: NewBadgeProps) {
+  const today = new TZDate(new Date(), "America/Guayaquil");
   const createdAtEcuadorTime = new TZDate(createdAt, "America/Guayaquil");
   const days = differenceInDays(today, createdAtEcuadorTime);
 
@@ -269,9 +269,9 @@ export function EventItem({ event, className, idx }: Props) {
         />
         <div className={cn("absolute bottom-2 left-2")}>
           <div className="flex overflow-x-auto gap-2">
-            <NewBadge createdAt={createdAt} today={today} />
-            <TodayBadge startAt={startAt} endAt={endAt} today={today} />
-            <DurationBadge startAt={startAt} endAt={endAt} today={today} />
+            <NewBadge createdAt={createdAt} />
+            <TodayBadge startAt={startAt} endAt={endAt} />
+            <DurationBadge startAt={startAt} endAt={endAt} />
             <EndedBadge endAt={endAt} />
           </div>
         </div>
