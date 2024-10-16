@@ -7,6 +7,7 @@ import { Title } from "@/components/title";
 import { EventsActionsButton } from "./components/EventsActionsButton";
 import { EventBackButton } from "./components/EvemtGoBackButton";
 import { EventsListItems } from "./components/EventsListItems";
+import { EventsListSkeleton } from "./components/EventsListSkeleton";
 
 interface Props {
   searchParams: Record<string, string>;
@@ -84,9 +85,9 @@ export default async function Page({ searchParams }: Props) {
         <EventsTabs />
       </Suspense>
 
-      {/* <Suspense key={JSON.stringify(options)} fallback={<EventsListSkeleton />}> */}
-      <EventsListItems />
-      {/* </Suspense> */}
+      <Suspense fallback={<EventsListSkeleton />}>
+        <EventsListItems />
+      </Suspense>
     </Container>
   );
 }
