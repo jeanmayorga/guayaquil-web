@@ -8,7 +8,13 @@ import {
   MenubarSeparator,
   MenubarTrigger,
 } from "@/components/ui/menubar";
-import { EllipsisVertical, LoaderCircle } from "lucide-react";
+import {
+  BadgeInfo,
+  EllipsisVertical,
+  Info,
+  InfoIcon,
+  LoaderCircle,
+} from "lucide-react";
 import { useState } from "react";
 import { revalidateBySlug } from "../actions";
 import { sleep } from "@/lib/sleep";
@@ -46,7 +52,7 @@ export function EventActionsButton({
           {isLoading ? (
             <LoaderCircle className="w-4 h-4 animate-spin" />
           ) : (
-            <EllipsisVertical className="w-4 h-4" />
+            <BadgeInfo className="w-4 h-4" />
           )}
         </MenubarTrigger>
         <MenubarContent align="end">

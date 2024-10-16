@@ -45,8 +45,8 @@ export function BackButton({ to, text }: Props) {
   if (!to) {
     return (
       <div
-        className="my-6 md:my-12"
-        // style={{ viewTransitionName: `title` }}
+      // className="my-6 md:my-12"
+      // style={{ viewTransitionName: `title` }}
       >
         <Button variant="ghost" className="rounded-full" onClick={goBack}>
           <LeftArrowIcon className="h-4 w-4 mr-2" /> {text || "Regresar"}
@@ -57,8 +57,8 @@ export function BackButton({ to, text }: Props) {
 
   return (
     <div
-      className="my-6 md:my-12"
-      // style={{ viewTransitionName: "back-button" }}
+    // className="my-6 md:my-12"
+    // style={{ viewTransitionName: "back-button" }}
     >
       <Link href={goBackUrl()}>
         <Button variant="ghost" className="rounded-full">

@@ -33,7 +33,7 @@ interface DurationBadgeProps {
   endAt: string;
   today: Date;
 }
-function DurationBadge({ startAt, endAt, today }: DurationBadgeProps) {
+export function DurationBadge({ startAt, endAt, today }: DurationBadgeProps) {
   const daysOfDifference = differenceInDays(endAt, startAt);
   const hoursOfDifference = differenceInHours(endAt, startAt);
 
@@ -90,7 +90,7 @@ interface TodayBadgeProps {
   startAt: string;
   endAt: string;
 }
-function TodayBadge({ today, startAt, endAt }: TodayBadgeProps) {
+export function TodayBadge({ today, startAt, endAt }: TodayBadgeProps) {
   const isPastEvent = isPast(endAt);
   if (isPastEvent) return null;
 
@@ -127,17 +127,17 @@ interface NewBadgeProps {
   createdAt: string;
   today: TZDate;
 }
-function NewBadge({ createdAt, today }: NewBadgeProps) {
+export function NewBadge({ createdAt, today }: NewBadgeProps) {
   const createdAtEcuadorTime = new TZDate(createdAt, "America/Guayaquil");
   const days = differenceInDays(today, createdAtEcuadorTime);
 
-  if (days < 2) return <Badge active>New</Badge>;
+  if (days < 2) return <Badge active>Nuevo</Badge>;
   return null;
 }
 interface EndedBadgeProps {
   endAt: string;
 }
-function EndedBadge({ endAt }: EndedBadgeProps) {
+export function EndedBadge({ endAt }: EndedBadgeProps) {
   const isPastEvent = isPast(endAt);
 
   if (!isPastEvent) return null;
@@ -202,6 +202,7 @@ export function DateText({ startAt, endAt }: DateTextProps) {
     }
     return format(startAt, "d 'de' LLLL 'del' yyyy H:mm bbbb", { locale: es });
   }
+
   return (
     <div
       className={cn(
@@ -282,8 +283,8 @@ export function EventItem({ event, className, idx }: Props) {
         >
           {event.name}
         </div>
-        <div className="flex items-center text-gray-400 group-hover:text-gray-500 text-xs gap-2 transition-all mb-1">
-          <MapPin className="w-4 h-4" />
+        <div className="flex items-center text-gray-400 group-hover:text-gray-500 text-xs gap-2 transition-all mb-1 truncate">
+          <MapPin className="w-4 h-4 flex-shrink-0" />
           {event.location_name}
         </div>
         <DateText startAt={startAt} endAt={endAt} />

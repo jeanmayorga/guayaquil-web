@@ -2,12 +2,23 @@ import { getEvent, getEvents } from "@/app/events/services";
 import { BackButton } from "@/components/back-button";
 import { Container } from "@/components/container";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, CalendarIcon } from "lucide-react";
 import { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { EventActionsButton } from "../components/EventActionsButton";
 import { EventBestImage } from "../components/EventBestImage";
+import { cn } from "@/lib/utils";
+import { differenceInDays, format, isPast } from "date-fns";
+import { es } from "date-fns/locale/es";
+import { EventBackButton } from "../components/EvemtGoBackButton";
+import {
+  DurationBadge,
+  EndedBadge,
+  NewBadge,
+  TodayBadge,
+} from "../components/EventItem";
+import { TZDate } from "@date-fns/tz";
 
 interface Props {
   params: {
@@ -89,15 +100,14 @@ export default async function Page({ params }: Props) {
     return notFound();
   }
 
-  async function onRevalidate() {
-    await fetch(
-      `${process.env.NEXT_PUBLIC_URL}/api/event/revalidate?slug=${slug}`
-    );
-  }
+  const today = new TZDate(new Date(), "America/Guayaquil");
+  const startAt = event.start_at;
+  const endAt = event.end_at;
+  const createdAt = event.created_at;
 
   return (
     <>
-      <section className="relative w-full p-12 bg-gray-800 overflow-hidden">
+      <section className="relative w-full p-12 bg-gray-800 overflow-hidden mb-16">
         <Image
           src={event.cover_image}
           alt="cover blur"
@@ -107,6 +117,16 @@ export default async function Page({ params }: Props) {
           className="blur-xl scale-150 absolute top-0 left-0 w-full h-full transition-all"
         />
         <Container className="relative">
+          <div className="flex items-center justify-between mb-12">
+            <EventBackButton />
+
+            <EventActionsButton
+              slug={slug}
+              last_updated={event.last_updated}
+              last_cached={response.lastCacheUpdate}
+              created_at={event.created_at}
+            />
+          </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div className="flex items-center justify-start">
               <EventBestImage
@@ -131,27 +151,45 @@ export default async function Page({ params }: Props) {
                 }}
               />
 
-              <a href={event.url} target="_blank" className="w-full my-8">
+              <a href={event.url} target="_blank" className="w-full mt-8">
                 <Button className="rounded-full w-full" variant="secondary">
                   Comprar entradas
                 </Button>
               </a>
             </div>
           </div>
+          <div className="flex overflow-x-auto gap-2 mt-8">
+            <NewBadge createdAt={createdAt} today={today} />
+            <TodayBadge startAt={startAt} endAt={endAt} today={today} />
+            <DurationBadge startAt={startAt} endAt={endAt} today={today} />
+            <EndedBadge endAt={endAt} />
+          </div>
         </Container>
       </section>
 
       <Container>
-        <div className="flex items-center justify-between">
-          <BackButton to="/events" />
+        {event.start_at && event.end_at && (
+          <section className="mb-12 gap-8">
+            <div className="scroll-m-20 font-semibold tracking-tight text-3xl mb-4 block">
+              Fecha
+            </div>
 
-          <EventActionsButton
-            slug={slug}
-            last_updated={event.last_updated}
-            last_cached={response.lastCacheUpdate}
-            created_at={event.created_at}
-          />
-        </div>
+            <div className={"flex items-center gap-2"}>
+              <CalendarIcon className="w-4 h-4" />
+              Empieza el{" "}
+              {format(startAt, "d 'de' LLLL 'del' yyyy H:mm bbbb", {
+                locale: es,
+              })}
+            </div>
+            <div className={"flex items-center gap-2"}>
+              <CalendarIcon className="w-4 h-4" />
+              Termina el{" "}
+              {format(endAt, "d 'de' LLLL 'del' yyyy H:mm bbbb", {
+                locale: es,
+              })}
+            </div>
+          </section>
+        )}
 
         {event.description && (
           <section className="mb-12 gap-8">
@@ -196,6 +234,9 @@ export default async function Page({ params }: Props) {
                   $ {ticket.price.toFixed(2)} USD
                 </div>
                 <div className="flex items-center lg:justify-end">
+                  <span className="text-xs mr-3 text-gray-400 dark:text-gray-200 -translate-x-2 group-hover:translate-x-2 transition-all">
+                    Comprar
+                  </span>
                   <ArrowRight className="w-6 h-6 text-gray-400 dark:text-gray-200 -translate-x-2 group-hover:translate-x-2 transition-all" />
                 </div>
               </a>

@@ -1,15 +1,12 @@
-import { DEFAULT_EVENTS_LIMIT, DEFAULT_EVENTS_TAB } from "./utils";
-import { EventTab, GetEventEventsOptions } from "./types";
 import { Metadata } from "next";
 import { Suspense } from "react";
-import { BackButton } from "@/components/back-button";
 import { EventsSearch } from "./components/EventsSearch";
 import { EventsTabs } from "./components/EventsTabs";
 import { Container } from "@/components/container";
-import { EventsListSkeleton } from "./components/EventsListSkeleton";
-import { EventsList } from "./components/EventsList";
 import { Title } from "@/components/title";
 import { EventsActionsButton } from "./components/EventsActionsButton";
+import { EventBackButton } from "./components/EvemtGoBackButton";
+import { EventsListItems } from "./components/EventsListItems";
 
 interface Props {
   searchParams: Record<string, string>;
@@ -65,18 +62,18 @@ export function generateMetadata(): Metadata {
 }
 
 export default async function Page({ searchParams }: Props) {
-  const options: GetEventEventsOptions = {
-    tab: (searchParams.tab as EventTab) || DEFAULT_EVENTS_TAB,
-    query: (searchParams.query as string) || undefined,
-    page: 1,
-    limit: DEFAULT_EVENTS_LIMIT,
-    log: "EventList",
-  };
+  // const options: GetEventEventsOptions = {
+  //   tab: (searchParams.tab as EventTab) || DEFAULT_EVENTS_TAB,
+  //   query: (searchParams.query as string) || undefined,
+  //   page: 1,
+  //   limit: DEFAULT_EVENTS_LIMIT,
+  //   log: "EventList",
+  // };
 
   return (
     <Container>
-      <div className="flex items-center justify-between">
-        <BackButton to="/" />
+      <div className="flex items-center justify-between my-8">
+        <EventBackButton />
         <EventsActionsButton />
       </div>
 
@@ -87,9 +84,9 @@ export default async function Page({ searchParams }: Props) {
         <EventsTabs />
       </Suspense>
 
-      <Suspense key={JSON.stringify(options)} fallback={<EventsListSkeleton />}>
-        <EventsList options={options} />
-      </Suspense>
+      {/* <Suspense key={JSON.stringify(options)} fallback={<EventsListSkeleton />}> */}
+      <EventsListItems />
+      {/* </Suspense> */}
     </Container>
   );
 }

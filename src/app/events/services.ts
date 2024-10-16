@@ -23,18 +23,8 @@ export async function getEvents(options: GetEventEventsOptions) {
   const searchParams = new URLSearchParams(optionsSearchParams).toString();
 
   const fetchUrl = `${apiUrl}/events${searchParams ? `?${searchParams}` : ""}`;
-  const fetchOptions: RequestInit = {
-    // cache: "no-cache",
-    next: {
-      revalidate: false,
-      tags: ["events"],
-    },
-  };
-
-  const request = await fetch(fetchUrl, fetchOptions);
+  const request = await fetch(fetchUrl);
   const response = await request.json();
-
-  // await new Promise((r) => setTimeout(r, 2000));
 
   const result: GetEventsResult = {
     events: response?.events || [],
@@ -57,17 +47,9 @@ export async function getEvent(options: GetEventSearchParams) {
   const searchParams = new URLSearchParams(optionsSearchParams).toString();
 
   const fetchUrl = `${apiUrl}/event${searchParams ? `?${searchParams}` : ""}`;
-  const fetchOptions: RequestInit = {
-    // cache: "no-cache",
-    next: {
-      revalidate: false,
-      tags: ["events", options.slug],
-    },
-  };
 
-  const request = await fetch(fetchUrl, fetchOptions);
+  const request = await fetch(fetchUrl);
   const response = await request.json();
-  // await new Promise((r) => setTimeout(r, 2000));
 
   const result: GetEventResult = {
     event: response?.event,
