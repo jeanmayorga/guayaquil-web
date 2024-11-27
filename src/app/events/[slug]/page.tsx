@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title,
     applicationName: "Guayaquil",
-    description: `${event?.name}, ${event.location_name}`,
+    description: event.description,
     keywords: [
       event?.name,
       event.location_name,
@@ -56,11 +56,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ],
     robots: "index, follow",
     openGraph: {
-      siteName: "Guayaquil",
-      title: title,
-      description: `${event?.name}, ${event.location_name}`,
-      url: `https://guayaquil.app/events/${event.slug}`,
-      type: "website",
       images: [
         {
           url: event.cover_image,
@@ -69,9 +64,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           alt: event?.name,
         },
       ],
-    },
-    alternates: {
-      canonical: `https://guayaquil.app/events/${event.slug}`,
     },
   };
 }
