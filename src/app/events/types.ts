@@ -32,14 +32,6 @@ export interface EventType {
     | null;
 }
 
-export interface GetEventEventsOptions {
-  query?: string;
-  page?: number;
-  limit?: number;
-  tab?: EventTab;
-  log?: string;
-}
-
 export interface GetEventSearchParams {
   slug: string;
   log?: string;

@@ -1,95 +1,73 @@
-import { Metadata } from "next";
-import { Suspense } from "react";
+"use client";
+
+import { useEffect } from "react";
 import { EventsSearch } from "./components/EventsSearch";
 import { EventsTabs } from "./components/EventsTabs";
 import { Container } from "@/components/container";
+
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { getEvents } from "./actions";
+import { EventItem } from "./components/EventItem";
+import { EventItemSkeleton } from "./components/EventItemSkeleton";
+import { useObserver } from "@/hooks/useObserver";
 import { Title } from "@/components/title";
-import { EventsActionsButton } from "./components/EventsActionsButton";
-import { EventBackButton } from "./components/EvemtGoBackButton";
-import { EventsListItems } from "./components/EventsListItems";
-import { EventsListSkeleton } from "./components/EventsListSkeleton";
+
+const DEFAULT_LIMIT = 9;
+const DEFAULT_TAB = "today";
 
 interface Props {
   searchParams: Record<string, string>;
 }
 
-export function generateMetadata(): Metadata {
-  const title = "Eventos, shows y conciertos en Guayaquil";
+export default function Page({ searchParams }: Props) {
+  const { tab = DEFAULT_TAB, query } = searchParams;
 
-  return {
-    title,
-    applicationName: "Guayaquil",
-    description:
-      "Descubre los eventos y shows más destacados en Guayaquil. Mantente al tanto de los próximos conciertos, exposiciones, festivales y más, organizados cronológicamente para que no te pierdas nada.",
-    keywords: [
-      "shows",
-      "eventos",
-      "conciertos",
-      "teatro",
-      "obras",
-      "Eventos en Guayaquil",
-      "Shows en Guayaquil",
-      "Conciertos Guayaquil",
-      "Festivales Guayaquil",
-      "Exposiciones Guayaquil",
-    ],
-    authors: [
-      {
-        name: "Jean Paul Mayorga",
-        url: "https://jeanmayorga.com",
-      },
-    ],
-    robots: "index, follow",
-    openGraph: {
-      siteName: "Guayaquil",
-      title,
-      description:
-        "Explora los eventos y shows en Guayaquil. Encuentra lo que está sucediendo en la ciudad y planifica tu próxima salida.",
-      url: `https://guayaquil.app/events`,
-      type: "website",
-      images: [
-        {
-          url: "https://guayaquil.app/banner.webp",
-          width: 1120,
-          height: 753,
-          alt: title,
-        },
-      ],
+  const { data, isFetching, fetchNextPage, refetch } = useInfiniteQuery({
+    queryKey: ["events"],
+    initialPageParam: 1,
+    queryFn: async ({ pageParam }) => {
+      return getEvents({ tab, page: pageParam, limit: DEFAULT_LIMIT, query });
     },
-    alternates: {
-      canonical: `https://guayaquil.app/events`,
+    getNextPageParam: (lastPage, _allPages, lastPageParam) => {
+      if (lastPage.length === 0) return undefined;
+      return lastPageParam + 1;
     },
-  };
-}
+  });
 
-export default async function Page({ searchParams }: Props) {
-  // const options: GetEventEventsOptions = {
-  //   tab: (searchParams.tab as EventTab) || DEFAULT_EVENTS_TAB,
-  //   query: (searchParams.query as string) || undefined,
-  //   page: 1,
-  //   limit: DEFAULT_EVENTS_LIMIT,
-  //   log: "EventList",
-  // };
+  const { isIntersecting, ref } = useObserver({
+    threshold: 0.5,
+  });
+
+  useEffect(() => {
+    if (isIntersecting) fetchNextPage();
+  }, [isIntersecting, fetchNextPage]);
+
+  useEffect(() => {
+    refetch();
+  }, [tab, query, refetch]);
 
   return (
     <Container>
-      <div className="flex items-center justify-between my-8">
-        <Suspense fallback={<>Cargando..</>}>
-          <EventBackButton />
-        </Suspense>
-        <EventsActionsButton />
-      </div>
+      {/* <div className="bg-black/20 w-full h-[400px] rounded-3xl mb-8"></div> */}
 
       <Title title="Eventos" />
 
-      <Suspense fallback={<>Cargando..</>}>
-        <EventsSearch />
-        <EventsTabs />
-      </Suspense>
+      <EventsSearch />
+      <EventsTabs tab={tab} />
 
-      <Suspense fallback={<EventsListSkeleton />}>
-        <EventsListItems />
-      </Suspense>
+      <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 mb-8">
+        {data?.pages.map((page) => {
+          return page.map((event, idx) => (
+            <EventItem event={event} key={event.slug} idx={idx} />
+          ));
+        })}
+        {isFetching &&
+          [...Array(DEFAULT_LIMIT).keys()].map((item) => (
+            <EventItemSkeleton key={item} />
+          ))}
+      </div>
+
+      <div ref={ref} />
     </Container>
   );
 }

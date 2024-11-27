@@ -1,9 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useSearchParams } from "next/navigation";
 import { Link } from "next-view-transitions";
-import { DEFAULT_EVENTS_TAB } from "../utils";
 
 export const tabs = [
   {
@@ -38,17 +36,17 @@ export const tabs = [
   },
 ];
 
-export function EventsTabs() {
-  const searchParams = useSearchParams();
-  const currentTab = searchParams.get("tab") || DEFAULT_EVENTS_TAB;
-
+interface Props {
+  tab: string;
+}
+export function EventsTabs({ tab }: Props) {
   return (
-    <nav className="space-x-1 flex overflow-x-auto no-scrollbar">
-      {tabs.map((tab) => {
-        const isTabActive = tab.key === currentTab;
+    <nav className="space-x-1 flex overflow-x-auto no-scrollbar mb-8">
+      {tabs.map((cTab) => {
+        const isTabActive = cTab.key === tab;
 
         return (
-          <Link href={`/events?tab=${tab.key}`} key={tab.key}>
+          <Link href={`/events?tab=${cTab.key}`} key={cTab.key}>
             <button
               className={cn(
                 "py-2 px-4 bg-gray-200/80 dark:bg-gray-700/80 hover:bg-cyan-500/50 hover:text-cyan-800 rounded-full text-sm font-medium text-gray-500 dark:text-gray-400 transition-all active:scale-95 text-nowrap",
@@ -56,7 +54,7 @@ export function EventsTabs() {
                   "bg-cyan-500/50 dark:bg-cyan-500/50 text-cyan-800 dark:text-white/70"
               )}
             >
-              {tab.name}
+              {cTab.name}
             </button>
           </Link>
         );

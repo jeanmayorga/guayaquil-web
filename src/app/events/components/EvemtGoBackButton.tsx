@@ -4,7 +4,7 @@ import { LeftArrowIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Link } from "next-view-transitions";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export function EventBackButton() {
   const searchParams = useSearchParams();
@@ -12,7 +12,7 @@ export function EventBackButton() {
   const searchParamsSaved = localStorage.getItem("searchParams");
 
   useEffect(() => {
-    if (searchParamsStringify) {
+    if (localStorage && searchParamsStringify) {
       localStorage.setItem("searchParams", searchParamsStringify);
     }
   }, [searchParamsStringify]);
@@ -22,7 +22,7 @@ export function EventBackButton() {
       href={`/events${searchParamsSaved ? `?${searchParamsSaved}` : ""}`}
       // style={{ viewTransitionName: `title` }}
     >
-      <Button variant="secondary" className="rounded-full">
+      <Button variant="ghost" className="rounded-full">
         <LeftArrowIcon className="h-4 w-4 mr-2" /> Regresar
       </Button>
     </Link>

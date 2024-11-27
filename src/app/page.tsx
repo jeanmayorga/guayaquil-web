@@ -1,10 +1,7 @@
-import { supabase } from "@/lib/supabase";
-import { EventType } from "./events/types";
+import { Container } from "@/components/container";
+import { getEvents } from "./events/actions";
 import { EventsSectionScroll } from "./events/components/section-scroll";
 import { Metadata } from "next";
-import { getEvents } from "./events/services";
-import { Title } from "@/components/title";
-import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Ciudad de Guayaquil",
@@ -53,26 +50,28 @@ export default async function Home() {
 
   return (
     <>
-      <section className="relative overflow-hidden h-[220px] md:h-[300px] lg:h-[400px]">
-        <img
-          src="./block2.jpg"
-          className="w-full absolute top-1/2 -translate-y-1/2"
-          alt="Guayaquil"
-        />
-        <div className="z-20 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-          <h1 className="font-bold drop-shadow-md text-4xl lg:text-8xl lg:mb-8 text-white">
-            Guayaquil
-          </h1>
-          <p className="font-light drop-shadow-xl hidden lg:block lg:text-base text-gray-50">
-            Conocida como la Perla del Pacífico, esta metrópolis costera se
-            encuentra a orillas del imponente río Guayas, siendo el principal
-            puerto del país y un centro económico clave en la región
-          </p>
-        </div>
-        <div className="z-10 bg-black/50 absolute top-0 left-0 w-full h-full" />
-      </section>
+      <Container>
+        <section className="relative overflow-hidden h-[220px] md:h-[300px] lg:h-[400px] rounded-3xl">
+          <img
+            src="./block2.jpg"
+            className="w-full absolute top-1/2 -translate-y-1/2"
+            alt="Guayaquil"
+          />
+          <div className="z-20 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+            <h1 className="font-bold drop-shadow-md text-4xl lg:text-8xl lg:mb-8 text-white">
+              Guayaquil
+            </h1>
+            <p className="font-light drop-shadow-xl hidden lg:block lg:text-base text-gray-50">
+              Conocida como la Perla del Pacífico, esta metrópolis costera se
+              encuentra a orillas del imponente río Guayas, siendo el principal
+              puerto del país y un centro económico clave en la región
+            </p>
+          </div>
+          <div className="z-10 bg-black/50 absolute top-0 left-0 w-full h-full" />
+        </section>
 
-      <EventsSectionScroll events={response.events} />
+        <EventsSectionScroll events={response} />
+      </Container>
     </>
   );
 }
