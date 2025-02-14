@@ -11,7 +11,7 @@ export async function GET() {
     const meet2GoEvents = await scrapMeet2Go();
     const ticketShowEvents = await scrapTicketShow();
 
-    await cleanEvents();
+    //await cleanEvents();
 
     revalidateTag("events");
 
