@@ -6,7 +6,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { format } from "date-fns";
 import { es } from "date-fns/locale/es";
-import { EventBackButton } from "../components/EvemtGoBackButton";
+import { EventBackButton } from "../components/EventGoBackButton";
 import { Suspense } from "react";
 import { EventNewBadge } from "../components/EventNewBadge";
 import { TodayBadge, DurationBadge, EndedBadge } from "../components/EventItem";
