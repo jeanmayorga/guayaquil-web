@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "./theme-provider";
 import { ReactQueryProvider } from "./react-query-provider";
-import { Header } from "@/components/Header";
+import { Sidebar } from "@/components/Sidebar";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -39,11 +39,14 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <ReactQueryProvider>
-              <Header />
-
-              {children}
-              <Analytics />
-              <SpeedInsights />
+              <div className="flex min-h-screen">
+                <Sidebar />
+                <main className="flex-1 md:ml-64 p-4">
+                  {children}
+                  <Analytics />
+                  <SpeedInsights />
+                </main>
+              </div>
             </ReactQueryProvider>
           </ThemeProvider>
         </body>
