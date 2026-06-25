@@ -8,11 +8,8 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "./theme-provider";
 import { AppSidebar } from "@/components/app-sidebar";
 import { Logo } from "@/components/Logo";
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
+import { MobileMenuButton } from "@/components/mobile-menu-button";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -76,11 +73,11 @@ export default function RootLayout({
             <SidebarProvider>
               <AppSidebar />
               <SidebarInset>
-                <header className="flex h-14 shrink-0 items-center gap-2 px-4 lg:hidden">
-                  <SidebarTrigger className="-ml-1" />
+                <header className="flex h-14 shrink-0 items-center justify-between px-4 lg:hidden">
                   <Link href="/">
                     <Logo className="h-10 w-auto" />
                   </Link>
+                  <MobileMenuButton />
                 </header>
                 <div className="pt-2 lg:pt-10 pb-16">{children}</div>
               </SidebarInset>
