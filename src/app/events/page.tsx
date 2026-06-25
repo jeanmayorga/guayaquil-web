@@ -76,7 +76,7 @@ export default function Page(props: Props) {
     <Container>
       {/* <div className="bg-black/20 w-full h-[400px] rounded-3xl mb-8"></div> */}
 
-      <Title title="Eventos" />
+      <Title title="Eventos" subtitle="Descubre qué hacer en Guayaquil" />
 
       <EventsSearch />
       <div className="lg:hidden">
