@@ -5,7 +5,7 @@ import { places } from "./sobre-guayaquil/places";
 export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const domain = "https://www.guayaquil.app";
+  const domain = "https://guayaquil.app";
 
   const events = await getEvents({ limit: 200 });
 

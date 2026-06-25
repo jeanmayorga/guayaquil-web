@@ -5,6 +5,7 @@ import Link from "next/link";
 
 import { Container } from "@/components/container";
 import { Button } from "@/components/ui/button";
+import { JsonLd } from "@/components/json-ld";
 import { getPlace, places } from "../places";
 
 interface Props {
@@ -22,7 +23,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
   const title = `${place.name} en Guayaquil: qué es y cómo llegar`;
   return {
-    title,
+    title: { absolute: title },
     description: place.summary,
     keywords: [
       place.name,
@@ -50,9 +51,39 @@ export default async function PlacePage(props: Props) {
   const query = encodeURIComponent(place.mapsQuery);
   const mapEmbed = `https://maps.google.com/maps?q=${query}&z=15&output=embed`;
   const directions = `https://www.google.com/maps/dir/?api=1&destination=${query}`;
+  const url = `https://guayaquil.app/sobre-guayaquil/${place.slug}`;
+
+  const attractionLd = {
+    "@context": "https://schema.org",
+    "@type": "TouristAttraction",
+    name: place.name,
+    description: place.summary,
+    url,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: place.address,
+      addressLocality: "Guayaquil",
+      addressCountry: "EC",
+    },
+  };
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Conoce la ciudad",
+        item: "https://guayaquil.app/sobre-guayaquil",
+      },
+      { "@type": "ListItem", position: 2, name: place.name, item: url },
+    ],
+  };
 
   return (
     <Container>
+      <JsonLd data={attractionLd} />
+      <JsonLd data={breadcrumbLd} />
       <article className="mx-auto max-w-3xl">
         <Link
           href="/sobre-guayaquil"

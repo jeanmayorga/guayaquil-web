@@ -4,13 +4,16 @@ import Link from "next/link";
 
 import { Container } from "@/components/container";
 import { Button } from "@/components/ui/button";
+import { JsonLd } from "@/components/json-ld";
 import { getEvents } from "./events/actions";
 import { EventItem } from "./events/components/EventItem";
 
 export const revalidate = 300;
 
 export const metadata: Metadata = {
-  title: "Ciudad de Guayaquil",
+  title: {
+    absolute: "Guayaquil | Eventos, conciertos y shows en la ciudad",
+  },
   description:
     "Descubre los eventos y shows más destacados en Guayaquil. Conciertos, obras, exposiciones, festivales y más.",
   keywords: [
@@ -44,8 +47,19 @@ export const metadata: Metadata = {
 export default async function Home() {
   const events = await getEvents({ tab: "all", limit: 6 });
 
+  const siteLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Guayaquil",
+    url: "https://guayaquil.app",
+    description:
+      "Agenda de eventos, conciertos y shows en Guayaquil, Ecuador.",
+    inLanguage: "es-EC",
+  };
+
   return (
     <Container>
+      <JsonLd data={siteLd} />
       <section className="relative mb-12 h-[300px] overflow-hidden rounded-3xl md:h-[400px]">
         <img
           src="/block2.jpg"

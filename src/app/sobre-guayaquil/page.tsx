@@ -7,7 +7,9 @@ import { Button } from "@/components/ui/button";
 import { places } from "./places";
 
 export const metadata: Metadata = {
-  title: "Conoce Guayaquil: guía turística de la Perla del Pacífico",
+  title: {
+    absolute: "Conoce Guayaquil: guía turística de la Perla del Pacífico",
+  },
   description:
     "Qué ver y hacer en Guayaquil, Ecuador: Malecón 2000, Las Peñas, el Cerro Santa Ana, el Parque de las Iguanas, gastronomía, clima y cómo moverte por la ciudad.",
   keywords: [

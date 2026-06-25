@@ -16,8 +16,30 @@ import {
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Guayaquil",
-  description: "Eventos y shows en la ciudad de Guayaquil",
+  metadataBase: new URL("https://guayaquil.app"),
+  title: {
+    default: "Guayaquil | Eventos, shows y conciertos en la ciudad",
+    template: "%s | Guayaquil",
+  },
+  description:
+    "Descubre los eventos, conciertos y shows más destacados de Guayaquil. La agenda cultural de la ciudad, en un solo lugar.",
+  applicationName: "Guayaquil",
+  keywords: [
+    "eventos Guayaquil",
+    "conciertos Guayaquil",
+    "shows Guayaquil",
+    "qué hacer en Guayaquil",
+    "agenda cultural Guayaquil",
+  ],
+  openGraph: {
+    siteName: "Guayaquil",
+    type: "website",
+    locale: "es_EC",
+    url: "https://guayaquil.app",
+    images: [{ url: "/block2.jpg", width: 1120, height: 753 }],
+  },
+  twitter: { card: "summary_large_image" },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({

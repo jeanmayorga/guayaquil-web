@@ -2,10 +2,12 @@ import { Metadata } from "next";
 import { ReactNode } from "react";
 
 export function generateMetadata(): Metadata {
-  const title = "Guayaquil | Eventos, shows y conciertos en Guayaquil";
-
   return {
-    title,
+    title: {
+      default: "Cartelera de eventos: conciertos, shows y obras",
+      template: "%s | Guayaquil",
+    },
+    alternates: { canonical: "/events" },
     description:
       "Descubre los eventos y shows más destacados en Guayaquil. Mantente al tanto de los próximos conciertos, exposiciones, festivales y más, organizados cronológicamente para que no te pierdas nada.",
     keywords: [

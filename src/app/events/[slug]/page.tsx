@@ -1,6 +1,7 @@
 import { getEvent } from "@/app/events/services";
 import { Container } from "@/components/container";
 import { Button } from "@/components/ui/button";
+import { JsonLd } from "@/components/json-ld";
 import { ArrowRight, CalendarIcon, MapPin } from "lucide-react";
 import { Metadata } from "next";
 import Image from "next/image";
@@ -32,43 +33,36 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     return notFound();
   }
 
-  const title = `Guayaquil | ${event.name}`;
+  const description =
+    (event.description || "")
+      .replace(/<[^>]+>/g, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+      .slice(0, 200) || `${event.name} en Guayaquil.`;
+  const url = `https://guayaquil.app/events/${event.slug}`;
 
   return {
-    title,
+    title: event.name,
     applicationName: "Guayaquil",
-    description: event.description,
+    description,
     keywords: [
       event?.name,
       event.location_name,
-      event.slug,
-      "shows",
-      "eventos",
-      "conciertos",
-      "teatro",
-      "obras",
-      "Eventos en Guayaquil",
-      "Shows en Guayaquil",
-      "Conciertos Guayaquil",
-      "Festivales Guayaquil",
-      "Exposiciones Guayaquil",
+      "eventos Guayaquil",
+      "shows Guayaquil",
+      "conciertos Guayaquil",
+      "teatro Guayaquil",
     ],
-    authors: [
-      {
-        name: "Jean Paul Mayorga",
-        url: "https://jeanmayorga.com",
-      },
-    ],
-    robots: "index, follow",
+    authors: [{ name: "Jean Paul Mayorga", url: "https://jeanmayorga.com" }],
+    alternates: { canonical: `/events/${event.slug}` },
     openGraph: {
-      images: [
-        {
-          url: event.cover_image,
-          width: 1120,
-          height: 753,
-          alt: event?.name,
-        },
-      ],
+      title: event.name,
+      description,
+      url,
+      type: "article",
+      images: event.cover_image
+        ? [{ url: event.cover_image, alt: event.name }]
+        : undefined,
     },
   };
 }
@@ -92,8 +86,62 @@ export default async function Page(props: Props) {
   const endAt = event.end_at;
   const multiDay = (startAt || "").slice(0, 10) !== (endAt || "").slice(0, 10);
 
+  const url = `https://guayaquil.app/events/${event.slug}`;
+  const eventLd = {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    name: event.name,
+    startDate: `${event.start_date}T${event.start_time}-05:00`,
+    endDate: `${event.end_date}T${event.end_time}-05:00`,
+    eventStatus: "https://schema.org/EventScheduled",
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    url,
+    image: event.cover_image ? [event.cover_image] : undefined,
+    description: (event.description || "")
+      .replace(/<[^>]+>/g, " ")
+      .replace(/\s+/g, " ")
+      .trim(),
+    location: event.location_name
+      ? {
+          "@type": "Place",
+          name: event.location_name,
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: event.location_name,
+            addressLocality: "Guayaquil",
+            addressCountry: "EC",
+          },
+        }
+      : undefined,
+    offers: event.tickets?.length
+      ? event.tickets.map((t) => ({
+          "@type": "Offer",
+          name: t.name,
+          price: t.price,
+          priceCurrency: "USD",
+          url: event.url,
+          availability: "https://schema.org/InStock",
+        }))
+      : undefined,
+  };
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Eventos",
+        item: "https://guayaquil.app/events",
+      },
+      { "@type": "ListItem", position: 2, name: event.name, item: url },
+    ],
+  };
+
   return (
     <>
+      <JsonLd data={eventLd} />
+      <JsonLd data={breadcrumbLd} />
       <Container>
         <section className="mx-auto max-w-2xl mb-8">
           <Image
