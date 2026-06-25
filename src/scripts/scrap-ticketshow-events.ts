@@ -1,29 +1,52 @@
 import { format } from "date-fns";
+import { pathToFileURL } from "url";
 import { supabase } from "../lib/supabase";
 import { TZDate } from "@date-fns/tz";
 import * as cheerio from "cheerio";
 import { EventType } from "@/app/events/types";
+import { slugify } from "../lib/utils";
+
+interface Localidad {
+  nombre: string;
+  precio: string;
+  descripcion: string;
+}
 
 interface Response {
   id: string;
+  idevento: string;
   nombre: string;
   fechaevento: string;
   fechaeventofin: string;
-  lugar: string; //
+  lugar: string;
   ciudad: string;
-  imagenpequeña: string;
+  imagengrande: string;
   imagenmediana: string;
+  imagenPequena: string;
+  redirect: boolean;
   redirectlink: string;
-  title?: string;
-  informacion: string;
+  title: string;
   description: string;
   keywords: string;
-  localidad: {
-    nombre: string;
-    precio: string;
-    descripcion: string;
-  }[];
 }
+
+interface EventDetail {
+  localidad?: Localidad[];
+}
+
+const API_URL =
+  "https://microservicios.ticketshow.com.ec/product/coba/getEventosByFiltros";
+
+// Detalle por título: trae las localidades/precios que ya no vienen en el listado
+// (funciona sin token para los eventos de la plataforma nueva, redirect=false).
+const DETAIL_URL =
+  "https://microservicios.ticketshow.com.ec/coba/product/getEventosByTitle";
+
+// Ciudades del área de Guayaquil. OJO: el API es sensible a mayúsculas.
+const CITIES = ["GUAYAQUIL", "SAMBORONDON", "DAULE", "DURAN"];
+
+// El API pagina con `cantmaxticket` como offset, en bloques de PAGE_SIZE.
+const PAGE_SIZE = 9;
 
 function getDateInEcuadorTZ(utcDate: string) {
   const tzDate = new TZDate(utcDate, "America/Guayaquil");
@@ -34,35 +57,43 @@ function getTimeInEcuadorTZ(utcDate: string) {
   return format(tzDate, "HH:mm:ss");
 }
 
-async function getEvents(city: string, countByPage: number) {
-  const request = await fetch(
-    "http://microservicios.ticketshow.com.ec/coba/product/getEventosByFiltro",
-    {
-      headers: {
-        accept: "application/json, text/plain, */*",
-        "accept-language": "es-ES,es;q=0.9,en;q=0.8",
-        "content-type": "application/json",
-        "sec-ch-ua":
-          '"Chromium";v="128", "Not;A=Brand";v="24", "Google Chrome";v="128"',
-        "sec-ch-ua-mobile": "?0",
-        "sec-ch-ua-platform": '"macOS"',
-        "sec-fetch-dest": "empty",
-        "sec-fetch-mode": "cors",
-        "sec-fetch-site": "same-site",
-      },
-      referrer: "https://www.ticketshow.com.ec/",
-      referrerPolicy: "strict-origin-when-cross-origin",
-      body: `{"ciudad":"${city}","cantmaxticket":${countByPage}}`,
-      method: "POST",
-      mode: "cors",
-      credentials: "omit",
-      cache: "no-cache",
-    }
-  );
+async function fetchPage(city: string, offset: number) {
+  const request = await fetch(API_URL, {
+    headers: {
+      accept: "application/json, text/plain, */*",
+      "accept-language": "es-ES,es;q=0.9,en;q=0.8",
+      "content-type": "application/json",
+      origin: "https://www.ticketshow.com.ec",
+      referer: "https://www.ticketshow.com.ec/",
+    },
+    body: JSON.stringify({ ciudad: city, cantmaxticket: offset }),
+    method: "POST",
+    cache: "no-cache",
+  });
 
-  const response = (await request.json()) as Response[];
+  if (!request.ok) {
+    console.error(`ticketShow: ${city} offset ${offset} -> HTTP ${request.status}`);
+    return [];
+  }
 
-  return response;
+  return (await request.json()) as Response[];
+}
+
+// Trae todos los eventos de una ciudad recorriendo las páginas hasta que se vacíe.
+async function getEventsByCity(city: string) {
+  const all: Response[] = [];
+  let offset = 0;
+
+  while (true) {
+    const page = await fetchPage(city, offset);
+    if (page.length === 0) break;
+    all.push(...page);
+    offset += PAGE_SIZE;
+    // Salvaguarda: si una página llega incompleta, ya no hay más.
+    if (page.length < PAGE_SIZE) break;
+  }
+
+  return all;
 }
 
 function extractFirstPrice(priceText: string) {
@@ -72,6 +103,8 @@ function extractFirstPrice(priceText: string) {
   return Number(price);
 }
 
+// Las localidades/precios ya no vienen en el JSON del listado: se obtienen
+// raspando la página synopsis (solo disponible para eventos con redirect).
 async function getEventTickets(url: string) {
   try {
     const response = await fetch(url);
@@ -81,9 +114,13 @@ async function getEventTickets(url: string) {
 
     let data: EventType["tickets"] = [];
 
-    if ($("#divTableLocalidades table tbody tr").length > 0) {
-      // Usar el primer selector si el elemento existe
-      $("#divTableLocalidades table tbody tr").each((index, element) => {
+    const selectors = [
+      "#divTableLocalidades table tbody tr",
+      "#divSynopsisConten table tbody tr",
+    ];
+
+    for (const selector of selectors) {
+      $(selector).each((index, element) => {
         const title = $(element).find("th").eq(0).text().trim();
         const price = $(element).find("th").eq(1).text().trim();
         const description = $(element).find("th").eq(2).text().trim();
@@ -97,24 +134,8 @@ async function getEventTickets(url: string) {
           });
         }
       });
-    }
 
-    if ($("#divSynopsisConten table tbody tr").length > 0) {
-      // Usar el segundo selector si el primer elemento no existe
-      $("#divSynopsisConten table tbody tr").each((index, element) => {
-        const title = $(element).find("th").eq(0).text().trim();
-        const price = $(element).find("th").eq(1).text().trim();
-        const description = $(element).find("th").eq(2).text().trim();
-
-        if (title && price && description) {
-          data.push({
-            price: extractFirstPrice(price),
-            name: title,
-            title: `Ticketshow`,
-            description: description,
-          });
-        }
-      });
+      if (data.length > 0) break;
     }
 
     return data;
@@ -124,48 +145,68 @@ async function getEventTickets(url: string) {
   }
 }
 
-async function getTickets(localidad: Response["localidad"], url: string) {
-  let tickets: EventType["tickets"] = [];
+// Trae el detalle del evento (incluye las localidades con precio).
+async function fetchEventDetail(title: string): Promise<EventDetail | null> {
+  try {
+    const request = await fetch(DETAIL_URL, {
+      headers: {
+        "content-type": "application/json",
+        origin: "https://www.ticketshow.com.ec",
+        referer: "https://www.ticketshow.com.ec/",
+      },
+      body: JSON.stringify({ title }),
+      method: "POST",
+      cache: "no-cache",
+    });
+    if (!request.ok) return null;
+    const data = (await request.json()) as EventDetail[];
+    return data?.[0] ?? null;
+  } catch (error) {
+    console.error("Error detalle:", error);
+    return null;
+  }
+}
 
-  const ticketsBeforeMap: EventType["tickets"] = localidad
-    .map((localidad) => {
-      if (localidad.precio === ".00") return null;
-
+function ticketsFromLocalidades(localidad: Localidad[]): EventType["tickets"] {
+  const tickets = localidad
+    .map((l) => {
+      const price = Number(l.precio);
+      if (!price || price <= 0) return null; // descarta gratis / sin precio
       return {
-        title: `Ticketshow`,
-        description: localidad.descripcion,
-        name: localidad.nombre,
-        price: Number(localidad.precio),
+        title: "Ticketshow",
+        description: l.descripcion,
+        name: l.nombre,
+        price,
       };
     })
-    .filter((ticket) => ticket !== null);
-
-  if (ticketsBeforeMap.length > 0) {
-    tickets = ticketsBeforeMap;
-  } else {
-    const scrapTickets = await getEventTickets(url);
-    if (scrapTickets.length > 0) tickets = scrapTickets;
-  }
+    .filter((t) => t !== null);
 
   return tickets.length > 0 ? tickets : null;
 }
 
-export default async function main() {
-  const resultsEvents = await Promise.allSettled([
-    getEvents("Guayaquil", 0),
-    getEvents("Guayaquil", 9),
-    getEvents("Guayaquil", 18),
-    getEvents("Samborondon", 0),
-    getEvents("Samborondon", 9),
-  ]);
+async function getTickets(tsEvent: Response, url: string) {
+  // 1) Plataforma nueva (redirect=false): precios en el detalle por título.
+  const detail = await fetchEventDetail(tsEvent.title);
+  const fromDetail = ticketsFromLocalidades(detail?.localidad ?? []);
+  if (fromDetail) return fromDetail;
 
-  const results = resultsEvents.flatMap((promise) => {
-    if (promise.status === "fulfilled") {
-      return promise.value;
-    }
-    return [];
-  });
-  const events = results.flat();
+  // 2) Plataforma antigua (redirect=true): precios en la página synopsis.
+  if (tsEvent.redirect && url.includes("synopsis.aspx")) {
+    const scraped = await getEventTickets(url);
+    if (scraped && scraped.length > 0) return scraped;
+  }
+
+  return null;
+}
+
+export default async function main() {
+  const resultsEvents = await Promise.allSettled(
+    CITIES.map((city) => getEventsByCity(city))
+  );
+
+  const events = resultsEvents.flatMap((promise) =>
+    promise.status === "fulfilled" ? promise.value : []
+  );
 
   const mapped: Omit<EventType, "id" | "created_at">[] = [];
 
@@ -178,15 +219,19 @@ export default async function main() {
     const url =
       tsEvent.redirectlink ||
       `https://www.ticketshow.com.ec/evento/${tsEvent.title}`;
-    const tickets = await getTickets(tsEvent.localidad, url);
+    const tickets = await getTickets(tsEvent, url);
 
-    const information = `${tsEvent.description}\n\n${tsEvent.keywords}`;
+    const information = [tsEvent.description, tsEvent.keywords]
+      .filter(Boolean)
+      .join("\n\n");
 
     console.log(`ticketShow: ${start_date} ${start_time} ${tsEvent.nombre}`);
     const newEvent: Omit<EventType, "id" | "created_at"> = {
-      cover_image: tsEvent.imagenmediana || tsEvent.imagenpequeña,
+      cover_image:
+        tsEvent.imagenmediana || tsEvent.imagengrande || tsEvent.imagenPequena,
       name: tsEvent.nombre.trim(),
-      slug: `ts-${tsEvent.id}`,
+      // Slug legible/SEO a partir del título de TicketShow (único y estable).
+      slug: `ts-${slugify(tsEvent.title) || tsEvent.id}`,
       url: url,
       start_date: start_date,
       start_time: start_time,
@@ -197,7 +242,7 @@ export default async function main() {
       tickets: tickets,
       location_name: `${tsEvent.lugar.trim()}, ${tsEvent.ciudad.trim()}`,
       last_updated: new Date().toISOString(),
-      description: tsEvent.informacion,
+      description: tsEvent.description,
       information,
     };
     mapped.push(newEvent);
@@ -219,18 +264,23 @@ export default async function main() {
     return 0;
   }
 
-  console.log(`ticketShow total: ${events.length}`);
+  console.log(`ticketShow total: ${mappedFinish.length}`);
 
   return data.count || 0;
 }
 
-// async function main2() {
-//   const result = await getEventTickets(
-//     "https://sale.ticketshow.com.ec/rps/synopsis.aspx?evento=8641&nombreEvento=La_Noche_Soda_&_Rock_Latino_&ciudad=Samborondon"
-//   );
-
-//   console.log(result);
-//   return;
-// }
-
-// main();
+// Permite ejecutarlo directo con `yarn scrap:ts` sin afectar al import del cron.
+if (
+  process.argv[1] &&
+  import.meta.url === pathToFileURL(process.argv[1]).href
+) {
+  main()
+    .then((count) => {
+      console.log(`ticketShow upserted: ${count}`);
+      process.exit(0);
+    })
+    .catch((error) => {
+      console.error(error);
+      process.exit(1);
+    });
+}

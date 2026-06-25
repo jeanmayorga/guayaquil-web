@@ -260,7 +260,8 @@ export function EventItem({ event, className, idx }: Props) {
             isPastEvent && "bg-black/70 group-hover:bg-gray/30"
           )}
         />
-        <div className={cn("absolute bottom-2 left-2")}>
+        <div className="absolute z-10 inset-0 bg-gradient-to-t from-black/70 via-black/0 to-black/0 pointer-events-none" />
+        <div className={cn("absolute z-20 bottom-2 left-2")}>
           <div className="flex overflow-x-auto gap-2">
             <EventNewBadge createdAt={createdAt} />
             <TodayBadge startAt={startAt} endAt={endAt} />
