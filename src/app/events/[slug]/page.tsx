@@ -9,7 +9,6 @@ import { format } from "date-fns";
 import { es } from "date-fns/locale/es";
 import { EventBackButton } from "../components/EvemtGoBackButton";
 import { Suspense } from "react";
-import { EventNewBadge } from "../components/EventNewBadge";
 import { TodayBadge, DurationBadge, EndedBadge } from "../components/EventItem";
 import { getEvents } from "../actions";
 
@@ -91,7 +90,6 @@ export default async function Page(props: Props) {
 
   const startAt = event.start_at;
   const endAt = event.end_at;
-  const createdAt = event.created_at;
   const multiDay = (startAt || "").slice(0, 10) !== (endAt || "").slice(0, 10);
 
   return (
@@ -110,7 +108,6 @@ export default async function Page(props: Props) {
           <div>
             <div className="mb-4 flex flex-wrap gap-2">
               <Suspense>
-                <EventNewBadge createdAt={createdAt} />
                 <TodayBadge startAt={startAt} endAt={endAt} />
                 <DurationBadge startAt={startAt} endAt={endAt} />
                 <EndedBadge endAt={endAt} />
