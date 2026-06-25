@@ -3,7 +3,6 @@ import Script from "next/script";
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "./theme-provider";
 import { AppSidebar } from "@/components/app-sidebar";
 import { Logo } from "@/components/Logo";
@@ -81,7 +80,6 @@ export default function RootLayout({
                 <div className="pt-2 lg:pt-10 pb-16">{children}</div>
               </SidebarInset>
             </SidebarProvider>
-            <SpeedInsights />
           </ThemeProvider>
         </body>
     </html>
