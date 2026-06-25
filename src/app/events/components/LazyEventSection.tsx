@@ -46,7 +46,7 @@ export function LazyEventSection({ sectionKey, label, limit }: Props) {
       {isEmpty ? (
         <p className="text-sm text-muted-foreground">No hay eventos por ahora.</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {events
             ? events.map((event, idx) => (
                 <EventItem key={event.slug} event={event} idx={idx} />
