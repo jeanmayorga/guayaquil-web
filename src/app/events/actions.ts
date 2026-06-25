@@ -77,6 +77,11 @@ export async function getEvents({
       .lte("end_at", endOfMonthISO);
   }
 
+  // Oculta los eventos que ya terminaron en todas las secciones menos "Pasados".
+  if (tab && tab !== "past") {
+    client = client.gte("end_at", todayISO);
+  }
+
   if (query) {
     client = client.ilike("name", `%${query}%`);
   }
