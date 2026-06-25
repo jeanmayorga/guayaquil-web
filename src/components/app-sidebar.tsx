@@ -7,6 +7,7 @@ import { Home, CalendarDays } from "lucide-react";
 
 import { Logo } from "@/components/Logo";
 import { ModeToggle } from "@/components/mode-toggle";
+import { useTimelineNav } from "@/hooks/useTimelineNav";
 import {
   Sidebar,
   SidebarContent,
@@ -17,11 +18,22 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 
 export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
   const isEvents = pathname?.startsWith("/events") ?? false;
+  const { items, active, go } = useTimelineNav(isEvents);
+
+  // En /events scrollea a la sección; si no, deja que el Link navegue.
+  const onSubClick = (e: React.MouseEvent, key: string) => {
+    if (!isEvents) return;
+    e.preventDefault();
+    go(key);
+  };
 
   return (
     <Sidebar variant="inset" {...props}>
@@ -43,6 +55,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
+
               <SidebarMenuItem>
                 <SidebarMenuButton asChild isActive={isEvents}>
                   <Link href="/events">
@@ -50,6 +63,24 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                     <span>Eventos</span>
                   </Link>
                 </SidebarMenuButton>
+                <SidebarMenuSub>
+                  {items.map((item) => (
+                    <SidebarMenuSubItem key={item.key}>
+                      <SidebarMenuSubButton
+                        asChild
+                        isActive={isEvents && active === item.key}
+                      >
+                        <Link
+                          href={`/events#${item.key}`}
+                          onClick={(e) => onSubClick(e, item.key)}
+                        >
+                          <item.icon />
+                          <span>{item.label}</span>
+                        </Link>
+                      </SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
+                  ))}
+                </SidebarMenuSub>
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
