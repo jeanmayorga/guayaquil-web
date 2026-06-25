@@ -72,7 +72,7 @@ export function EventsTimeline() {
       ) : (
         <div className="flex gap-8">
           <TimelineNav className="sticky top-6 hidden h-fit w-44 flex-none self-start lg:flex" />
-          <div className="flex min-w-0 flex-1 flex-col gap-12">
+          <div className="flex min-w-0 flex-1 flex-col gap-12 pb-[60vh]">
             {SECTIONS.map((s) => (
               <LazyEventSection key={s.key} sectionKey={s.key} label={s.label} />
             ))}

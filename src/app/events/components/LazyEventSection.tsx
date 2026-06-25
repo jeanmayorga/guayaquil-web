@@ -21,9 +21,11 @@ export function LazyEventSection({ sectionKey, label }: Props) {
   const [hasMore, setHasMore] = useState(true);
   const nextPage = useRef(1);
 
-  // El centinela dispara la carga al acercarse: sirve para la carga inicial
-  // de la sección y para ir trayendo más lotes a medida que se scrollea.
-  const { ref, isIntersecting } = useObserver({ rootMargin: "300px" });
+  // El centinela dispara la carga al acercarse. Solo precarga hacia ABAJO
+  // (margen inferior); así un salto a una sección no carga las de arriba.
+  const { ref, isIntersecting } = useObserver({
+    rootMargin: "0px 0px 200px 0px",
+  });
 
   const loadMore = useCallback(async () => {
     setLoading(true);

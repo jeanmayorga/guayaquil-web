@@ -64,10 +64,17 @@ export function useTimelineNav(enabled = true) {
   }, [enabled]);
 
   const go = (key: string) => {
-    document
-      .getElementById(key)
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    // Salto instantáneo (no animado): evita que el scroll pase por las
+    // secciones intermedias y dispare su carga en el camino.
+    const scroll = () =>
+      document
+        .getElementById(key)
+        ?.scrollIntoView({ behavior: "instant", block: "start" });
+    scroll();
     setActive(key);
+    // Re-ajusta tras un instante: si una sección de arriba terminó de cargar
+    // y corrió el layout, vuelve a dejar la sección destino arriba.
+    setTimeout(scroll, 250);
   };
 
   return { items: TIMELINE_ITEMS, active, go };
