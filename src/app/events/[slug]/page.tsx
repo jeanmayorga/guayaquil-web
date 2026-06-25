@@ -12,13 +12,18 @@ import { EventNewBadge } from "../components/EventNewBadge";
 import { TodayBadge, DurationBadge, EndedBadge } from "../components/EventItem";
 import { getEvents } from "../actions";
 
+// Estático en build (generateStaticParams) + ISR: refresca el contenido y
+// genera on-demand los eventos nuevos del cron sin necesidad de redeploy.
+export const revalidate = 3600;
+
 interface Props {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params;
   const slug = params.slug;
   const response = await getEvent({ slug, log: "generateMetadata" });
   const event = response.event;
@@ -73,7 +78,8 @@ export async function generateStaticParams() {
   return events.map((event) => ({ slug: event.slug }));
 }
 
-export default async function Page({ params }: Props) {
+export default async function Page(props: Props) {
+  const params = await props.params;
   const slug = params.slug;
   const response = await getEvent({ slug, log: "Page" });
   const event = response.event;

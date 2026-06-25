@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, use } from "react";
 import { Link } from "next-view-transitions";
 import { CalendarX2, CalendarRange, LayoutGrid } from "lucide-react";
 import { EventsSearch } from "./components/EventsSearch";
@@ -36,10 +36,11 @@ const DEFAULT_LIMIT = 9;
 const DEFAULT_TAB = "today";
 
 interface Props {
-  searchParams: Record<string, string>;
+  searchParams: Promise<Record<string, string>>;
 }
 
-export default function Page({ searchParams }: Props) {
+export default function Page(props: Props) {
+  const searchParams = use(props.searchParams);
   const { tab = DEFAULT_TAB, query } = searchParams;
 
   const { data, isFetching, fetchNextPage, refetch } = useInfiniteQuery({

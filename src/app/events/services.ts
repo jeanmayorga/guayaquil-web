@@ -1,28 +1,31 @@
 "use server";
 
+import { TZDate } from "@date-fns/tz";
+import { supabase } from "@/lib/supabase";
 import { EventType, GetEventSearchParams } from "./types";
 
-const apiUrl = `${process.env.NEXT_PUBLIC_URL}/api`;
-
 export interface GetEventResult {
-  event: EventType;
+  event: EventType | null;
   lastCacheUpdate: string;
 }
-export async function getEvent(options: GetEventSearchParams) {
-  const optionsSearchParams = options as unknown as Record<string, string>;
-  const searchParams = new URLSearchParams(optionsSearchParams).toString();
 
-  const fetchUrl = `${apiUrl}/event${searchParams ? `?${searchParams}` : ""}`;
+// Consulta Supabase directamente (sin pasar por /api/event), para que el
+// detalle se pueda prerenderizar en build + ISR sin self-fetch.
+export async function getEvent(
+  options: GetEventSearchParams
+): Promise<GetEventResult> {
+  const { slug } = options;
 
-  const request = await fetch(fetchUrl);
-  const response = await request.json();
+  const { data } = await supabase
+    .from("events")
+    .select("*")
+    .eq("slug", slug)
+    .maybeSingle();
 
-  const result: GetEventResult = {
-    event: response?.event,
-    lastCacheUpdate: response?.lastCacheUpdate,
-  };
+  const lastCacheUpdate = new TZDate(
+    new Date(),
+    "America/Guayaquil"
+  ).toISOString();
 
-  console.log(`Client fetch -> ${searchParams} -> log ${options.log}`);
-
-  return result;
+  return { event: (data as EventType) ?? null, lastCacheUpdate };
 }

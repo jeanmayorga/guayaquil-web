@@ -4,7 +4,6 @@ import { NextResponse } from "next/server";
 import scrapMeet2Go from "../../../../scripts/scrap-meet2go-events";
 import scrapTicketShow from "../../../../scripts/scrap-ticketshow-events";
 import cleanEvents from "../../../../scripts/clean-events";
-import { revalidateTag } from "next/cache";
 
 export async function GET() {
   try {
@@ -13,7 +12,8 @@ export async function GET() {
 
     //await cleanEvents();
 
-    revalidateTag("events");
+    // El detalle usa ISR (revalidate) y el listado consulta Supabase en vivo,
+    // así que no hace falta invalidar tags manualmente tras el scrape.
 
     return Response.json({
       ok: true,

@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
-import { Roboto } from "next/font/google";
+import { GeistSans } from "geist/font/sans";
 import { ViewTransitions } from "next-view-transitions";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { ThemeProvider } from "./theme-provider";
 import { ReactQueryProvider } from "./react-query-provider";
 import { AppSidebar } from "@/components/app-sidebar";
@@ -17,11 +18,6 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Link } from "next-view-transitions";
-
-const roboto = Roboto({
-  subsets: ["latin"],
-  weight: ["100", "300", "500", "700"],
-});
 
 export const metadata: Metadata = {
   title: "Guayaquil",
@@ -35,12 +31,12 @@ export default function RootLayout({
 }>) {
   return (
     <ViewTransitions>
-      <html lang="es">
+      <html lang="es" className={GeistSans.variable}>
         <meta
           name="google-site-verification"
           content="pzLChC3XsCNZpXUcP4jBhm83YPDTt5x9vvdvlQ8QuVg"
         />
-        <body className={cn(roboto.className, "min-h-screen")}>
+        <body className={cn(GeistSans.className, "min-h-screen antialiased")}>
           {/* Google tag (gtag.js) - GA4 */}
           <Script
             src="https://www.googletagmanager.com/gtag/js?id=G-XZ3LY3G0C7"
@@ -61,6 +57,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <ReactQueryProvider>
+              <NuqsAdapter>
               <SidebarProvider>
                 <Suspense fallback={null}>
                   <AppSidebar />
@@ -75,6 +72,7 @@ export default function RootLayout({
                   <div className="pt-2 lg:pt-10 pb-16">{children}</div>
                 </SidebarInset>
               </SidebarProvider>
+              </NuqsAdapter>
               <Analytics />
               <SpeedInsights />
             </ReactQueryProvider>
