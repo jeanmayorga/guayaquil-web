@@ -95,17 +95,17 @@ export default async function Page(props: Props) {
   return (
     <>
       <Container>
-        <section className="md:grid md:grid-cols-2 md:gap-12 mb-8">
+        <section className="mx-auto max-w-2xl mb-8">
           <Image
             src={event.cover_image}
             alt="cover"
             height={390}
             width={450}
             quality={90}
-            className="w-full rounded-3xl transition-all relative md:sticky top-8 mb-12 md:mb-0"
+            className="w-full rounded-3xl mb-8"
             style={{ viewTransitionName: `event-image-${event.slug}` }}
           />
-          <div className="pt-8 md:px-6">
+          <div>
             <div
               className="font-semibold text-balance text-center text-5xl text-foreground mb-4"
               style={{ viewTransitionName: `event-name-${event.slug}` }}
