@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import Image from "next/image";
 import { ArrowRight, CalendarDays, MapPin } from "lucide-react";
 import Link from "next/link";
 
@@ -61,10 +62,13 @@ export default async function Home() {
     <Container>
       <JsonLd data={siteLd} />
       <section className="relative mb-12 h-[300px] overflow-hidden rounded-3xl md:h-[400px]">
-        <img
+        <Image
           src="/block2.jpg"
           alt="Guayaquil"
-          className="absolute inset-0 h-full w-full object-cover"
+          fill
+          priority
+          sizes="(max-width: 1024px) 100vw, 1024px"
+          className="object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/20" />
         <div className="relative z-10 flex h-full flex-col justify-end p-8 md:p-12">
