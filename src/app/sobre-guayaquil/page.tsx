@@ -55,7 +55,7 @@ export default function SobreGuayaquilPage() {
           </div>
         </section>
 
-        <div className="max-w-3xl">
+        <div className="mx-auto max-w-3xl">
           <p className="text-balance text-lg leading-relaxed text-muted-foreground">
             Guayaquil es la ciudad más grande y el principal puerto de Ecuador.
             Ubicada a orillas del río Guayas, es el motor económico del país y la

@@ -53,7 +53,7 @@ export default async function PlacePage(props: Props) {
 
   return (
     <Container>
-      <article className="max-w-3xl">
+      <article className="mx-auto max-w-3xl">
         <Link
           href="/sobre-guayaquil"
           className="mb-6 inline-flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
