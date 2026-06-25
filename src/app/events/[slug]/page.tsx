@@ -1,6 +1,7 @@
 import { getEvent } from "@/app/events/services";
 import { Container } from "@/components/container";
-import { ArrowRight, CalendarIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, CalendarIcon, MapPin } from "lucide-react";
 import { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -91,6 +92,7 @@ export default async function Page(props: Props) {
   const startAt = event.start_at;
   const endAt = event.end_at;
   const createdAt = event.created_at;
+  const multiDay = (startAt || "").slice(0, 10) !== (endAt || "").slice(0, 10);
 
   return (
     <>
@@ -106,23 +108,7 @@ export default async function Page(props: Props) {
             style={{ viewTransitionName: `event-image-${event.slug}` }}
           />
           <div>
-            <div
-              className="font-semibold text-balance text-center text-5xl text-foreground mb-4"
-              style={{ viewTransitionName: `event-name-${event.slug}` }}
-            >
-              {event.name}
-            </div>
-            <div
-              className="text-gray-500 whitespace-pre-wrap text-balance text-center text-xs mb-3"
-              dangerouslySetInnerHTML={{
-                __html: (event.information || "").replace(
-                  /<p\b([^>]*)>/g,
-                  '<p class="mb-1">'
-                ),
-              }}
-            />
-
-            <div className="flex justify-center overflow-x-auto gap-2 mb-12">
+            <div className="mb-4 flex flex-wrap gap-2">
               <Suspense>
                 <EventNewBadge createdAt={createdAt} />
                 <TodayBadge startAt={startAt} endAt={endAt} />
@@ -131,54 +117,114 @@ export default async function Page(props: Props) {
               </Suspense>
             </div>
 
-            {event.start_at && event.end_at && (
-              <section className="mb-12 gap-8">
-                <div className="font-semibold text-sm uppercase tracking-tight mb-2 text-[#0397b0]">
-                  Fecha:
-                </div>
+            <h1
+              className="mb-5 text-balance text-3xl font-bold tracking-tight text-foreground md:text-4xl"
+              style={{ viewTransitionName: `event-name-${event.slug}` }}
+            >
+              {event.name}
+            </h1>
 
-                <div className="flex items-start gap-1 text-gray-600 dark:text-gray-300 text-sm">
-                  <CalendarIcon className="w-4 h-4 mt-[2px]" />
-                  Empieza el{" "}
-                  {format(startAt, "d 'de' LLLL 'del' yyyy H:mm bbbb", {
-                    locale: es,
-                  })}
+            <div className="mb-8 flex flex-col gap-3">
+              {startAt && (
+                <div className="flex items-start gap-3">
+                  <CalendarIcon className="mt-0.5 h-5 w-5 flex-none text-cyan-500" />
+                  <div className="text-sm">
+                    <span className="block font-medium text-foreground first-letter:uppercase">
+                      {format(startAt, "EEEE d 'de' LLLL 'de' yyyy", {
+                        locale: es,
+                      })}
+                    </span>
+                    <span className="text-muted-foreground">
+                      {multiDay
+                        ? `Hasta el ${format(endAt, "d 'de' LLLL", {
+                            locale: es,
+                          })} · ${format(startAt, "H:mm bbbb", { locale: es })}`
+                        : format(startAt, "H:mm bbbb", { locale: es })}
+                    </span>
+                  </div>
                 </div>
-                <div className="flex items-start gap-1 text-gray-600 dark:text-gray-300 text-sm">
-                  <CalendarIcon className="w-4 h-4 mt-[2px]" />
-                  Termina el{" "}
-                  {format(endAt, "d 'de' LLLL 'del' yyyy H:mm bbbb", {
-                    locale: es,
-                  })}
+              )}
+              {event.location_name && (
+                <div className="flex items-start gap-3">
+                  <MapPin className="mt-0.5 h-5 w-5 flex-none text-cyan-500" />
+                  <span className="text-sm text-muted-foreground">
+                    {event.location_name}
+                  </span>
                 </div>
-              </section>
+              )}
+            </div>
+
+            {event.url && (
+              <a
+                href={event.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mb-10 block"
+              >
+                <Button size="lg" className="w-full rounded-full sm:w-auto">
+                  Comprar entradas
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </a>
             )}
 
             {event.description && (
-              <section className="mb-12 gap-8">
-                <div className="font-semibold text-sm uppercase tracking-tight mb-2 text-[#0397b0]">
+              <section className="mb-10">
+                <h2 className="mb-3 text-lg font-semibold tracking-tight">
                   Descripción
-                </div>
+                </h2>
                 <div
-                  className="text-gray-600 dark:text-gray-300 text-sm"
+                  className="text-sm leading-relaxed text-muted-foreground [&_p]:mb-4"
                   dangerouslySetInnerHTML={{
                     __html: event.description
-                      .replace(/<p\b([^>]*)>/g, '<p class="mb-4">')
+                      .replace(/<p\b([^>]*)>/g, "<p>")
                       .replace(/<\/?span[^>]*>/g, ""),
                   }}
                 />
               </section>
             )}
 
-            {event.location_name && (
-              <section className="mb-12 gap-8">
-                <div className="font-semibold text-sm uppercase tracking-tight mb-2 text-[#0397b0]">
-                  Lugar
+            {event.tickets && event.tickets.length > 0 && (
+              <section className="mb-10">
+                <h2 className="mb-3 text-lg font-semibold tracking-tight">
+                  Entradas
+                </h2>
+                <div className="flex flex-col gap-2">
+                  {event.tickets.map((ticket) => (
+                    <a
+                      key={`${ticket.title}-${ticket.price}-${ticket.name}`}
+                      href={event.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex items-center justify-between gap-4 rounded-2xl border border-border bg-card px-5 py-4 transition-colors hover:border-cyan-500/60"
+                    >
+                      <div className="min-w-0">
+                        <span className="block font-medium group-hover:text-cyan-600 dark:group-hover:text-cyan-400">
+                          {ticket.name}
+                        </span>
+                        {ticket.description && (
+                          <span className="block text-xs text-muted-foreground">
+                            {ticket.description}
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex flex-none items-center gap-3">
+                        <span className="font-medium">
+                          ${ticket.price.toFixed(2)}
+                        </span>
+                        <ArrowRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-cyan-500" />
+                      </div>
+                    </a>
+                  ))}
                 </div>
+              </section>
+            )}
 
-                <div className="text-gray-600 dark:text-gray-300 text-sm mb-4">
-                  {event.location_name}
-                </div>
+            {event.location_name && (
+              <section className="mb-10">
+                <h2 className="mb-3 text-lg font-semibold tracking-tight">
+                  Ubicación
+                </h2>
                 <iframe
                   title={`Mapa de ${event.location_name}`}
                   src={`https://maps.google.com/maps?q=${encodeURIComponent(
@@ -186,7 +232,7 @@ export default async function Page(props: Props) {
                   )}&z=15&output=embed`}
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  className="rounded-3xl w-full h-64 border-0 shadow"
+                  className="h-64 w-full rounded-2xl border border-border"
                 />
                 <a
                   href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
@@ -194,42 +240,11 @@ export default async function Page(props: Props) {
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-[#0397b0] hover:underline"
+                  className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-cyan-600 hover:underline dark:text-cyan-400"
                 >
                   Cómo llegar
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="h-4 w-4" />
                 </a>
-              </section>
-            )}
-
-            {event.tickets && event.tickets.length > 0 && (
-              <section className="mb-12 gap-8">
-                <div className="font-semibold text-sm uppercase tracking-tight mb-2 text-[#0397b0]">
-                  Tickets
-                </div>
-                {event.tickets?.map((ticket) => (
-                  <a
-                    key={`${ticket.title}-${ticket.price}-${ticket.name}`}
-                    className="group grid grid-cols-8 bg-white rounded-3xl px-4 lg:px-6 py-4 lg:py-3 mb-2 border border-transparent hover:border hover:border-[#0397b0] dark:bg-black dark:hover:bg-gray-700 transition-all"
-                    href={event.url}
-                    target="_blank"
-                  >
-                    <div className="col-span-5 flex items-start justify-center flex-col mb-4 lg:mb-0">
-                      <span className="block dark:text-white group-hover:text-[#0397b0] text-black text-bold text-base">
-                        {ticket.name}
-                      </span>
-                      <span className="text-gray-400 text-sm block">
-                        {ticket.description}
-                      </span>
-                    </div>
-                    <div className="col-span-2 flex items-center lg:justify-end group-hover:text-[#0397b0] dark:text-white text-gray-500">
-                      $ {ticket.price.toFixed(2)} USD
-                    </div>
-                    <div className="flex items-center lg:justify-end">
-                      <ArrowRight className="w-6 h-6 group-hover:text-[#0397b0] text-gray-400 dark:text-gray-200 -translate-x-2 group-hover:translate-x-2 transition-all" />
-                    </div>
-                  </a>
-                ))}
               </section>
             )}
           </div>
