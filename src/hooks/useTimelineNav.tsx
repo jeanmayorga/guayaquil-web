@@ -22,6 +22,10 @@ export const TIMELINE_ITEMS: {
   { key: "past", label: "Pasados", icon: History },
 ];
 
+// Lock compartido: al saltar a una sección, se bloquea la carga del resto
+// por un instante para que un salto no dispare las secciones intermedias.
+export const navLock: { key: string | null } = { key: null };
+
 // Maneja el scroll-spy (sección visible) y el scroll suave a cada sección.
 // `enabled` evita el observer en páginas que no tienen las secciones.
 export function useTimelineNav(enabled = true) {
@@ -64,6 +68,8 @@ export function useTimelineNav(enabled = true) {
   }, [enabled]);
 
   const go = (key: string) => {
+    // Bloquea la carga de las demás secciones mientras se hace el salto.
+    navLock.key = key;
     // Salto instantáneo (no animado): evita que el scroll pase por las
     // secciones intermedias y dispare su carga en el camino.
     const scroll = () =>
@@ -72,9 +78,11 @@ export function useTimelineNav(enabled = true) {
         ?.scrollIntoView({ behavior: "instant", block: "start" });
     scroll();
     setActive(key);
-    // Re-ajusta tras un instante: si una sección de arriba terminó de cargar
-    // y corrió el layout, vuelve a dejar la sección destino arriba.
+    // Re-ajusta tras un instante (si el layout se corrió) y libera el lock.
     setTimeout(scroll, 250);
+    setTimeout(() => {
+      navLock.key = null;
+    }, 700);
   };
 
   return { items: TIMELINE_ITEMS, active, go };

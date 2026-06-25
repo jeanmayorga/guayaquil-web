@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useObserver } from "@/hooks/useObserver";
+import { navLock } from "@/hooks/useTimelineNav";
 import { getEvents } from "../actions";
 import { EventType } from "../types";
 import { EventItem } from "./EventItem";
@@ -41,10 +42,11 @@ export function LazyEventSection({ sectionKey, label }: Props) {
   }, [sectionKey]);
 
   useEffect(() => {
-    if (isIntersecting && !loading && hasMore) {
-      loadMore();
-    }
-  }, [isIntersecting, loading, hasMore, loadMore]);
+    if (!isIntersecting || loading || !hasMore) return;
+    // Si hay un salto en curso a otra sección, no cargar esta.
+    if (navLock.key && navLock.key !== sectionKey) return;
+    loadMore();
+  }, [isIntersecting, loading, hasMore, loadMore, sectionKey]);
 
   const showInitialSkeleton = events.length === 0 && hasMore;
   const isEmpty = events.length === 0 && !hasMore;
