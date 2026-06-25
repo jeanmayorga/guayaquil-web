@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 
+import { cn } from "@/lib/utils";
 import { useObserver } from "@/hooks/useObserver";
 import { getEvents } from "../actions";
 import { EventType } from "../types";
@@ -15,9 +16,9 @@ interface Props {
 }
 
 export function LazyEventSection({ sectionKey, label, limit }: Props) {
-  // Carga cuando la sección está por entrar al viewport (300px antes).
+  // Carga cuando la sección está por entrar al viewport (150px antes).
   const { ref, isIntersecting } = useObserver({
-    rootMargin: "300px",
+    rootMargin: "150px",
     freezeOnceVisible: true,
   });
 
@@ -35,7 +36,11 @@ export function LazyEventSection({ sectionKey, label, limit }: Props) {
   const isEmpty = events !== null && events.length === 0;
 
   return (
-    <section id={sectionKey} ref={ref} className="scroll-mt-20">
+    <section
+      id={sectionKey}
+      ref={ref}
+      className={cn("scroll-mt-20", events === null && "min-h-[70vh]")}
+    >
       <h2 className="text-lg font-semibold tracking-tight mb-4">{label}</h2>
 
       {isEmpty ? (
