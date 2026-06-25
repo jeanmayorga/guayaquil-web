@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { CalendarX2 } from "lucide-react";
 
 import { SearchIcon } from "@/components/icons";
@@ -12,29 +12,43 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
-import { EventItem } from "./EventItem";
+import { getEvents } from "../actions";
 import { EventType } from "../types";
+import { EventItem } from "./EventItem";
+import { EventItemSkeleton } from "./EventItemSkeleton";
+import { LazyEventSection } from "./LazyEventSection";
 
-export interface TimelineSection {
-  key: string;
-  label: string;
-  events: EventType[];
-}
+const SECTIONS: { key: string; label: string; limit: number }[] = [
+  { key: "today", label: "Hoy", limit: 30 },
+  { key: "this-week", label: "Esta semana", limit: 30 },
+  { key: "this-month", label: "Este mes", limit: 30 },
+  { key: "next-month", label: "Próximo mes", limit: 30 },
+  { key: "past", label: "Pasados", limit: 12 },
+];
 
-export function EventsTimeline({ sections }: { sections: TimelineSection[] }) {
+export function EventsTimeline() {
   const [query, setQuery] = useState("");
+  const [results, setResults] = useState<EventType[] | null>(null);
+  const [searching, setSearching] = useState(false);
 
-  // Filtra por nombre en el cliente, sobre las secciones ya renderizadas.
-  const visible = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    const filtered = q
-      ? sections.map((s) => ({
-          ...s,
-          events: s.events.filter((e) => e.name.toLowerCase().includes(q)),
-        }))
-      : sections;
-    return filtered.filter((s) => s.events.length > 0);
-  }, [query, sections]);
+  // Búsqueda en el server (DB oculta), con debounce.
+  useEffect(() => {
+    const q = query.trim();
+    if (!q) {
+      setResults(null);
+      setSearching(false);
+      return;
+    }
+    setSearching(true);
+    const t = setTimeout(() => {
+      getEvents({ query: q, limit: 60 })
+        .then(setResults)
+        .finally(() => setSearching(false));
+    }, 350);
+    return () => clearTimeout(t);
+  }, [query]);
+
+  const isSearchingMode = query.trim().length > 0;
 
   return (
     <>
@@ -48,43 +62,68 @@ export function EventsTimeline({ sections }: { sections: TimelineSection[] }) {
         />
       </section>
 
-      {visible.length === 0 ? (
-        <Empty className="mb-8">
-          <EmptyHeader>
-            <EmptyMedia variant="icon">
-              <CalendarX2 />
-            </EmptyMedia>
-            <EmptyTitle>Sin resultados</EmptyTitle>
-            <EmptyDescription>
-              {query
-                ? `No encontramos eventos para “${query}”.`
-                : "No hay eventos por ahora."}
-            </EmptyDescription>
-          </EmptyHeader>
-        </Empty>
+      {isSearchingMode ? (
+        <SearchResults
+          results={results}
+          searching={searching}
+          query={query.trim()}
+        />
       ) : (
         <div className="flex flex-col gap-12">
-          {visible.map((section) => (
-            <section
-              key={section.key}
-              id={section.key}
-              className="scroll-mt-20"
-            >
-              <h2 className="text-lg font-semibold tracking-tight mb-4">
-                {section.label}
-                <span className="ml-2 text-sm font-normal text-muted-foreground">
-                  {section.events.length}
-                </span>
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
-                {section.events.map((event, idx) => (
-                  <EventItem key={event.slug} event={event} idx={idx} />
-                ))}
-              </div>
-            </section>
+          {SECTIONS.map((s) => (
+            <LazyEventSection
+              key={s.key}
+              sectionKey={s.key}
+              label={s.label}
+              limit={s.limit}
+            />
           ))}
         </div>
       )}
     </>
+  );
+}
+
+function SearchResults({
+  results,
+  searching,
+  query,
+}: {
+  results: EventType[] | null;
+  searching: boolean;
+  query: string;
+}) {
+  if (searching && !results) {
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <EventItemSkeleton key={i} />
+        ))}
+      </div>
+    );
+  }
+
+  if (!results || results.length === 0) {
+    return (
+      <Empty className="mb-8">
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <CalendarX2 />
+          </EmptyMedia>
+          <EmptyTitle>Sin resultados</EmptyTitle>
+          <EmptyDescription>
+            No encontramos eventos para “{query}”.
+          </EmptyDescription>
+        </EmptyHeader>
+      </Empty>
+    );
+  }
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+      {results.map((event, idx) => (
+        <EventItem key={event.slug} event={event} idx={idx} />
+      ))}
+    </div>
   );
 }
