@@ -17,6 +17,7 @@ import { EventType } from "../types";
 import { EventItem } from "./EventItem";
 import { EventItemSkeleton } from "./EventItemSkeleton";
 import { LazyEventSection } from "./LazyEventSection";
+import { TimelineNav } from "./TimelineNav";
 
 const SECTIONS: { key: string; label: string; limit: number }[] = [
   { key: "today", label: "Hoy", limit: 30 },
@@ -69,15 +70,18 @@ export function EventsTimeline() {
           query={query.trim()}
         />
       ) : (
-        <div className="flex flex-col gap-12">
-          {SECTIONS.map((s) => (
-            <LazyEventSection
-              key={s.key}
-              sectionKey={s.key}
-              label={s.label}
-              limit={s.limit}
-            />
-          ))}
+        <div className="flex gap-8">
+          <TimelineNav className="sticky top-6 hidden h-fit w-44 flex-none self-start lg:flex" />
+          <div className="flex min-w-0 flex-1 flex-col gap-12">
+            {SECTIONS.map((s) => (
+              <LazyEventSection
+                key={s.key}
+                sectionKey={s.key}
+                label={s.label}
+                limit={s.limit}
+              />
+            ))}
+          </div>
         </div>
       )}
     </>
