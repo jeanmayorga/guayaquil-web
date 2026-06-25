@@ -11,7 +11,7 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://guayaquil.app"),
+  metadataBase: new URL("https://www.guayaquil.app"),
   title: {
     default: "Guayaquil | Eventos, shows y conciertos en la ciudad",
     template: "%s | Guayaquil",
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     siteName: "Guayaquil",
     type: "website",
     locale: "es_EC",
-    url: "https://guayaquil.app",
+    url: "https://www.guayaquil.app",
     images: [{ url: "/block2.jpg", width: 1120, height: 753 }],
   },
   twitter: { card: "summary_large_image" },

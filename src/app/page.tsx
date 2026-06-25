@@ -31,11 +31,11 @@ export const metadata: Metadata = {
     title: "Eventos y shows en la ciudad de Guayaquil",
     description:
       "Explora los eventos y shows más importantes en Guayaquil y planifica tu próxima salida.",
-    url: "https://guayaquil.app",
+    url: "https://www.guayaquil.app",
     type: "website",
     images: [
       {
-        url: "https://guayaquil.app/block2.jpg",
+        url: "https://www.guayaquil.app/block2.jpg",
         width: 1120,
         height: 753,
         alt: "Eventos en Guayaquil",
@@ -52,7 +52,7 @@ export default async function Home() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "Guayaquil",
-    url: "https://guayaquil.app",
+    url: "https://www.guayaquil.app",
     description:
       "Agenda de eventos, conciertos y shows en Guayaquil, Ecuador.",
     inLanguage: "es-EC",

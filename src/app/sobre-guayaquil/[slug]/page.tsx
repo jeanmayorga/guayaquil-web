@@ -37,7 +37,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
       siteName: "Guayaquil App",
       title,
       description: place.summary,
-      url: `https://guayaquil.app/sobre-guayaquil/${place.slug}`,
+      url: `https://www.guayaquil.app/sobre-guayaquil/${place.slug}`,
       type: "article",
     },
   };
@@ -51,7 +51,7 @@ export default async function PlacePage(props: Props) {
   const query = encodeURIComponent(place.mapsQuery);
   const mapEmbed = `https://maps.google.com/maps?q=${query}&z=15&output=embed`;
   const directions = `https://www.google.com/maps/dir/?api=1&destination=${query}`;
-  const url = `https://guayaquil.app/sobre-guayaquil/${place.slug}`;
+  const url = `https://www.guayaquil.app/sobre-guayaquil/${place.slug}`;
 
   const attractionLd = {
     "@context": "https://schema.org",
@@ -74,7 +74,7 @@ export default async function PlacePage(props: Props) {
         "@type": "ListItem",
         position: 1,
         name: "Conoce la ciudad",
-        item: "https://guayaquil.app/sobre-guayaquil",
+        item: "https://www.guayaquil.app/sobre-guayaquil",
       },
       { "@type": "ListItem", position: 2, name: place.name, item: url },
     ],

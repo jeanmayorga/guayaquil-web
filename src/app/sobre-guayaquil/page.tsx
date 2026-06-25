@@ -29,9 +29,9 @@ export const metadata: Metadata = {
     title: "Conoce Guayaquil: qué ver y hacer en la Perla del Pacífico",
     description:
       "Guía turística de Guayaquil: atractivos, gastronomía, clima y cómo moverte por la ciudad.",
-    url: "https://guayaquil.app/sobre-guayaquil",
+    url: "https://www.guayaquil.app/sobre-guayaquil",
     type: "article",
-    images: [{ url: "https://guayaquil.app/block4.jpg", width: 1120, height: 753 }],
+    images: [{ url: "https://www.guayaquil.app/block4.jpg", width: 1120, height: 753 }],
   },
 };
 

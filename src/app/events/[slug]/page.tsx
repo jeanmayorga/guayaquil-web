@@ -39,7 +39,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
       .replace(/\s+/g, " ")
       .trim()
       .slice(0, 200) || `${event.name} en Guayaquil.`;
-  const url = `https://guayaquil.app/events/${event.slug}`;
+  const url = `https://www.guayaquil.app/events/${event.slug}`;
 
   return {
     title: event.name,
@@ -86,7 +86,7 @@ export default async function Page(props: Props) {
   const endAt = event.end_at;
   const multiDay = (startAt || "").slice(0, 10) !== (endAt || "").slice(0, 10);
 
-  const url = `https://guayaquil.app/events/${event.slug}`;
+  const url = `https://www.guayaquil.app/events/${event.slug}`;
   const eventLd = {
     "@context": "https://schema.org",
     "@type": "Event",
@@ -132,7 +132,7 @@ export default async function Page(props: Props) {
         "@type": "ListItem",
         position: 1,
         name: "Eventos",
-        item: "https://guayaquil.app/events",
+        item: "https://www.guayaquil.app/events",
       },
       { "@type": "ListItem", position: 2, name: event.name, item: url },
     ],

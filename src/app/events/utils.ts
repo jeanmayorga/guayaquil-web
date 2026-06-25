@@ -39,11 +39,11 @@ export function metadata({
       title,
       description:
         "Explora los eventos y shows en Guayaquil. Encuentra lo que está sucediendo en la ciudad y planifica tu próxima salida.",
-      url: `https://guayaquil.app/events/${tab}`,
+      url: `https://www.guayaquil.app/events/${tab}`,
       type: "website",
       images: [
         {
-          url: "https://guayaquil.app/banner.webp",
+          url: "https://www.guayaquil.app/banner.webp",
           width: 1120,
           height: 753,
           alt: title,

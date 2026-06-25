@@ -34,7 +34,7 @@ export function generateMetadata(): Metadata {
       type: "website",
       images: [
         {
-          url: "https://guayaquil.app/banner.webp",
+          url: "https://www.guayaquil.app/banner.webp",
           width: 1120,
           height: 753,
         },
