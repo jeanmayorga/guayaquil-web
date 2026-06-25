@@ -3,7 +3,7 @@
 import * as React from "react";
 import { usePathname } from "next/navigation";
 import { Link } from "next-view-transitions";
-import { Home, CalendarDays } from "lucide-react";
+import { Home, CalendarDays, Landmark } from "lucide-react";
 
 import { Logo } from "@/components/Logo";
 import { ModeToggle } from "@/components/mode-toggle";
@@ -81,6 +81,18 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                     </SidebarMenuSubItem>
                   ))}
                 </SidebarMenuSub>
+              </SidebarMenuItem>
+
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={pathname === "/sobre-guayaquil"}
+                >
+                  <Link href="/sobre-guayaquil">
+                    <Landmark />
+                    <span>Conoce la ciudad</span>
+                  </Link>
+                </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
