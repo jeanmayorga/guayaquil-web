@@ -14,20 +14,13 @@ import {
 } from "@/components/ui/empty";
 import { getEvents } from "../actions";
 import { EventType } from "../types";
+import { SECTIONS, InitialEvents } from "../sections";
 import { EventItem } from "./EventItem";
 import { EventItemSkeleton } from "./EventItemSkeleton";
 import { LazyEventSection } from "./LazyEventSection";
 import { TimelineNav } from "./TimelineNav";
 
-const SECTIONS: { key: string; label: string }[] = [
-  { key: "today", label: "Hoy" },
-  { key: "this-week", label: "Esta semana" },
-  { key: "this-month", label: "Este mes" },
-  { key: "next-month", label: "Próximo mes" },
-  { key: "past", label: "Pasados" },
-];
-
-export function EventsTimeline() {
+export function EventsTimeline({ initial }: { initial: InitialEvents }) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<EventType[] | null>(null);
   const [searching, setSearching] = useState(false);
@@ -74,7 +67,12 @@ export function EventsTimeline() {
           <TimelineNav className="sticky top-6 hidden h-fit w-44 flex-none self-start lg:flex" />
           <div className="flex min-w-0 flex-1 flex-col gap-12 pb-[60vh]">
             {SECTIONS.map((s) => (
-              <LazyEventSection key={s.key} sectionKey={s.key} label={s.label} />
+              <LazyEventSection
+                key={s.key}
+                sectionKey={s.key}
+                label={s.label}
+                initialEvents={initial[s.key] ?? []}
+              />
             ))}
           </div>
         </div>

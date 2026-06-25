@@ -6,21 +6,28 @@ import { useObserver } from "@/hooks/useObserver";
 import { navLock } from "@/hooks/useTimelineNav";
 import { getEvents } from "../actions";
 import { EventType } from "../types";
+import { PAGE_SIZE } from "../sections";
 import { EventItem } from "./EventItem";
 import { EventItemSkeleton } from "./EventItemSkeleton";
-
-const PAGE_SIZE = 6;
 
 interface Props {
   sectionKey: string;
   label: string;
+  /** Primer lote, renderizado en el server (SSR). */
+  initialEvents?: EventType[];
 }
 
-export function LazyEventSection({ sectionKey, label }: Props) {
-  const [events, setEvents] = useState<EventType[]>([]);
+export function LazyEventSection({
+  sectionKey,
+  label,
+  initialEvents = [],
+}: Props) {
+  const [events, setEvents] = useState<EventType[]>(initialEvents);
   const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-  const nextPage = useRef(1);
+  // Si el primer lote vino completo, puede haber más.
+  const [hasMore, setHasMore] = useState(initialEvents.length === PAGE_SIZE);
+  // El primer lote ya está (SSR), así que el scroll infinito sigue desde 2.
+  const nextPage = useRef(initialEvents.length > 0 ? 2 : 1);
 
   // El centinela dispara la carga al acercarse. Solo precarga hacia ABAJO
   // (margen inferior); así un salto a una sección no carga las de arriba.
@@ -48,32 +55,20 @@ export function LazyEventSection({ sectionKey, label }: Props) {
     loadMore();
   }, [isIntersecting, loading, hasMore, loadMore, sectionKey]);
 
-  const showInitialSkeleton = events.length === 0 && hasMore;
-  const isEmpty = events.length === 0 && !hasMore;
-
   return (
     <section id={sectionKey} className="scroll-mt-20">
       <h2 className="text-lg font-semibold tracking-tight mb-4">{label}</h2>
 
-      {isEmpty ? (
+      {events.length === 0 ? (
         <p className="text-sm text-muted-foreground">
           No hay eventos por ahora.
         </p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {showInitialSkeleton
-            ? Array.from({ length: PAGE_SIZE }).map((_, i) => (
-                <EventItemSkeleton key={`init-${i}`} />
-              ))
-            : events.map((event, idx) => (
-                <EventItem
-                  key={event.slug}
-                  event={event}
-                  idx={idx % PAGE_SIZE}
-                />
-              ))}
+          {events.map((event, idx) => (
+            <EventItem key={event.slug} event={event} idx={idx % PAGE_SIZE} />
+          ))}
           {loading &&
-            events.length > 0 &&
             Array.from({ length: 3 }).map((_, i) => (
               <EventItemSkeleton key={`more-${i}`} />
             ))}
