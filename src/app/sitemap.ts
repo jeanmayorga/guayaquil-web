@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getEvents } from "./events/actions";
+import { places } from "./sobre-guayaquil/places";
 
 export const revalidate = 3600;
 
@@ -7,6 +8,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const domain = "https://www.guayaquil.app";
 
   const events = await getEvents({ limit: 200 });
+
+  const placePages: MetadataRoute.Sitemap = places.map((place) => ({
+    url: `${domain}/sobre-guayaquil/${place.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
 
   const eventPages: MetadataRoute.Sitemap = events.map((event) => ({
     url: `${domain}/events/${event.slug}`,
@@ -34,6 +42,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    ...placePages,
     ...eventPages,
   ];
 }

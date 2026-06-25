@@ -4,6 +4,7 @@ import { Link } from "next-view-transitions";
 
 import { Container } from "@/components/container";
 import { Button } from "@/components/ui/button";
+import { places } from "./places";
 
 export const metadata: Metadata = {
   title: "Conoce Guayaquil: guía turística de la Perla del Pacífico",
@@ -30,33 +31,6 @@ export const metadata: Metadata = {
     images: [{ url: "https://guayaquil.app/block4.jpg", width: 1120, height: 753 }],
   },
 };
-
-const attractions = [
-  {
-    name: "Malecón 2000",
-    text: "El paseo más emblemático de la ciudad, a orillas del río Guayas: jardines, monumentos como La Rotonda, museos, miradores y cafés a lo largo de 2,5 km.",
-  },
-  {
-    name: "Las Peñas y el Cerro Santa Ana",
-    text: "El barrio más antiguo de Guayaquil, con casas coloridas y calles empedradas. Subiendo los 444 escalones del Cerro Santa Ana se llega al faro y a una vista panorámica de la ciudad.",
-  },
-  {
-    name: "Parque Seminario (de las Iguanas)",
-    text: "Un parque en pleno centro donde decenas de iguanas conviven con los visitantes, frente a la Catedral Metropolitana.",
-  },
-  {
-    name: "Parque Histórico",
-    text: "Un espacio que recrea la Guayaquil de antaño con fauna nativa, arquitectura tradicional y zonas verdes, ideal para ir en familia.",
-  },
-  {
-    name: "Isla Santay",
-    text: "Área natural protegida frente a la ciudad, perfecta para caminar o andar en bicicleta entre manglares y avistar aves.",
-  },
-  {
-    name: "Malecón del Salado y la Aerovía",
-    text: "Un malecón sobre el estero Salado y el teleférico Aerovía, que cruza el río ofreciendo vistas únicas de Guayaquil.",
-  },
-];
 
 export default function SobreGuayaquilPage() {
   return (
@@ -98,16 +72,23 @@ export default function SobreGuayaquilPage() {
             Estos son algunos de los lugares turísticos imperdibles de la ciudad.
           </p>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {attractions.map((a) => (
-              <div
-                key={a.name}
-                className="rounded-2xl border border-border bg-card p-5"
+            {places.map((p) => (
+              <Link
+                key={p.slug}
+                href={`/sobre-guayaquil/${p.slug}`}
+                className="group flex flex-col rounded-2xl border border-border bg-card p-5 transition-colors hover:border-cyan-500/60"
               >
-                <h3 className="mb-1 font-semibold">{a.name}</h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  {a.text}
+                <h3 className="mb-1 font-semibold transition-colors group-hover:text-cyan-600 dark:group-hover:text-cyan-400">
+                  {p.name}
+                </h3>
+                <p className="mb-3 text-sm leading-relaxed text-muted-foreground">
+                  {p.summary}
                 </p>
-              </div>
+                <span className="mt-auto inline-flex items-center gap-1 text-sm font-medium text-cyan-600 dark:text-cyan-400">
+                  Ver más y cómo llegar
+                  <ArrowRight className="h-4 w-4" />
+                </span>
+              </Link>
             ))}
           </div>
 
