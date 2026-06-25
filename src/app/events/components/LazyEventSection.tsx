@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 
-import { cn } from "@/lib/utils";
 import { useObserver } from "@/hooks/useObserver";
 import { getEvents } from "../actions";
 import { EventType } from "../types";
@@ -36,11 +35,7 @@ export function LazyEventSection({ sectionKey, label, limit }: Props) {
   const isEmpty = events !== null && events.length === 0;
 
   return (
-    <section
-      id={sectionKey}
-      ref={ref}
-      className={cn("scroll-mt-20", events === null && "min-h-[70vh]")}
-    >
+    <section id={sectionKey} ref={ref} className="scroll-mt-20">
       <h2 className="text-lg font-semibold tracking-tight mb-4">{label}</h2>
 
       {isEmpty ? (
@@ -51,7 +46,7 @@ export function LazyEventSection({ sectionKey, label, limit }: Props) {
             ? events.map((event, idx) => (
                 <EventItem key={event.slug} event={event} idx={idx} />
               ))
-            : Array.from({ length: 4 }).map((_, i) => (
+            : Array.from({ length: 6 }).map((_, i) => (
                 <EventItemSkeleton key={i} />
               ))}
         </div>
