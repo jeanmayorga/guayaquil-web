@@ -2,7 +2,7 @@
 
 import { LeftArrowIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import { Link } from "next-view-transitions";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 

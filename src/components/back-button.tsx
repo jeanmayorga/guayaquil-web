@@ -1,9 +1,9 @@
 "use client";
 
-import { Link, useTransitionRouter } from "next-view-transitions";
+import Link from "next/link";
 import { Button } from "./ui/button";
 import { LeftArrowIcon } from "./icons";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
 export function BackButton({ to, text }: Props) {
   const searchParams = useSearchParams();
   const searchParamsStringify = searchParams.toString();
-  const router = useTransitionRouter();
+  const router = useRouter();
 
   async function goBack() {
     router.back();

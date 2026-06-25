@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 import { GeistSans } from "geist/font/sans";
-import { ViewTransitions } from "next-view-transitions";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -14,7 +13,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Link } from "next-view-transitions";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Guayaquil",
@@ -27,8 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ViewTransitions>
-      <html lang="es" className={GeistSans.variable}>
+    <html lang="es" className={GeistSans.variable}>
         <meta
           name="google-site-verification"
           content="pzLChC3XsCNZpXUcP4jBhm83YPDTt5x9vvdvlQ8QuVg"
@@ -69,7 +67,6 @@ export default function RootLayout({
             <SpeedInsights />
           </ThemeProvider>
         </body>
-      </html>
-    </ViewTransitions>
+    </html>
   );
 }

@@ -26,7 +26,7 @@ import { TZDate } from "@date-fns/tz";
 import { es } from "date-fns/locale/es";
 import { CountdownText } from "./CountdownText";
 import { Badge } from "@/components/badge";
-import { Link } from "next-view-transitions";
+import Link from "next/link";
 import { EventNewBadge } from "./EventNewBadge";
 
 interface DurationBadgeProps {

@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { ArrowRight, MapPin } from "lucide-react";
-import { Link } from "next-view-transitions";
+import Link from "next/link";
 
 import { Container } from "@/components/container";
 import { Button } from "@/components/ui/button";

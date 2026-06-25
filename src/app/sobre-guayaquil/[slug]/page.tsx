@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArrowLeft, MapPin, Navigation, Bus } from "lucide-react";
-import { Link } from "next-view-transitions";
+import Link from "next/link";
 
 import { Container } from "@/components/container";
 import { Button } from "@/components/ui/button";

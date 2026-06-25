@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { usePathname } from "next/navigation";
-import { Link } from "next-view-transitions";
+import Link from "next/link";
 import { Home, CalendarDays, Landmark } from "lucide-react";
 
 import { Logo } from "@/components/Logo";
