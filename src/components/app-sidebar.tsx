@@ -11,10 +11,10 @@ import {
   Flame,
   LayoutGrid,
   History,
+  MapPin,
   type LucideIcon,
 } from "lucide-react";
 
-import { Logo } from "@/components/Logo";
 import { ModeToggle } from "@/components/mode-toggle";
 import {
   Sidebar,
@@ -53,7 +53,9 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <Link href="/">
-                <Logo className="size-8" />
+                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-cyan-500 text-white">
+                  <MapPin className="size-4" />
+                </div>
                 <div className="grid flex-1 text-left leading-tight">
                   <span className="truncate font-semibold">Guayaquil</span>
                   <span className="truncate text-xs text-muted-foreground">
