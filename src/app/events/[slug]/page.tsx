@@ -179,15 +179,25 @@ export default async function Page(props: Props) {
                 <div className="text-gray-600 dark:text-gray-300 text-sm mb-4">
                   {event.location_name}
                 </div>
+                <iframe
+                  title={`Mapa de ${event.location_name}`}
+                  src={`https://maps.google.com/maps?q=${encodeURIComponent(
+                    event.location_name
+                  )}&z=15&output=embed`}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="rounded-3xl w-full h-64 border-0 shadow"
+                />
                 <a
-                  href={`https://www.google.com/maps/search/?api=1&query=${event.location_name}`}
+                  href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+                    event.location_name
+                  )}`}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-[#0397b0] hover:underline"
                 >
-                  <img
-                    src={`https://maps.googleapis.com/maps/api/staticmap?size=400x200&zoom=14&maptype=roadmap\&markers=size:mid%7Ccolor:red%7C${event.location_name}&key=AIzaSyBn6Gu0M2bZgVZ-NioKAVtrrGc1yKraYk0`}
-                    className="rounded-3xl w-full lg:w-auto shadow"
-                  />
+                  Cómo llegar
+                  <ArrowRight className="w-4 h-4" />
                 </a>
               </section>
             )}
