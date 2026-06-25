@@ -36,14 +36,7 @@ export function LazyEventSection({ sectionKey, label, limit }: Props) {
 
   return (
     <section id={sectionKey} ref={ref} className="scroll-mt-20">
-      <h2 className="text-lg font-semibold tracking-tight mb-4">
-        {label}
-        {events !== null && (
-          <span className="ml-2 text-sm font-normal text-muted-foreground">
-            {events.length}
-          </span>
-        )}
-      </h2>
+      <h2 className="text-lg font-semibold tracking-tight mb-4">{label}</h2>
 
       {isEmpty ? (
         <p className="text-sm text-muted-foreground">No hay eventos por ahora.</p>
