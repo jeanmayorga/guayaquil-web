@@ -23,13 +23,13 @@ export function EventsSearch() {
   const [isSearching, setIsSearching] = useState<boolean>(false);
 
   return (
-    <section className="relative mb-8 rounded-full overflow-hidden">
-      <SearchIcon className="h-5 w-5 absolute top-1/2 -translate-y-1/2 text-gray-500 left-3" />
+    <section className="relative mb-8 rounded-xl overflow-hidden">
+      <SearchIcon className="h-5 w-5 absolute top-1/2 -translate-y-1/2 text-muted-foreground left-3.5 z-10" />
       <Input
         placeholder="Buscar shows o eventos"
         className={cn(
           isSearching ? "w-[calc(100%-80px)]" : "w-full",
-          "bg-gray-50 dark:bg-gray-700 rounded-xl pl-11 text-gray-500 dark:text-gray-300 placeholder:text-gray-400 text-base border-0 transition-all duration-300"
+          "h-12 rounded-xl border border-border bg-muted/40 pl-11 text-base text-foreground placeholder:text-muted-foreground transition-all duration-300 focus-visible:border-cyan-500 focus-visible:bg-background"
         )}
         onFocus={() => setIsSearching(true)}
         onChange={(e) => doSearch(e.target.value)}
