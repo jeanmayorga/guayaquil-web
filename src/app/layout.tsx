@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Analytics } from "@vercel/analytics/react";
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import { cn } from "@/lib/utils";
@@ -82,7 +81,6 @@ export default function RootLayout({
                 <div className="pt-2 lg:pt-10 pb-16">{children}</div>
               </SidebarInset>
             </SidebarProvider>
-            <Analytics />
             <SpeedInsights />
           </ThemeProvider>
         </body>
