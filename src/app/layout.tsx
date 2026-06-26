@@ -35,6 +35,9 @@ export const metadata: Metadata = {
   },
   twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
+  other: {
+    "google-adsense-account": "ca-pub-9957192797804577",
+  },
 };
 
 export default function RootLayout({
@@ -62,6 +65,14 @@ export default function RootLayout({
               gtag('config', 'G-XZ3LY3G0C7');
             `}
           </Script>
+          {/* Google AdSense */}
+          <Script
+            id="adsbygoogle"
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9957192797804577"
+            strategy="afterInteractive"
+            crossOrigin="anonymous"
+            async
+          />
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
