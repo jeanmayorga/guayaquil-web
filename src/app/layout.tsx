@@ -5,6 +5,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "./theme-provider";
 import { AppSidebar } from "@/components/app-sidebar";
+import { Footer } from "@/components/footer";
 import { Logo } from "@/components/Logo";
 import { MobileMenuButton } from "@/components/mobile-menu-button";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
@@ -35,6 +36,9 @@ export const metadata: Metadata = {
   },
   twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
+  verification: {
+    google: "pzLChC3XsCNZpXUcP4jBhm83YPDTt5x9vvdvlQ8QuVg",
+  },
   other: {
     "google-adsense-account": "ca-pub-9957192797804577",
   },
@@ -47,10 +51,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className={GeistSans.variable}>
-        <meta
-          name="google-site-verification"
-          content="pzLChC3XsCNZpXUcP4jBhm83YPDTt5x9vvdvlQ8QuVg"
-        />
         <body className={cn(GeistSans.className, "min-h-screen antialiased")}>
           {/* Google tag (gtag.js) - GA4 */}
           <Script
@@ -88,7 +88,8 @@ export default function RootLayout({
                   </Link>
                   <MobileMenuButton />
                 </header>
-                <div className="pt-2 lg:pt-10 pb-16">{children}</div>
+                <div className="pt-2 lg:pt-10">{children}</div>
+                <Footer />
               </SidebarInset>
             </SidebarProvider>
           </ThemeProvider>
