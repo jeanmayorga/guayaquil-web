@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import Image from "next/image";
-import { ArrowRight, MapPin } from "lucide-react";
+import { ArrowRight, Clock, MapPin, UtensilsCrossed } from "lucide-react";
 import Link from "next/link";
 
 import { Container } from "@/components/container";
@@ -99,14 +99,63 @@ export default function SobreGuayaquilPage() {
           </div>
 
           <h2 className="mt-12 mb-2 text-2xl font-semibold tracking-tight">
+            Guías para tu visita
+          </h2>
+          <p className="mb-6 text-muted-foreground">
+            Dos lecturas para planificar mejor tu paso por la ciudad.
+          </p>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <Link
+              href="/sobre-guayaquil/guayaquil-en-un-dia"
+              className="group flex flex-col rounded-2xl border border-border bg-card p-5 transition-colors hover:border-cyan-500/60"
+            >
+              <Clock className="mb-3 h-6 w-6 text-cyan-500" />
+              <h3 className="mb-1 font-semibold transition-colors group-hover:text-cyan-600 dark:group-hover:text-cyan-400">
+                Guayaquil en un día
+              </h3>
+              <p className="mb-3 text-sm leading-relaxed text-muted-foreground">
+                Un itinerario a pie por lo esencial: del Parque de las Iguanas
+                al atardecer en el río, con paradas para comer.
+              </p>
+              <span className="mt-auto inline-flex items-center gap-1 text-sm font-medium text-cyan-600 dark:text-cyan-400">
+                Ver itinerario
+                <ArrowRight className="h-4 w-4" />
+              </span>
+            </Link>
+            <Link
+              href="/sobre-guayaquil/gastronomia"
+              className="group flex flex-col rounded-2xl border border-border bg-card p-5 transition-colors hover:border-cyan-500/60"
+            >
+              <UtensilsCrossed className="mb-3 h-6 w-6 text-cyan-500" />
+              <h3 className="mb-1 font-semibold transition-colors group-hover:text-cyan-600 dark:group-hover:text-cyan-400">
+                Qué comer en Guayaquil
+              </h3>
+              <p className="mb-3 text-sm leading-relaxed text-muted-foreground">
+                Encebollado, cangrejada, bolón y más: los platos imperdibles y
+                dónde probarlos.
+              </p>
+              <span className="mt-auto inline-flex items-center gap-1 text-sm font-medium text-cyan-600 dark:text-cyan-400">
+                Ver guía gastronómica
+                <ArrowRight className="h-4 w-4" />
+              </span>
+            </Link>
+          </div>
+
+          <h2 className="mt-12 mb-2 text-2xl font-semibold tracking-tight">
             Gastronomía
           </h2>
           <p className="text-muted-foreground leading-relaxed">
             La cocina guayaquileña gira en torno al mar y al plátano verde.
             Imperdibles: el <strong className="text-foreground">encebollado</strong>{" "}
             (considerado plato nacional), el ceviche de camarón o concha, el bolón
-            de verde, el encocado y el cangrejo criollo. Cualquier visita queda
-            incompleta sin probar el marisco fresco de la costa.
+            de verde, el encocado y el cangrejo criollo. Lee nuestra{" "}
+            <Link
+              href="/sobre-guayaquil/gastronomia"
+              className="font-medium text-cyan-600 underline dark:text-cyan-400"
+            >
+              guía completa de qué comer en Guayaquil
+            </Link>{" "}
+            para saber dónde probarlos.
           </p>
 
           <h2 className="mt-12 mb-2 text-2xl font-semibold tracking-tight">

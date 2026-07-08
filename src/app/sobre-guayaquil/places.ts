@@ -123,6 +123,114 @@ export const places: Place[] = [
       "A pie: accesible desde la zona de la Universidad de Guayaquil.",
     ],
   },
+  {
+    slug: "puerto-santa-ana",
+    name: "Puerto Santa Ana",
+    tagline: "El paseo moderno junto al río",
+    summary:
+      "Un paseo ribereño con plazas, museos, cafés y edificios modernos al pie del cerro Santa Ana, ideal para el atardecer.",
+    paragraphs: [
+      "Puerto Santa Ana es la extensión moderna del malecón: un paseo peatonal junto al río Guayas, al pie del cerro Santa Ana, rodeado de edificios residenciales, plazas, cafés y restaurantes. Es una de las zonas más fotogénicas de la ciudad, especialmente al atardecer.",
+      "En su recorrido encontrarás espacios culturales como el museo dedicado a la música popular guayaquileña y a Julio Jaramillo, además de vistas privilegiadas del río. Conecta directamente con Las Peñas, así que es fácil combinar ambos en una sola caminata.",
+    ],
+    address: "Junto al río Guayas, al norte de Las Peñas",
+    mapsQuery: "Puerto Santa Ana, Guayaquil, Ecuador",
+    howToGet: [
+      "A pie: continúa desde el extremo norte del Malecón 2000, pasando Las Peñas.",
+      "Taxi o app: pide “Puerto Santa Ana”.",
+      "Ideal combinarlo con Las Peñas y el Cerro Santa Ana en un mismo paseo.",
+    ],
+  },
+  {
+    slug: "mercado-del-rio",
+    name: "Mercado del Río",
+    tagline: "El food hall del Malecón",
+    summary:
+      "Un mercado gastronómico frente al río Guayas con decenas de locales de comida ecuatoriana e internacional, dentro del Malecón 2000.",
+    paragraphs: [
+      "El Mercado del Río es un gran mercado gastronómico ubicado en el Malecón 2000, frente al río Guayas. Reúne bajo un mismo techo decenas de propuestas: comida típica guayaquileña, cocina de autor, opciones internacionales, postres y cafés.",
+      "Es una parada perfecta para almorzar durante un recorrido por el malecón: pruebas varios platos en un solo lugar, con aire acondicionado y vista al río. Suele estar animado los fines de semana.",
+    ],
+    address: "Malecón Simón Bolívar, sector norte del Malecón 2000",
+    mapsQuery: "Mercado del Río, Malecón 2000, Guayaquil, Ecuador",
+    howToGet: [
+      "A pie: dentro del propio Malecón 2000, en su tramo norte, cerca de Las Peñas.",
+      "Metrovía: estaciones del centro (Troncal 1) a pocas cuadras.",
+      "Taxi o app: pide “Mercado del Río, Malecón”.",
+    ],
+  },
+  {
+    slug: "cementerio-patrimonial",
+    name: "Cementerio Patrimonial",
+    tagline: "La Ciudad Blanca",
+    summary:
+      "Uno de los cementerios más bellos de Sudamérica: mausoleos de mármol, historia republicana y la tumba de Julio Jaramillo.",
+    paragraphs: [
+      "El Cementerio General de Guayaquil, conocido como el Cementerio Patrimonial o la “Ciudad Blanca”, es considerado uno de los más hermosos de Sudamérica. Sus avenidas reúnen mausoleos y esculturas de mármol de estilo neoclásico que cuentan la historia de la ciudad y del país.",
+      "Aquí descansan expresidentes y personajes ilustres, además de Julio Jaramillo, el “Ruiseñor de América”, cuya tumba sigue recibiendo visitantes. La mejor forma de conocerlo es en una visita guiada o ruta patrimonial, que suelen organizarse los fines de semana.",
+    ],
+    address: "Av. Pedro Menéndez Gilbert y Julián Coronel, junto al cerro del Carmen",
+    mapsQuery: "Cementerio General de Guayaquil, Ecuador",
+    howToGet: [
+      "Taxi o app: pide “Cementerio Patrimonial” o “Cementerio General”.",
+      "Se recomienda ir en horario diurno y, de preferencia, en visita guiada.",
+      "Está cerca del centro, junto al cerro del Carmen.",
+    ],
+  },
+  {
+    slug: "jardin-botanico",
+    name: "Jardín Botánico de Guayaquil",
+    tagline: "Orquídeas y mariposas sobre la ciudad",
+    summary:
+      "Un jardín en lo alto del norte de la ciudad con colecciones de orquídeas, mariposario, aves y vistas panorámicas de Guayaquil.",
+    paragraphs: [
+      "El Jardín Botánico de Guayaquil, ubicado en una colina del norte de la ciudad, reúne cientos de especies de plantas nativas y exóticas, con su colección de orquídeas como gran protagonista. Sus senderos incluyen un mariposario y zonas donde se observan aves e iguanas.",
+      "Por su ubicación elevada ofrece, además, vistas panorámicas de la ciudad. Es un plan tranquilo de media mañana, ideal para amantes de la naturaleza y la fotografía.",
+    ],
+    address: "Urbanización Las Orquídeas, norte de Guayaquil",
+    mapsQuery: "Jardín Botánico de Guayaquil, Ecuador",
+    howToGet: [
+      "Taxi o app: a unos 20–30 min del centro, según el tráfico.",
+      "Auto propio: hay parqueo en el lugar.",
+      "Lleva repelente y agua; el recorrido es al aire libre.",
+    ],
+  },
+  {
+    slug: "cerro-blanco",
+    name: "Bosque Protector Cerro Blanco",
+    tagline: "Bosque seco a minutos de la ciudad",
+    summary:
+      "Reserva de bosque seco tropical en la vía a la Costa, hogar del papagayo de Guayaquil, con senderos y avistamiento de fauna.",
+    paragraphs: [
+      "El Bosque Protector Cerro Blanco es una reserva de bosque seco tropical a pocos kilómetros de la ciudad, por la vía a la Costa. Protege una gran diversidad de flora y fauna, incluido el papagayo de Guayaquil (guacamayo verde mayor), emblema de la ciudad y especie en peligro.",
+      "Cuenta con senderos de distintos niveles que se recorren con guías locales, ideales para el avistamiento de aves y para desconectarse de la ciudad por unas horas. Conviene ir temprano en la mañana y consultar disponibilidad antes de la visita.",
+    ],
+    address: "Km 16 de la vía a la Costa, Guayaquil",
+    mapsQuery: "Bosque Protector Cerro Blanco, Guayaquil, Ecuador",
+    howToGet: [
+      "Auto propio o taxi/app: por la vía a la Costa, a unos 20–30 min del centro.",
+      "Ve temprano: las primeras horas son las mejores para ver fauna.",
+      "Lleva zapatos de trekking, agua, gorra y repelente.",
+    ],
+  },
+  {
+    slug: "urdesa",
+    name: "Urdesa",
+    tagline: "El barrio gastronómico clásico",
+    summary:
+      "Uno de los barrios tradicionales de Guayaquil, con la avenida Víctor Emilio Estrada como eje de restaurantes, cafés y cangrejales.",
+    paragraphs: [
+      "Urdesa es uno de los barrios residenciales tradicionales de Guayaquil y, para muchos, su zona gastronómica por excelencia. Su eje es la avenida Víctor Emilio Estrada, repleta de restaurantes, cafés, heladerías y tiendas que se animan especialmente por las noches.",
+      "Aquí están varios de los cangrejales más conocidos de la ciudad, donde se vive uno de los rituales guayacos por excelencia: la cangrejada. Es el lugar para cenar después de un día de turismo por el centro.",
+    ],
+    address: "Av. Víctor Emilio Estrada, Urdesa, al noroeste del centro",
+    mapsQuery: "Urdesa, Guayaquil, Ecuador",
+    howToGet: [
+      "Taxi o app: a unos 10–15 min del centro; pide “Urdesa, Víctor Emilio Estrada”.",
+      "La avenida principal se recorre bien a pie una vez ahí.",
+      "Reserva en los cangrejales más populares los fines de semana.",
+    ],
+  },
 ];
 
 export function getPlace(slug: string): Place | undefined {

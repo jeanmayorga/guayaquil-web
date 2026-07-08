@@ -43,6 +43,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     {
+      url: `${domain}/sobre-guayaquil/gastronomia`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${domain}/sobre-guayaquil/guayaquil-en-un-dia`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
       url: `${domain}/quienes-somos`,
       lastModified: new Date(),
       changeFrequency: "yearly",
